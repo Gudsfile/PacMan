@@ -3,8 +3,8 @@ package logic;
 /**
  *
  *
- * @inv width > 0
- * @inv height > 0
+ * @inv {@code width > 0}
+ * @inv {@code height > 0}
  *
  *
  */

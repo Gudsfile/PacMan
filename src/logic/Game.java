@@ -4,10 +4,10 @@ package logic;
  *
  *
  *
- * @inv this.life >=0
- * @inv this.gameBoard != null
- * @inv this.gameBoard.width > 0
- * @inv this.gameBoard.height > 0
+ * @inv {@code this.life >=0}
+ * @inv {@code this.gameBoard != null}
+ * @inv {@code this.gameBoard.width > 0}
+ * @inv {@code this.gameBoard.height > 0}
  *
  *
  */
@@ -42,13 +42,13 @@ public class Game {
      * Construit une partie
      * @param life entier, nombre de vie que PacMan possède
      * @param power booléen, pouvoir de PacMan
-     * @pre life >= 0
-     * @pre gameBoard != null
-     * @pre gameBoard.width > 0
-     * @pre gameBoard.height > 0
-     * @pre nbRegularDots > 0
-     * @pre nbPowerDots >= 0
-     * @pre nbRegularDots + nbPowerDots < gameBoard.size[0]*gameBoard.size[1]
+     * @pre  {@code life >= 0}
+     * @pre  {@code gameBoard != null}
+     * @pre  {@code gameBoard.width > 0}
+     * @pre  {@code gameBoard.height > 0}
+     * @pre  {@code nbRegularDots > 0}
+     * @pre  {@code nbPowerDots >= 0}
+     * @pre  {@code nbRegularDots + nbPowerDots < gameBoard.size[0]*gameBoard.size[1]}
      * @post this.life = life
      * @post this.power = power
      * @post this.gameBoard = gameBoard
@@ -71,7 +71,7 @@ public class Game {
     /**
      * Modifier le nombre de point de vie
      * @param life un entier positif remplacant le nombre de point de vie de PacMan
-     * @pre life >= 0
+     * @pre {@code life >= 0}
      * @post this.life = life
      */
     public void setLife(int life) {
@@ -166,8 +166,8 @@ public class Game {
      * Modifie le plateau de jeu
      * @param gameBoard plateau GameBoard
      * @pre gameBoard != null
-     * @pre gameBoard.width > 0
-     * @pre gameBoard.height > 0
+     * @pre {@code gameBoard.width > 0}
+     * @pre {@code gameBoard.height > 0}
      * @post this.gameBoard = gameBoard
      */
     public void setGameBoard(GameBoard gameBoard) {
