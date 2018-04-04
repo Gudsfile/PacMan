@@ -5,16 +5,19 @@ Le labyrinthe est constitué d’une grille dont certaines cases sont des murs. 
 ## Dépendences
 Ce projet nécessite les librairies suivantes :
 Json-simple :
-'''
+```
 <dependency>
   <groupId>com.googlecode.json-simple</groupId>
   <artifactId>json-simple</artifactId>
   <version>1.1.1</version>
 </dependency>
+```
 
 Gson :
+```
 <dependency>
   <groupId>com.google.code.gson</groupId>
   <artifactId>gson</artifactId>
   <version>2.8.2</version>
 </dependency>
+```
