@@ -1,8 +1,25 @@
 package view;
-
+import logic.Game;
 
 public class Play {
-    private logic.Game game;
 
-    
+
+    /**
+     * animates
+     *
+     * @param args NONE
+     */
+    public static void main(String[] args)
+    {
+        Play play=new Play();
+    }
+
+    private Game game;
+
+    public Play()
+    {
+        
+    }
+
+
 }
