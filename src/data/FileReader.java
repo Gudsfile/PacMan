@@ -6,6 +6,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.util.Arrays;
+
 import static java.lang.Math.toIntExact;
 
 /**
@@ -42,13 +44,13 @@ public class FileReader {
         try {
             JSONObject param = (JSONObject) parser.parse(new java.io.FileReader(this.fileName));
             Gson gson = new GsonBuilder().create();
-            long regularPacDotValue = (long) param.get("RegularPacDotValue");
-            long powerPacDotValue = (long) param.get("PowerPacDotValue");
+            long pacDotValue = (long) param.get("PacDotValue");
+            long fruitValue = (long) param.get("FruitValue");
             long powerTime = (long) param.get("PowerTime");
             long gameSpeed = (long) param.get("GameSpeed");
             JSONArray boardString = (JSONArray) param.get("board");
             int[][] board = gson.fromJson(boardString.toString(), int[][].class);
-            game = new GameParam(toIntExact(regularPacDotValue), toIntExact(powerPacDotValue), toIntExact(powerTime), toIntExact(gameSpeed), board);
+            game = new GameParam(toIntExact(pacDotValue), toIntExact(fruitValue), toIntExact(powerTime), toIntExact(gameSpeed), board);
         } catch (Exception e) {
             e.printStackTrace();
         }

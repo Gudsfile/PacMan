@@ -1,5 +1,9 @@
 package data;
 
 public class EntityWall extends Entity {
-    private String name = "wall";
+    public String name = "wall";
+
+    public String getName() {
+        return this.name;
+    }
 }

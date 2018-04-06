@@ -1,5 +1,9 @@
 package data;
 
 public abstract class Entity {
-    String name = null;
+    private String name = "";
+
+    public String getName() {
+        return this.name;
+    }
 }

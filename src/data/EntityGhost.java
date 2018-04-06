@@ -1,5 +1,9 @@
 package data;
 
 public class EntityGhost extends Entity {
-    private String name = "ghost";
+    public String name = "ghost";
+
+    public String getName() {
+        return this.name;
+    }
 }

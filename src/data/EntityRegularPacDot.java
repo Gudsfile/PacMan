@@ -1,5 +1,9 @@
 package data;
 
 public class EntityRegularPacDot extends EntityPacDot {
-    private String name = "regularPacDot";
+    public String name = "regularPacDot";
+
+    public String getName() {
+        return this.name;
+    }
 }

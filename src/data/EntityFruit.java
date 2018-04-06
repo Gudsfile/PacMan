@@ -1,5 +1,9 @@
 package data;
 
 public class EntityFruit extends EntityPacDot {
-    private String name = "fruit";
+    public String name = "fruit";
+
+    public String getName() {
+        return this.name;
+    }
 }
