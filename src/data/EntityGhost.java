@@ -1,7 +1,5 @@
 package data;
 
-public class EntityGhost implements Entity {
-    public EntityGhost() {
-
-    }
+public class EntityGhost extends Entity {
+    private String name = "ghost";
 }

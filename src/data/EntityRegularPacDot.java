@@ -1,4 +1,5 @@
 package data;
 
-public class EntityRegularPacDot implements Entity{
+public class EntityRegularPacDot extends EntityPacDot {
+    private String name = "regularPacDot";
 }

@@ -1,4 +1,5 @@
 package data;
 
-public class EntityWall implements Entity {
+public class EntityWall extends Entity {
+    private String name = "wall";
 }

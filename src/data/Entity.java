@@ -1,5 +1,5 @@
 package data;
 
-public interface Entity {
+public abstract class Entity {
     String name = null;
 }
