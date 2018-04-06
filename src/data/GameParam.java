@@ -164,4 +164,20 @@ public class GameParam {
     public void setBoard(Entity[][] board) {
         this.board = board;
     }
+
+    /**
+     * Get ghostBoard
+     * @return ghostBoard
+     */
+    public EntityGhost[][] getGhostBoard() {
+        return ghostBoard;
+    }
+
+    /**
+     * Set ghostBoard
+     * @param ghostBoard new ghostBoard
+     */
+    public void setGhostBoard(EntityGhost[][] ghostBoard) {
+        this.ghostBoard = ghostBoard;
+    }
 }
