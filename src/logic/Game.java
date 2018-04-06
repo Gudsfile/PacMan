@@ -8,7 +8,7 @@ package logic;
  * @inv {@code this.gameBoard != null}
  * @inv {@code this.gameBoard.width > 0}
  * @inv {@code this.gameBoard.height > 0}
- *
+ * @inv {@code this.score >= 0}
  *
  */
 public class Game {
@@ -22,40 +22,29 @@ public class Game {
      */
     private boolean power;
     /**
-     * Tableau de Ghost d'une dimension correspondant à la liste des fantômes de la partie
-     */
-    private Ghost[] ghostList;
-    /**
-     * Tableau de PacDot d'une dimension correspondant à la liste des gommes de la partie
-     */
-    private PacDot[] pacDotList;
-    /**
-     * Objet PacMan représentant le PacMan de la partie
-     */
-    private PacMan pacMan;
-    /**
      * Objet GameBoard correspondant au plateau de la partie
      */
     private GameBoard gameBoard;
+    /**
+     * Entier contenant le score de la partie
+     */
+    private int score;
 
     /**
      * Construit une partie
      * @param life entier, nombre de vie que PacMan possède
      * @param power booléen, pouvoir de PacMan
+     * @param gameBoard objet GameBoard, plateau de jeu
      * @pre  {@code life >= 0}
      * @pre  {@code gameBoard != null}
      * @pre  {@code gameBoard.width > 0}
      * @pre  {@code gameBoard.height > 0}
-     * @pre  {@code nbRegularDots > 0}
-     * @pre  {@code nbPowerDots >= 0}
-     * @pre  {@code nbRegularDots + nbPowerDots < gameBoard.size[0]*gameBoard.size[1]}
      * @post this.life = life
      * @post this.power = power
      * @post this.gameBoard = gameBoard
-     * @post this.nbRegularDots = nbRegularDots
-     * @post this.nbPowerDots = nbPowerDots
+     * @post this.score = 0
      */
-    public Game(int life, boolean power, GameBoard gameBoard, int nbRegularDots, int nbPowerDots) {
+    public Game(int life, boolean power, GameBoard gameBoard) {
 
     }
 
@@ -97,63 +86,6 @@ public class Game {
     }
 
     /**
-     * Retourne la liste des fantômes
-     * @return tableau de Ghost
-     * @post result = ghostList
-     */
-    public Ghost[] getGhostList() {
-        return ghostList;
-    }
-
-    /**
-     * Modifie la liste des fantômes
-     * @param ghostList tableau de Ghost
-     * @pre ghostList != null
-     * @post this.ghostList = ghostList
-     */
-    public void setGhostList(Ghost[] ghostList) {
-        this.ghostList = ghostList;
-    }
-
-    /**
-     * Retourne la liste des PacDots
-     * @return tableau de PacDot
-     * @post result = pacDotList
-     */
-    public PacDot[] getPacDotList() {
-        return pacDotList;
-    }
-
-    /**
-     * Modifie la liste des PacDots
-     * @param pacDotList tableau de PacDot
-     * @pre pacDotList != null
-     * @post this.pacDotList = pacDotList
-     */
-    public void setPacDotList(PacDot[] pacDotList) {
-        this.pacDotList = pacDotList;
-    }
-
-    /**
-     * Retourne le PacMan
-     * @return objet PacMan
-     * @post result = pacMan
-     */
-    public PacMan getPacMan() {
-        return pacMan;
-    }
-
-    /**
-     * Modifie le PacMan
-     * @param pacMan objet PacMan
-     * @pre pacMan != null
-     * @post this.pacMan = pacMan
-     */
-    public void setPacMan(PacMan pacMan) {
-        this.pacMan = pacMan;
-    }
-
-    /**
      * Retourne le plateau de jeu
      * @return plateau GameBoard
      * @post result = gameBoard
@@ -172,6 +104,25 @@ public class Game {
      */
     public void setGameBoard(GameBoard gameBoard) {
         this.gameBoard = gameBoard;
+    }
+
+    /**
+     * Retourne le score
+     * @return une entier représentant le score
+     * @post result = score
+     */
+    public int getScore() {
+        return score;
+    }
+
+    /**
+     * Modifie la valeur du score
+     * @param score un entier
+     * @pre score >= 0
+     * @post this.score = score
+     */
+    public void setScore(int score) {
+        this.score = score;
     }
 
 
