@@ -1,6 +1,11 @@
 package logic;
 
+import data.GameParam;
+
 /**
+ *
+ * Cette classe modélise une partie du jeu PacMan.
+ * @author Théophile Chénais
  *
  *
  *
@@ -33,19 +38,17 @@ public class Game {
     /**
      * Construit une partie
      * @param life entier, nombre de vie que PacMan possède
-     * @param power booléen, pouvoir de PacMan
-     * @param gameBoard objet GameBoard, plateau de jeu
-     * @pre  {@code life >= 0}
-     * @pre  {@code gameBoard != null}
-     * @pre  {@code gameBoard.width > 0}
-     * @pre  {@code gameBoard.height > 0}
+     * @param gameParam objet GameParam, contient tous les paramètres de la partie
+     * @pre  {@code gameParam != null}
      * @post this.life = life
-     * @post this.power = power
-     * @post this.gameBoard = gameBoard
      * @post this.score = 0
      */
-    public Game(int life, boolean power, GameBoard gameBoard) {
-
+    public Game(int life, GameParam gameParam) {
+        if (gameParam != null) {
+            this.life = life;
+            this.power = false;
+            this.gameBoard = new GameBoard(gameParam);
+        }
     }
 
     /**

@@ -1,4 +1,9 @@
 package logic;
 
-public class Wall extends GamePiece {
-}
+/**
+ *
+ * Cette classe modélise les murs du jeu PacMan.
+ * @author Théophile Chénais
+ *
+ */
+class Wall extends GamePiece { }
