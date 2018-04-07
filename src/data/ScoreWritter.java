@@ -25,7 +25,7 @@ public class ScoreWritter {
      * @param name le nom du joueur
      * @param score le score du joueur
      * @pre name != null
-     * @pre score >= 0
+     * @pre {@code score >= 0}
      */
     public static void writeScore(String name, int score) {
         if (name != null && score >= 0) {

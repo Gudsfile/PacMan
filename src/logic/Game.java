@@ -121,7 +121,7 @@ public class Game {
     /**
      * Modifie la valeur du score
      * @param score un entier
-     * @pre score >= 0
+     * @pre {@code score >= 0}
      * @post this.score = score
      */
     public void setScore(int score) {

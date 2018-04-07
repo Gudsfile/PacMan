@@ -19,7 +19,7 @@ public class GameBoard {
 
     /**
      * Construit un plateau de jeu
-     * @param gameParam paramètre de la partie
+     * @param gameParam paramètres de la partie
      * @pre gameParam != null
      * @post gamePieceBoard et gameGhostBoard correspondent au gameParam
      */
@@ -170,6 +170,8 @@ public class GameBoard {
      */
 
     private void movePacMan(int dx, int dy, int x, int y) {
+        //TODO Augmenter le score si pacdot + power ?
+        //TODO Cas où Fantôme ? Fantôme + Power ?
         gamePieceBoard[x+dx][y+dy] = gamePieceBoard[x][y];
         gamePieceBoard[x][y] = null;
     }
