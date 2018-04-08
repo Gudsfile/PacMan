@@ -38,7 +38,7 @@ public class FileReader {
      * @return les paramètre de la partie
      * @post game != null
      */
-    public GameParam initGame() {
+    public GameParam initGame(int level) {
         GameParam game = null;
         JSONParser parser = new JSONParser();
         try {
@@ -50,7 +50,7 @@ public class FileReader {
             long gameSpeed = (long) param.get("GameSpeed");
             JSONArray boardString = (JSONArray) param.get("board");
             int[][] board = gson.fromJson(boardString.toString(), int[][].class);
-            game = new GameParam(toIntExact(pacDotValue), toIntExact(fruitValue), toIntExact(powerTime), toIntExact(gameSpeed), board);
+            game = new GameParam(level, toIntExact(pacDotValue), toIntExact(fruitValue), toIntExact(powerTime), toIntExact(gameSpeed), board);
         } catch (Exception e) {
             e.printStackTrace();
         }

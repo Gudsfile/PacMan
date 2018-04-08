@@ -7,6 +7,10 @@ package data;
 public class GameParam {
 
     /**
+     * Le niveau de jeu
+     */
+    private int level;
+    /**
      * Le nombre de point pour un PacDot
      */
     private int pacDotValue;
@@ -33,13 +37,15 @@ public class GameParam {
 
     /**
      * Constructeur, initialise les attribut de classe
+     * @param level le niveau de jeu
      * @param pacDotValue le nombre de point pour un PacDot
      * @param fruitValue le nombre de point pour un Fruit
      * @param powerTime le temps en seconde du power
      * @param gameSpeed la vitesse du jeu
      * @param dataBoard le plateau de jeu (tableau d'entier, 0 = vide, 1 = wall, 2 = regularPacDot, 3 = fruit, 4 = SuperPacDot, 5 = ghost, 6 = pacMan
      */
-    public GameParam(int pacDotValue, int fruitValue, int powerTime, int gameSpeed, int[][] dataBoard) {
+    public GameParam(int level, int pacDotValue, int fruitValue, int powerTime, int gameSpeed, int[][] dataBoard) {
+        this.level = level;
         this.pacDotValue = pacDotValue;
         this.fruitValue = fruitValue;
         this.powerTime = powerTime;
@@ -53,6 +59,7 @@ public class GameParam {
      * @return Un tableau d'entité correspondant au tableau passé en paramètre
      */
     private Entity[][] initGameBoard(int[][] dataBoard) {
+        EntityGhost.compteurGhost = 0;
         this.board = new Entity[dataBoard.length][dataBoard[0].length];
         this.ghostBoard = new EntityGhost[dataBoard.length][dataBoard[0].length];
         for (int i = 0; i < dataBoard.length; i++) {
@@ -68,7 +75,7 @@ public class GameParam {
                         this.board[i][j] = new EntityRegularPacDot();
                         break;
                     case 3:
-                        this.board[i][j] = new EntityFruit();
+                        this.board[i][j] = new EntityFruit(this.level);
                         break;
                     case 4:
                         this.board[i][j] = new EntitySuperPacDot();
