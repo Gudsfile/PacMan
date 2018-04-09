@@ -38,6 +38,9 @@ public class Game {
      */
     private int comboCount;
 
+    private int previousX = 0;
+    private int previousY = 0;
+
     /**
      * Construit une partie
      * @param level niveau de la partie
@@ -140,55 +143,100 @@ public class Game {
     public void play(){//int mouvement) {
         //int mouvement = Play.getTouche();
         int mouvement = 1+(int)(Math.random()*((4-1)+1));
+        int dx = 0;
+        int dy = 0;
+
          switch (mouvement) {
             case 1 :
-                if (this.gameBoard.isValidMovePacMan(0,1)) {
+                dx = 0;
+                dy = 1;
+                /*if (this.gameBoard.isValidMovePacMan(0,1)) {
                     movePacMan(0,1);
-                }
+                }*/
                 break;
             case 2 :
-                if (this.gameBoard.isValidMovePacMan(-1,0)) {
+                dx = -1;
+                dy = 0;
+                /*if (this.gameBoard.isValidMovePacMan(-1,0)) {
                     movePacMan(-1,0);
-                }
+                }*/
                 break;
             case 3 :
-                if (this.gameBoard.isValidMovePacMan(1,0)) {
+                dx = 1;
+                dy = 0;
+                /*if (this.gameBoard.isValidMovePacMan(1,0)) {
                     movePacMan(1,0);
-                }
+                }*/
                 break;
             case 4 :
-                if (this.gameBoard.isValidMovePacMan(0,-1)) {
+                dx = 0;
+                dy = -1;
+                /*if (this.gameBoard.isValidMovePacMan(0,-1)) {
                     movePacMan(0,-1);
-                }
+                }*/
                 break;
             default :
                 break;
         }
+        if (this.gameBoard.isValidMovePacMan(dx,dy)) {
+            movePacMan(dx,dy);
+            this.previousX = dx;
+            this.previousY = dy;
+        } else {
+            if (this.gameBoard.isValidMovePacMan(this.previousX,this.previousY)) {
+                movePacMan(this.previousX,this.previousY);
+            }
+        }
+
+
         for (Ghost g : this.gameBoard.getGhostList()) {
-             int x = -1+(int)(Math.random()*((1+1)+1));
-             int y = -1+(int)(Math.random()*((1+1)+1));
+             dx = (int)(Math.random()*((399)+1));
+             dy = (int)(Math.random()*((399)+1));
+             if (dx < 100) {
+                dx = -1;
+                dy = 0;
+             } else if (dx < 200) {
+                 dx = 0;
+                 dy = 1;
+             } else if (dx < 300) {
+                 dx = 1;
+                 dy = 0;
+             } else if (dx < 400) {
+                 dx = 0;
+                 dy = -1;
+             }
              if (g.isStateEaten()) {
                  //TODO aller vers g.getStartX && g.getStartY
-                 x =  Ghost.getStartX();
-                 y = Ghost.getStartY();
+                 dx =  Ghost.getStartX();
+                 dy = Ghost.getStartY();
              } else if (g.getName().equals(GhostNames.Oikake.toString())) {
                 //TODO deplacement premier ghost
-                 x = -1+(int)(Math.random()*((1+1)+1));
-                 y = -1+(int)(Math.random()*((1+1)+1));
              } else if (g.getName().equals(GhostNames.Machibuse.toString())) {
                  //TODO deplacement deuxieme ghost
-                 x = -1+(int)(Math.random()*((1+1)+1));
-                 y = -1+(int)(Math.random()*((1+1)+1));
              } else if (g.getName().equals(GhostNames.Kimagure.toString())) {
                  //TODO deplacement troisieme ghost
-                 x = -1+(int)(Math.random()*((1+1)+1));
-                 y = -1+(int)(Math.random()*((1+1)+1));
              } else if (g.getName().equals(GhostNames.Otoboke.toString())) {
                  //TODO deplacement quatrieme ghost
-                 x = -1+(int)(Math.random()*((1+1)+1));
-                 y = -1+(int)(Math.random()*((1+1)+1));
              }
-            moveGhost(g, x, y);
+             System.out.println(g.getName());
+             while(!this.gameBoard.isValidMove(g.getX(), g.getY(), dx, dy)) {
+                 dx = (int)(Math.random()*((399)+1));
+                 dy = (int)(Math.random()*((399)+1));
+                 if (dx < 100) {
+                     dx = -1;
+                     dy = 0;
+                 } else if (dx < 200) {
+                     dx = 0;
+                     dy = 1;
+                 } else if (dx < 300) {
+                     dx = 1;
+                     dy = 0;
+                 } else if (dx < 400) {
+                     dx = 0;
+                     dy = -1;
+                 }
+             }
+            moveGhost(g, dx, dy);
         }
 
     }
