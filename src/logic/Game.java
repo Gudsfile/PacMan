@@ -44,22 +44,25 @@ public class Game {
     private int startGhostX;
     private int startGhostY;
     /**
-     * Compteur de combos fantôme
+     * Compteur de combos fantômes mangés
      */
-    private int countGhost = 1;
+    private int comboCount;
 
     /**
      * Construit une partie
      * @param level niveau de la partie
-     * @pre  level existe
-     * @post this.life = 3
-     * @post this.score = 0
+     * @pre  level est un niveau qui existe
+     * @post life = 3
+     * @post score = 0
+     * @post countGhost = 1
      */
     public Game(int level) {
         FileReader in = new FileReader("res/Levels/Level"+level+".json");
         GameParam gameParam = in.initGame(level);
         if (gameParam != null) {
             this.life = 3;
+            this.score = 0;
+            this.comboCount = 1;
             this.power = false;
             this.gameBoard = new GameBoard(gameParam);
             this.startPacManX = gameParam.getStartPacManX();
@@ -146,24 +149,33 @@ public class Game {
         this.score = score;
     }
 
-    public void playGame() {
+    public void play() {
         int deplacement = Play.getTouche();
         switch (deplacement) {
             case 1 :
-                move(0,1,gameBoard.getPacMan().getX(), gameBoard.getPacMan().getY());
+                if (gameBoard.isValidMovePacMan(0,1)) {
+                    movePacMan(0,1);
+                }
                 break;
             case 2 :
-                move(-1,0, gameBoard.getPacMan().getX(), gameBoard.getPacMan().getY());
+                if (gameBoard.isValidMovePacMan(-1,0)) {
+                    movePacMan(0,1);
+                }
                 break;
             case 3 :
-                move(1,0,gameBoard.getPacMan().getX(), gameBoard.getPacMan().getY());
+                if (gameBoard.isValidMovePacMan(1,0)) {
+                    movePacMan(0,1);
+                }
                 break;
             case 4 :
-                move(0, -1,gameBoard.getPacMan().getX(), gameBoard.getPacMan().getY());
+                if (gameBoard.isValidMovePacMan(0,-1)) {
+                    movePacMan(0,1);
+                }
                 break;
             default :
                 break;
         }
+
     }
 
     /**
@@ -208,16 +220,16 @@ public class Game {
      * Déplace un PacMan
      * @param dx déplacement en x du PacMan
      * @param dy déplacement en y du PacMan
-     * @param x position en x du PacMan
-     * @param y position en y du PacMan
      * @pre piece instanceof PacMan
      * @pre x+dx and y+dy in the board
      * @post piece.x = x+dx and piece.y = y+dy
      */
 
-    private void movePacMan(int dx, int dy, int x, int y) {
+    private void movePacMan(int dx, int dy) {
         //TODO Augmenter le score si pacdot + power ?
         //TODO Cas où Fantôme ? Fantôme + Power ?
+        int x = gameBoard.pacMan.getX();
+        int y = gameBoard.pacMan.getY();
 
         if (gameBoard.gameGhostBoard[x + dx][y + dy] != null) {
             if (!this.power) { //PacMan mangé
@@ -232,12 +244,10 @@ public class Game {
 
         } else if (gameBoard.gamePieceBoard[x + dx][y + dy] instanceof SuperPacDot) {
             this.power = true;
-            this.countGhost = 1;
+            this.comboCount = 1;
         }
-
-
-        gameBoard.gamePieceBoard[x+dx][y+dy] = gameBoard.gamePieceBoard[x][y];
-        gameBoard.gamePieceBoard[x][y] = null;
+        gameBoard.pacMan.setX(x+dx);
+        gameBoard.pacMan.setY(y+dy);
     }
 
     /**
@@ -262,8 +272,8 @@ public class Game {
     }
 
     private void PacManEatsGhost (int x, int y) {
-        this.score += Ghost.getValue()*countGhost;
-        this.countGhost += 1;
+        this.score += Ghost.getValue()*comboCount;
+        this.comboCount += 1;
         //TODO diriger le fantôme vers startGhostX et startGhostY
     }
 
