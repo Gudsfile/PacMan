@@ -2,7 +2,14 @@ package data;
 
 /**
  * Cette class permet de stocker les paramètre d'une partie de PacMan lu à partir d'un fichier JSON de paramètre
- * @author Alexis CANO
+ * @author Alexis Cano
+ * @inv {@code this.level > 0}
+ * @inv {@code this.pacDotValue > 0}
+ * @inv {@code this.fruitValue > 0}
+ * @inv {@code this.powerTime > 0}
+ * @inv {@code this.gameSpeed > 0}
+ * @inv {@code this.board != null}
+ * @inv {@code this.ghostBoard != null}
  */
 public class GameParam {
 
@@ -19,7 +26,7 @@ public class GameParam {
      */
     private int fruitValue;
     /**
-     * Le temps en seconde du Power
+     * La durée en seconde du pouvoir
      */
     private int powerTime;
     /**
@@ -43,20 +50,43 @@ public class GameParam {
      * @param powerTime le temps en seconde du power
      * @param gameSpeed la vitesse du jeu
      * @param dataBoard le plateau de jeu (tableau d'entier, 0 = vide, 1 = wall, 2 = regularPacDot, 3 = fruit, 4 = SuperPacDot, 5 = ghost, 6 = pacMan
+     * @pre {@code level > 0}
+     * @pre {@code pacDotValue > 0}
+     * @pre {@code fruitValue > 0}
+     * @pre {@code powerTime > 0}
+     * @pre {@code gameSpeed > 0}
+     * @pre {@code dataBoard != null}
+     * @post {@code this.level = level}
+     * @post {@code this.pacDotValue = pacDotValue}
+     * @post {@code this.fruitValue = fruitValue}
+     * @post {@code this.powerTime = powerTime}
+     * @post {@code this.gameSpeed = gameSpeed}
      */
     public GameParam(int level, int pacDotValue, int fruitValue, int powerTime, int gameSpeed, int[][] dataBoard) {
-        this.level = level;
-        this.pacDotValue = pacDotValue;
-        this.fruitValue = fruitValue;
-        this.powerTime = powerTime;
-        this.gameSpeed = gameSpeed;
-        this.board = initGameBoard(dataBoard);
+        if (level > 0 && pacDotValue > 0 && fruitValue > 0 && powerTime > 0 && gameSpeed > 0 && dataBoard != null) {
+            this.level = level;
+            this.pacDotValue = pacDotValue;
+            this.fruitValue = fruitValue;
+            this.powerTime = powerTime;
+            this.gameSpeed = gameSpeed;
+            this.board = initGameBoard(dataBoard);
+        }
+    }
+
+    public boolean invarriant() {
+        if (this.level > 0 && this.pacDotValue > 0 && this.fruitValue > 0 && this.powerTime > 0 && this.gameSpeed > 0 && this.board != null && this.ghostBoard != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
      * Initialise le plateau de jeu avec des objets entité
-     * @param dataBoard le plateau de jeu sous forme d'entier [0-6]
+     * @param dataBoard le plateau de jeu sous forme d'entier, i.e. un tableau 2D contenant des entier compris dans [0-6]
+     *                  chacun décrivant une pièce du jeu, 0 = vide, 1 = wall, etc.
      * @return Un tableau d'entité correspondant au tableau passé en paramètre
+     * @pre {@code dataBoard != null}
      */
     private Entity[][] initGameBoard(int[][] dataBoard) {
         EntityGhost.compteurGhost = 0;
