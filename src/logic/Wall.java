@@ -6,4 +6,8 @@ package logic;
  * @author Théophile Chénais
  *
  */
-class Wall extends GamePiece { }
+public class Wall extends GamePiece {
+    public Wall(){
+        super();
+    }
+}

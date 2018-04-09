@@ -42,13 +42,17 @@ public class FileReader {
         try {
             JSONObject param = (JSONObject) parser.parse(new java.io.FileReader(this.fileName));
             Gson gson = new GsonBuilder().create();
-            long pacDotValue = (long) param.get("PacDotValue");
-            long fruitValue = (long) param.get("FruitValue");
-            long powerTime = (long) param.get("PowerTime");
-            long gameSpeed = (long) param.get("GameSpeed");
+            int pacDotValue = toIntExact((long) param.get("PacDotValue"));
+            int fruitValue = toIntExact((long) param.get("FruitValue"));
+            int powerTime = toIntExact((long) param.get("PowerTime"));
+            int gameSpeed = toIntExact((long) param.get("GameSpeed"));
             JSONArray boardString = (JSONArray) param.get("board");
             int[][] board = gson.fromJson(boardString.toString(), int[][].class);
-            game = new GameParam(level, toIntExact(pacDotValue), toIntExact(fruitValue), toIntExact(powerTime), toIntExact(gameSpeed), board);
+            int startPacManX = toIntExact((long) param.get("startPacManX"));
+            int startPacManY = toIntExact((long) param.get("startPacManY"));
+            int startGhostX = toIntExact((long) param.get("startGhostX"));
+            int startGhostY = toIntExact((long) param.get("startGhostY"));
+            game = new GameParam(level, pacDotValue, fruitValue, powerTime, gameSpeed, board, startPacManX, startPacManY, startGhostX, startGhostY);
         } catch (Exception e) {
             e.printStackTrace();
         }

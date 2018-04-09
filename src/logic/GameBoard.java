@@ -2,6 +2,8 @@ package logic;
 
 import data.*;
 
+import java.util.ArrayList;
+
 /**
  *
  * Cette classe modélise le plateau de jeu de PacMan.
@@ -14,8 +16,10 @@ public class GameBoard {
     /**
      * Tableau de Piece de deux dimensions indiquant la position des dots, des murs et du pacman
      */
-    protected GamePiece[][] gamePieceBoard;
-    protected Ghost[][] gameGhostBoard;
+    private GamePiece[][] gamePieceBoard;
+    private Ghost[][] gameGhostBoard;
+    private ArrayList<Ghost> ghostList = new ArrayList<>();
+    private PacMan pacMan;
 
     /**
      * Construit un plateau de jeu
@@ -30,19 +34,26 @@ public class GameBoard {
 
             for (int i = 0; i < gameParam.getBoard().length; i++) {
                 for (int j = 0; j < gameParam.getBoard()[0].length; j++) {
-                    Entity e = gameParam.getBoard()[i][j];
-                    if (e instanceof EntityWall) {
-                        gamePieceBoard[i][j] = new Wall();
-                    } else if (e instanceof EntityRegularPacDot) {
-                        gamePieceBoard[i][j] = new RegularPacDot(gameParam.getPacDotValue());
-                    } else if (e instanceof EntityFruit) {
-                        gamePieceBoard[i][j] = new Fruit(gameParam.getFruitValue(), e.getName());
-                    } else if (e instanceof EntitySuperPacDot) {
-                        gamePieceBoard[i][j] = new SuperPacDot(gameParam.getPowerTime());
-                    } else if (e instanceof EntityGhost) {
-                        gameGhostBoard[i][j] = new Ghost(gameParam.getGameSpeed(), e.getName());
-                    } else if (e instanceof EntityPacMan) {
-                        gamePieceBoard[i][j] = new PacMan(gameParam.getGameSpeed());
+                    switch(gameParam.getBoard()[i][j]) {
+                        case 1:
+                            gamePieceBoard[i][j] = new Wall();
+                            break;
+                        case 2:
+                            gamePieceBoard[i][j] = new PacDot(gameParam.getPacDotValue());
+                            break;
+                        case 3:
+                            gamePieceBoard[i][j] = new Fruit(gameParam.getLevel(), gameParam.getFruitValue());
+                            break;
+                        case 4 :
+                            gamePieceBoard[i][j] = new SuperPacDot(gameParam.getPowerTime());
+                            break;
+                        case 5 :
+                            Ghost g = new Ghost(gameParam.getGameSpeed(), gameParam.getStartGhostX(), gameParam.getStartGhostY(), j, i);
+                            ghostList.add(g);
+                            gameGhostBoard[i][j] = g;
+                            break;
+                        case 6 :
+                            this.pacMan = new PacMan(gameParam.getGameSpeed(), gameParam.getStartGhostX(), gameParam.getStartGhostY(), j, i);
                     }
                 }
             }
@@ -106,13 +117,14 @@ public class GameBoard {
     }
 
     /**
-     * Vérifie la validité d'une position
-     * @param x position en x
-     * @param y position en y
-     * @param dx déplacement en x de la piece
-     * @param dy déplacement en y de la piece
-     * @return un booléen indiquant la validité de la position donnée
+     * Retourne le PacMan de la partie
+     * @return pacMan
+     * @post result = pacMan
      */
+    protected PacMan getPacMan() {
+        return pacMan;
+    }
+
     protected boolean isValidMove(int x, int y, int dx, int dy) {
         boolean result = true;
 
@@ -120,7 +132,7 @@ public class GameBoard {
             result = false;
         } else if (y < 0 || y > gamePieceBoard[0].length) {
             result = false;
-        } else if (!(gamePieceBoard[x][y] instanceof Ghost || gamePieceBoard[x][y] instanceof PacMan)){
+        } else if (!(getPiece(x,y) instanceof Ghost)){
             result = false;
         } else if (!((dx == 1 && dy == 0) || (dx == 0 && dy == 1))) {
             result = false;
@@ -135,23 +147,31 @@ public class GameBoard {
         return result;
     }
 
-    /**
-     * Retourne la pièce aux coordonnées données
-     * @param x entier représentant la coordonnée en x
-     * @param y entier représentant la coordonnée en y
-     * @return une GamePiece
-     * @pre coordonnées valides (comprises dans le plateau)
-     * @post result = plateau[x][y]
-     */
+    protected boolean isValidMovePacMan(int dx, int dy) {
+        boolean result = true;
+
+        if (!((dx == 1 && dy == 0) || (dx == 0 && dy == 1))) {
+            result = false;
+        } else if (pacMan.getX()+dx < 0 || pacMan.getX()+dx > gamePieceBoard[0].length) { //largeur
+            result = false;
+        } else if (pacMan.getY()+dy < 0 || pacMan.getY()+dy > gamePieceBoard.length) { //hauteur
+            result = false;
+        } else if (gamePieceBoard[pacMan.getX()+dx][pacMan.getY()+dy] instanceof Wall) {
+            result = false;
+        }
+
+        return result;
+    }
+
     protected GamePiece getPiece(int x, int y) {
         GamePiece result =  null;
-        // TODO vérification de la taille du tableau
-        if (this.gamePieceBoard[x][y] == null || this.gamePieceBoard[x][y] instanceof PacDot){
+
+        if (this.gameGhostBoard[x][y] != null) {
             result = this.gameGhostBoard[x][y];
-        }
-        else {
+        } else {
             result = this.gamePieceBoard[x][y];
         }
         return result;
     }
+
 }
