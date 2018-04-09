@@ -23,8 +23,4 @@ public class EntityFruit extends EntityPacDot {
             this.name = FruitNames.Clé.toString();
         }
     }
-
-    public String getName() {
-        return this.name;
-    }
 }

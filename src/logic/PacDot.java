@@ -5,15 +5,15 @@ package logic;
  * Cette classe modélise les PacDot du jeu PacMan.
  * @author Théophile Chénais
  *
- * @inv {@code values > 0}
+ * @inv {@code value > 0}
  *
  */
-public abstract class PacDot extends GamePiece {
+public class PacDot extends GamePiece {
 
     /**
      * Valeur du PacDot
      */
-    private int value;
+    private static int value;
 
     /**
      * Construit un PacDot
@@ -23,7 +23,7 @@ public abstract class PacDot extends GamePiece {
      */
     PacDot(int value) {
         super();
-        this.value = value;
+        PacDot.value = value;
     }
 
     /**

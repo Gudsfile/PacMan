@@ -13,9 +13,12 @@ public class Fruit extends PacDot {
      * Nom du fruit
      */
     private String name;
+    private static int value;
 
     Fruit(int value, String name) {
         super(value);
+        Fruit.value = value;
+        this.name = name;
     }
 
     /**

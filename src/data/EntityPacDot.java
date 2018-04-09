@@ -1,4 +1,3 @@
 package data;
 
-public abstract class EntityPacDot extends Entity{
-}
+public class EntityPacDot extends Entity{}

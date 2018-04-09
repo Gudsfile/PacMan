@@ -34,6 +34,23 @@ public class GameParam {
      */
     private int gameSpeed;
     /**
+     * La position x de départ du PacMan
+     */
+    private int startPacManX;
+    /**
+     * La position y de départ du PacMan
+     */
+    private int startPacManY;
+    /**
+     * La position x de départ des fantomes
+     */
+    private int startGhostX;
+    /**
+     * La position y de départ des fantomes
+     */
+    private int startGhostY;
+
+    /**
      * Le plateau de jeu contenant les différentes pièces (PacDot, Fruit, PacMan)
      */
     private Entity[][] board;
@@ -62,7 +79,7 @@ public class GameParam {
      * @post {@code this.powerTime = powerTime}
      * @post {@code this.gameSpeed = gameSpeed}
      */
-    public GameParam(int level, int pacDotValue, int fruitValue, int powerTime, int gameSpeed, int[][] dataBoard) {
+    public GameParam(int level, int pacDotValue, int fruitValue, int powerTime, int gameSpeed, int[][] dataBoard, int startPacManX, int startPacManY, int startGhostX, int startGhostY) {
         if (level > 0 && pacDotValue > 0 && fruitValue > 0 && powerTime > 0 && gameSpeed > 0 && dataBoard != null) {
             this.level = level;
             this.pacDotValue = pacDotValue;
@@ -70,6 +87,10 @@ public class GameParam {
             this.powerTime = powerTime;
             this.gameSpeed = gameSpeed;
             this.board = initGameBoard(dataBoard);
+            this.startPacManX = startPacManX;
+            this.startPacManY = startPacManY;
+            this.startGhostX = startGhostX;
+            this.startGhostY = startGhostY;
         }
     }
 
@@ -102,7 +123,7 @@ public class GameParam {
                         this.board[i][j] = new EntityWall();
                         break;
                     case 2:
-                        this.board[i][j] = new EntityRegularPacDot();
+                        this.board[i][j] = new EntityPacDot();
                         break;
                     case 3:
                         this.board[i][j] = new EntityFruit(this.level);
@@ -115,11 +136,20 @@ public class GameParam {
                         break;
                     case 6:
                         this.board[i][j] = new EntityPacMan();
+                        System.out.println("i : "+i+" j : "+j);
                         break;
                 }
             }
         }
         return board;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     /**
@@ -216,5 +246,37 @@ public class GameParam {
      */
     public void setGhostBoard(EntityGhost[][] ghostBoard) {
         this.ghostBoard = ghostBoard;
+    }
+
+    public int getStartPacManX() {
+        return startPacManX;
+    }
+
+    public void setStartPacManX(int startPacManX) {
+        this.startPacManX = startPacManX;
+    }
+
+    public int getStartPacManY() {
+        return startPacManY;
+    }
+
+    public void setStartPacManY(int startPacManY) {
+        this.startPacManY = startPacManY;
+    }
+
+    public int getStartGhostX() {
+        return startGhostX;
+    }
+
+    public void setStartGhostX(int startGhostX) {
+        this.startGhostX = startGhostX;
+    }
+
+    public int getStartGhostY() {
+        return startGhostY;
+    }
+
+    public void setStartGhostY(int startGhostY) {
+        this.startGhostY = startGhostY;
     }
 }

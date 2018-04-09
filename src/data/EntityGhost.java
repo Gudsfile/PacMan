@@ -3,7 +3,7 @@ package data;
 public class EntityGhost extends Entity {
 
     public static int compteurGhost = 0;
-    private String name;
+    public String name;
 
     public EntityGhost() {
         switch(compteurGhost) {
@@ -21,9 +21,5 @@ public class EntityGhost extends Entity {
                 break;
         }
         compteurGhost++;
-    }
-
-    public String getName() {
-        return this.name;
     }
 }
