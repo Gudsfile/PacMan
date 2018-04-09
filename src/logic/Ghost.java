@@ -20,9 +20,12 @@ public class Ghost extends GamePiece {
      */
     private static int value = 200;
     /**
-     * Position de départ
+     * Position de départ en x
      */
     private static int startX;
+    /**
+     * Position de départ en y
+     */
     private static int startY;
     /**
      * Coordonée x du fantôme
@@ -32,6 +35,9 @@ public class Ghost extends GamePiece {
      * Coordonée y du fantôme
      */
     private int y;
+    /**
+     * Etat du fantôme (mangé ou non)
+     */
     private boolean stateEaten;
 
     /**
@@ -50,16 +56,16 @@ public class Ghost extends GamePiece {
         this.y = y;
         switch (countGhost) {
             case 0:
-                this.name = GhostNames.Oikake.toString();
+                this.name = "\033[31m" + "G1" + "\033[39m";//GhostNames.Oikake.toString();
                 break;
             case 1 :
-                this.name = GhostNames.Machibuse.toString();
+                this.name = "\033[31m" + "G2" + "\033[39m";//GhostNames.Machibuse.toString();
                 break;
             case 2 :
-                this.name = GhostNames.Kimagure.toString();
+                this.name = "\033[31m" + "G3" + "\033[39m";//GhostNames.Kimagure.toString();
                 break;
             case 3 :
-                this.name = GhostNames.Otoboke.toString();
+                this.name = "\033[34m" + "G4" + "\033[39m";//GhostNames.Otoboke.toString();
                 break;
         }
     }
@@ -70,9 +76,8 @@ public class Ghost extends GamePiece {
      * @post result = speed
      */
     public int getSpeed() {
-        return speed;
+        return this.speed;
     }
-
 
     /**
      * set speed
@@ -90,7 +95,7 @@ public class Ghost extends GamePiece {
      * @post result = name
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
@@ -103,33 +108,55 @@ public class Ghost extends GamePiece {
     }
 
     /**
-     *
-     * @return
+     * get value
+     * @return value
+     * @post result = value
      */
     public static int getValue() {
         return value;
     }
 
     /**
-     *
-     * @param value
+     * set value
+     * @param value new value
+     * @post this.value = value
      */
     public void setValue(int value) {
         Ghost.value = value;
     }
 
+    /**
+     * Retourne la position de départ du fantôme
+     * @return startX
+     * @post result = startX
+     */
     public static int getStartX() {
-        return startX;
+        return Ghost.startX;
     }
 
+    /**
+     * set startX
+     * @param startX new startX
+     * @post Ghost.startX = startX
+     */
     public static void setStartX(int startX) {
         Ghost.startX = startX;
     }
 
+    /**
+     * get startY
+     * @return startY
+     * @post result = startY
+     */
     public static int getStartY() {
-        return startY;
+        return Ghost.startY;
     }
 
+    /**
+     * set startY
+     * @param startY new startY
+     * @post Ghost.startY = startY
+     */
     public static void setStartY(int startY) {
         Ghost.startY = startY;
     }
@@ -139,7 +166,7 @@ public class Ghost extends GamePiece {
      * @return x
      */
     public int getX() {
-        return x;
+        return this.x;
     }
 
     /**
@@ -155,7 +182,7 @@ public class Ghost extends GamePiece {
      * @return set y
      */
     public int getY() {
-        return y;
+        return this.y;
     }
 
     /**
@@ -166,4 +193,21 @@ public class Ghost extends GamePiece {
         this.y = y;
     }
 
+    /**
+     * get stateEaten
+     * @return stateEaten
+     * @post result = stateEaten
+     */
+    public boolean isStateEaten() {
+        return this.stateEaten;
+    }
+
+    /**
+     * set stateEaten
+     * @param stateEaten new stateEaten
+     * @post this.stateEaten = stateEaten
+     */
+    public void setStateEaten(boolean stateEaten) {
+        this.stateEaten = stateEaten;
+    }
 }

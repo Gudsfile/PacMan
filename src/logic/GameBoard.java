@@ -48,7 +48,7 @@ public class GameBoard {
                             gamePieceBoard[i][j] = new SuperPacDot(gameParam.getPowerTime());
                             break;
                         case 5 :
-                            Ghost g = new Ghost(gameParam.getGameSpeed(), gameParam.getStartGhostX(), gameParam.getStartGhostY(), j, i);
+                            Ghost g = new Ghost(gameParam.getGameSpeed(), gameParam.getStartGhostX(), gameParam.getStartGhostY(), i, j);
                             ghostList.add(g);
                             gameGhostBoard[i][j] = g;
                             Ghost.countGhost++;
@@ -117,13 +117,25 @@ public class GameBoard {
         this.gameGhostBoard = gameGhostBoard;
     }
 
+    public ArrayList<Ghost> getGhostList() {
+        return ghostList;
+    }
+
+    public void setGhostList(ArrayList<Ghost> ghostList) {
+        this.ghostList = ghostList;
+    }
+
     /**
      * Retourne le PacMan de la partie
      * @return pacMan
      * @post result = pacMan
      */
-    protected PacMan getPacMan() {
+    public PacMan getPacMan() {
         return pacMan;
+    }
+
+    public void setPacMan(PacMan pacMan) {
+        this.pacMan = pacMan;
     }
 
     protected boolean isValidMove(int x, int y, int dx, int dy) {
@@ -133,9 +145,9 @@ public class GameBoard {
             result = false;
         } else if (y < 0 || y > gamePieceBoard[0].length) {
             result = false;
-        } else if (!(getPiece(x,y) instanceof Ghost)){
+        } else if (!(getPiece(x,y) instanceof Ghost)) {
             result = false;
-        } else if (!((dx == 1 && dy == 0) || (dx == 0 && dy == 1))) {
+        } else if (!((Math.abs(dx) == 1 && dy == 0) || (dx == 0 && Math.abs(dy) == 1))) {
             result = false;
         } else if (x+dx < 0 || x+dx > gamePieceBoard[0].length) { //largeur
             result = false;
@@ -151,7 +163,7 @@ public class GameBoard {
     protected boolean isValidMovePacMan(int dx, int dy) {
         boolean result = true;
 
-        if (!((dx == 1 && dy == 0) || (dx == 0 && dy == 1))) {
+        if (!((Math.abs(dx) == 1 && dy == 0) || (dx == 0 && Math.abs(dy) == 1))) {
             result = false;
         } else if (pacMan.getX()+dx < 0 || pacMan.getX()+dx > gamePieceBoard[0].length) { //largeur
             result = false;
@@ -175,8 +187,12 @@ public class GameBoard {
         return result;
     }
 
+    protected Ghost getGhost(int x, int y) {
+        return this.gameGhostBoard[x][y];
+    }
+
     protected void erase(int x, int y) {
-        this.gamePieceBoard[x][y] = null;
+        this.gamePieceBoard[y][x] = null;
     }
 
 

@@ -39,7 +39,7 @@ public class PacMan extends GamePiece {
      */
     PacMan(int speed, int startX, int startY, int x, int y) {
         super();
-        this.name = "PC";
+        this.name = "\033[34m" + "PC" + "\033[39m";
         this.speed = speed;
         this.startX = startX;
         this.startY = startY;

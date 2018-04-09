@@ -23,7 +23,7 @@ public class PacDot extends GamePiece {
      */
     PacDot(int value) {
         super();
-        this.name = "PD";
+        this.name = "\033[35m" + "--" + "\033[39m";
         PacDot.value = value;
     }
 }

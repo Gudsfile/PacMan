@@ -9,6 +9,6 @@ package logic;
 public class Wall extends GamePiece {
     public Wall(){
         super();
-        this.name = "--";
+        this.name = "\033[36m" + "[]" + "\033[39m";
     }
 }
