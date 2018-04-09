@@ -16,6 +16,7 @@ public class GameBoard {
      */
     protected GamePiece[][] gamePieceBoard;
     protected Ghost[][] gameGhostBoard;
+    protected PacMan pacMan;
 
     /**
      * Construit un plateau de jeu
@@ -42,7 +43,9 @@ public class GameBoard {
                     } else if (e instanceof EntityGhost) {
                         gameGhostBoard[i][j] = new Ghost(gameParam.getGameSpeed(), e.getName());
                     } else if (e instanceof EntityPacMan) {
-                        gamePieceBoard[i][j] = new PacMan(gameParam.getGameSpeed());
+                        this.pacMan = new PacMan(gameParam.getGameSpeed());
+                        this.pacMan.setX(gameParam.getStartPacManX());
+                        this.pacMan.setY(gameParam.getStartPacManY());
                     }
                 }
             }
@@ -153,5 +156,9 @@ public class GameBoard {
             result = this.gamePieceBoard[x][y];
         }
         return result;
+    }
+
+    protected PacMan getPacMan() {
+        return pacMan;
     }
 }

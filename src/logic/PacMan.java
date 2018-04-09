@@ -15,6 +15,14 @@ public class PacMan extends GamePiece {
      * Vitesse du PacMan
      */
     private int speed;
+    /**
+     * Coordonnée x du PacMan
+     */
+    private int x;
+    /**
+     * Coordonée y du PacMan
+     */
+    private int y;
 
     /**
      * Construit un PacMan
@@ -43,5 +51,37 @@ public class PacMan extends GamePiece {
      */
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    /**
+     * get x
+     * @return x
+     */
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * set x
+     * @param x new x
+     */
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    /**
+     * get y
+     * @return set y
+     */
+    public int getY() {
+        return y;
+    }
+
+    /**
+     * set y
+     * @param y set y
+     */
+    public void setY(int y) {
+        this.y = y;
     }
 }

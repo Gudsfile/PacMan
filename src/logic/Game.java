@@ -2,6 +2,7 @@ package logic;
 
 import data.FileReader;
 import data.GameParam;
+import view.Play;
 
 /**
  *
@@ -61,10 +62,10 @@ public class Game {
             this.life = 3;
             this.power = false;
             this.gameBoard = new GameBoard(gameParam);
-            this.startPacManX = gameParam.getStartPacManX;
-            this.startPacManY = gameParam.getStartPacManY;
-            this.startGhostX = gameParam.getStartGhostX;
-            this.startGhostY = gameParam.getStartGhostY;
+            this.startPacManX = gameParam.getStartPacManX();
+            this.startPacManY = gameParam.getStartPacManY();
+            this.startGhostX = gameParam.getStartGhostX();
+            this.startGhostY = gameParam.getStartGhostY();
         }
     }
 
@@ -145,6 +146,26 @@ public class Game {
         this.score = score;
     }
 
+    public void playGame() {
+        int deplacement = Play.getTouche();
+        switch (deplacement) {
+            case 1 :
+                move(0,1,gameBoard.getPacMan().getX(), gameBoard.getPacMan().getY());
+                break;
+            case 2 :
+                move(-1,0, gameBoard.getPacMan().getX(), gameBoard.getPacMan().getY());
+                break;
+            case 3 :
+                move(1,0,gameBoard.getPacMan().getX(), gameBoard.getPacMan().getY());
+                break;
+            case 4 :
+                move(0, -1,gameBoard.getPacMan().getX(), gameBoard.getPacMan().getY());
+                break;
+            default :
+                break;
+        }
+    }
+
     /**
      * Deplace un fantôme sur le plateau
      * @param dx déplacement en x de la piece
@@ -153,7 +174,7 @@ public class Game {
      * @param y position en y de la piece
      * @pre
      */
-    public void move(int dx, int dy, int x, int y) {
+    private void move(int dx, int dy, int x, int y) {
         if (gameBoard.isValidMove(x, y, dx, dy)) {
             if (gameBoard.getPiece(x, y) instanceof Ghost) {
                 moveGhost(dx, dy, x, y);
@@ -205,8 +226,13 @@ public class Game {
             if (this.power) {
                 PacManEatsGhost(x+dx, y+dy);
             }
+        } else if (gameBoard.gamePieceBoard[x + dx][y + dy] instanceof PacDot) {
+
         } else if (gameBoard.gamePieceBoard[x + dx][y + dy] instanceof Fruit) {
 
+        } else if (gameBoard.gamePieceBoard[x + dx][y + dy] instanceof SuperPacDot) {
+            this.power = true;
+            this.countGhost = 1;
         }
 
 
@@ -231,6 +257,8 @@ public class Game {
             end();
         }
         gameBoard.gamePieceBoard[x][y] = gameBoard.gamePieceBoard[startPacManX][startPacManY];
+        gameBoard.pacMan.setX(startPacManX);
+        gameBoard.pacMan.setY(startPacManY);
     }
 
     private void PacManEatsGhost (int x, int y) {

@@ -13,8 +13,22 @@ public class Ghost extends GamePiece {
      * Vitesse du fantôme
      */
     private int speed;
+    /**
+     * Nom du fantôme
+     */
     private String name;
+    /**
+     * Valeur du fantôme
+     */
     private static int value = 200;
+    /**
+     * Coordonée x du fantôme
+     */
+    private int x;
+    /**
+     * Coordonée y du fantôme
+     */
+    private int y;
 
     /**
      * Construit un fantôme
@@ -82,4 +96,36 @@ public class Ghost extends GamePiece {
     public void setValue(int value) {
         Ghost.value = value;
     }
+    /**
+     * get x
+     * @return x
+     */
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * set x
+     * @param x new x
+     */
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    /**
+     * get y
+     * @return set y
+     */
+    public int getY() {
+        return y;
+    }
+
+    /**
+     * set y
+     * @param y set y
+     */
+    public void setY(int y) {
+        this.y = y;
+    }
+
 }
