@@ -9,16 +9,12 @@ package logic;
  */
 public class Ghost extends GamePiece {
 
-    private static int countGhost = 0;
+    protected static int countGhost = 0;
 
     /**
      * Vitesse du fantôme
      */
     private int speed;
-    /**
-     * Nom du fantôme
-     */
-    private String name;
     /**
      * Valeur du fantôme
      */
@@ -36,6 +32,7 @@ public class Ghost extends GamePiece {
      * Coordonée y du fantôme
      */
     private int y;
+    private boolean stateEaten;
 
     /**
      * Construit un fantôme

@@ -13,7 +13,7 @@ public class PacDot extends GamePiece {
     /**
      * Valeur du PacDot
      */
-    private static int value;
+    protected static int value;
 
     /**
      * Construit un PacDot
@@ -23,25 +23,7 @@ public class PacDot extends GamePiece {
      */
     PacDot(int value) {
         super();
+        this.name = "PD";
         PacDot.value = value;
-    }
-
-    /**
-     * get value
-     * @return value
-     * @post result = value
-     */
-    public int getValue() {
-        return value;
-    }
-
-    /**
-     * set value
-     * @param value new value
-     * @pre {@code value > 0}
-     * @post this.value = value
-     */
-    public void setValue(int value) {
-        this.value = value;
     }
 }

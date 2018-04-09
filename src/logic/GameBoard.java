@@ -51,9 +51,10 @@ public class GameBoard {
                             Ghost g = new Ghost(gameParam.getGameSpeed(), gameParam.getStartGhostX(), gameParam.getStartGhostY(), j, i);
                             ghostList.add(g);
                             gameGhostBoard[i][j] = g;
+                            Ghost.countGhost++;
                             break;
                         case 6 :
-                            this.pacMan = new PacMan(gameParam.getGameSpeed(), gameParam.getStartGhostX(), gameParam.getStartGhostY(), j, i);
+                            this.pacMan = new PacMan(gameParam.getGameSpeed(), gameParam.getStartGhostX(), gameParam.getStartGhostY(), i, j);
                     }
                 }
             }
@@ -184,9 +185,19 @@ public class GameBoard {
 
         for (int i = 0; i < this.gamePieceBoard.length; i++) {
             for (int j = 0; j < this.gamePieceBoard[0].length; j++) {
-                gamePieceBoard
-                if ()
+                GamePiece g = this.gamePieceBoard[i][j];
+                Ghost gh = this.gameGhostBoard[i][j];
+                if (gh != null) {
+                    System.out.print(gh.getName()+"  ");
+                } else {
+                    if (g != null) {
+                        System.out.print(g.getName()+"  ");
+                    } else {
+                        System.out.print("00"+"  ");
+                    }
+                }
             }
+            System.out.println("");
         }
 
 
