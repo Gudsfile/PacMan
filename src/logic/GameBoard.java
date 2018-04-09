@@ -174,4 +174,23 @@ public class GameBoard {
         return result;
     }
 
+    protected void erase(int x, int y) {
+        this.gamePieceBoard[x][y] = null;
+    }
+
+
+    public void displayBoard() {
+        this.gamePieceBoard[this.pacMan.getX()][this.pacMan.getY()] = this.pacMan;
+
+        for (int i = 0; i < this.gamePieceBoard.length; i++) {
+            for (int j = 0; j < this.gamePieceBoard[0].length; j++) {
+                gamePieceBoard
+                if ()
+            }
+        }
+
+
+        this.gamePieceBoard[this.pacMan.getX()][this.pacMan.getY()] = null;
+    }
+
 }

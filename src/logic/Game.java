@@ -34,16 +34,6 @@ public class Game {
      */
     private int score;
     /**
-     * Position de départ du PacMan
-     */
-    private int startPacManX;
-    private int startPacManY;
-    /**
-     * Position de départ du Ghost
-     */
-    private int startGhostX;
-    private int startGhostY;
-    /**
      * Compteur de combos fantômes mangés
      */
     private int comboCount;
@@ -65,10 +55,6 @@ public class Game {
             this.comboCount = 1;
             this.power = false;
             this.gameBoard = new GameBoard(gameParam);
-            this.startPacManX = gameParam.getStartPacManX();
-            this.startPacManY = gameParam.getStartPacManY();
-            this.startGhostX = gameParam.getStartGhostX();
-            this.startGhostY = gameParam.getStartGhostY();
         }
     }
 
@@ -149,9 +135,10 @@ public class Game {
         this.score = score;
     }
 
+
     public void play() {
-        int deplacement = Play.getTouche();
-        switch (deplacement) {
+        int mouvement = Play.getTouche();
+         switch (mouvement) {
             case 1 :
                 if (gameBoard.isValidMovePacMan(0,1)) {
                     movePacMan(0,1);
@@ -159,17 +146,17 @@ public class Game {
                 break;
             case 2 :
                 if (gameBoard.isValidMovePacMan(-1,0)) {
-                    movePacMan(0,1);
+                    movePacMan(-1,0);
                 }
                 break;
             case 3 :
                 if (gameBoard.isValidMovePacMan(1,0)) {
-                    movePacMan(0,1);
+                    movePacMan(1,0);
                 }
                 break;
             case 4 :
                 if (gameBoard.isValidMovePacMan(0,-1)) {
-                    movePacMan(0,1);
+                    movePacMan(0,-1);
                 }
                 break;
             default :
@@ -179,106 +166,97 @@ public class Game {
     }
 
     /**
-     * Deplace un fantôme sur le plateau
-     * @param dx déplacement en x de la piece
-     * @param dy déplacement en y de la piece
-     * @param x position en x de la piece
-     * @param y position en y de la piece
-     * @pre
-     */
-    private void move(int dx, int dy, int x, int y) {
-        if (gameBoard.isValidMove(x, y, dx, dy)) {
-            if (gameBoard.getPiece(x, y) instanceof Ghost) {
-                moveGhost(dx, dy, x, y);
-            } else if (gameBoard.getPiece(x, y) instanceof PacMan) {
-                movePacMan(dx, dy, x, y);
-            }
-        }
-    }
-
-    /**
      * Déplace un fantôme
-     * @param dx déplacement en x du fantôme
-     * @param dy déplacement en y du fantôme
-     * @param x position en x du fantôme
-     * @param y position en y du fantôme
-     * @pre piece instanceof Ghost
-     * @pre isValidMove()
-     * @post piece.x = x+dx and piece.y = y+dy
+     * @param ghost fantôme à déplacer
+     * @param dx déplacement en x à effectuer
+     * @param dy déplacement en y à effectuer
+     * @pre ghost != null
+     * @pre dx isValidMoveGhost
+     * @pre dy isValidMoveGhost
+     * @post ghost.x = x+dx
+     * @post ghost.y = y+dy
+     * @post ghostboard[x+dx][y+dy] = ghost
+     * @post ghostboard[x][y] = null
      */
-    private void moveGhost(int dx, int dy, int x, int y) {
+    private void moveGhost(Ghost ghost, int dx, int dy) {
 
-        if (gameBoard.gamePieceBoard[x+dx][y+dy] instanceof PacMan) {
-            PacManEaten(x+dx, y+dy);
+        int x = ghost.getX();
+        int y = ghost.getY();
+
+        if (gameBoard.isValidMove(x, y, dx, dy)) {
+            if (gameBoard.getPacMan().getX() == x+dx && gameBoard.getPacMan().getY() == y+dy) {
+                PacManEaten();
+            }
+
+            ghost.setX(x+dx);
+            ghost.setY(y+dy);
+            gameBoard.getGameGhostBoard()[x+dx][y+dy] = gameBoard.getGameGhostBoard()[x][y];
+            gameBoard.getGameGhostBoard()[x][y] = null;
         }
-        gameBoard.gameGhostBoard[x+dx][y+dy] = gameBoard.gameGhostBoard[x][y];
-        gameBoard.gameGhostBoard[x][y] = null;
 
     }
 
     /**
-     * Déplace un PacMan
-     * @param dx déplacement en x du PacMan
-     * @param dy déplacement en y du PacMan
-     * @pre piece instanceof PacMan
-     * @pre x+dx and y+dy in the board
-     * @post piece.x = x+dx and piece.y = y+dy
+     * Déplacement du PacMan
+     * @param dx déplacement en x de PacMan
+     * @param dy déplacement en y de PacMan
      */
-
     private void movePacMan(int dx, int dy) {
-        //TODO Augmenter le score si pacdot + power ?
-        //TODO Cas où Fantôme ? Fantôme + Power ?
-        int x = gameBoard.pacMan.getX();
-        int y = gameBoard.pacMan.getY();
 
-        if (gameBoard.gameGhostBoard[x + dx][y + dy] != null) {
-            if (!this.power) { //PacMan mangé
-                PacManEaten(x+dx, y+dy);
+        int x = this.gameBoard.getPacMan().getX();
+        int y = this.gameBoard.getPacMan().getY();
+
+        if (this.gameBoard.getGameGhostBoard()[x + dx][y + dy] != null) {
+            if (!this.power) {
+                PacManEaten();
             }
             if (this.power) {
                 PacManEatsGhost(x+dx, y+dy);
             }
-        } else if (gameBoard.gamePieceBoard[x + dx][y + dy] instanceof PacDot) {
-
-        } else if (gameBoard.gamePieceBoard[x + dx][y + dy] instanceof Fruit) {
-
-        } else if (gameBoard.gamePieceBoard[x + dx][y + dy] instanceof SuperPacDot) {
+        } else if (this.gameBoard.getGamePieceBoard()[x + dx][y + dy] instanceof SuperPacDot) {
             this.power = true;
             this.comboCount = 1;
+            this.gameBoard.erase(x+dx, y+dx);
+            //TODO gérer le temps
+        } else if (this.gameBoard.getGamePieceBoard()[x + dx][y + dy] instanceof Fruit) {
+            this.score += Fruit.value;
+            this.gameBoard.erase(x+dx, y+dx);
+        } else if (gameBoard.getGamePieceBoard()[x + dx][y + dy] instanceof PacDot) {
+            this.score += PacDot.value;
+            this.gameBoard.erase(x+dx, y+dx);
         }
-        gameBoard.pacMan.setX(x+dx);
-        gameBoard.pacMan.setY(y+dy);
+        this.gameBoard.getPacMan().setX(x+dx);
+        this.gameBoard.getPacMan().setY(y+dy);
     }
 
     /**
-     * Supprime une piece du plateau
-     * @param x position de la piece en x
-     * @param y position de la piece en y
-     * @pre piece instanceof PacDot
-     * @post gamePieceBoard[x][y] = null
+     * Evenement lorsque PacMane est mangé
      */
-    private void erase(int x, int y) {
-        gameBoard.gamePieceBoard[x][y] = null;
-    }
-
-    private void PacManEaten (int x, int y) {
+    private void PacManEaten () {
         this.life -= 1;
         if ( this.life < 0) {
             end();
         }
-        gameBoard.gamePieceBoard[x][y] = gameBoard.gamePieceBoard[startPacManX][startPacManY];
-        gameBoard.pacMan.setX(startPacManX);
-        gameBoard.pacMan.setY(startPacManY);
+        this.gameBoard.getPacMan().setX(this.gameBoard.getPacMan().getStartX());
+        this.gameBoard.getPacMan().setY(this.gameBoard.getPacMan().getStartY());
     }
 
+    /**
+     * Evenement lorsque PacMan mange un fantôme
+     * @param x position du fantôme mangé
+     * @param y position du fantôme mangé
+     */
     private void PacManEatsGhost (int x, int y) {
         this.score += Ghost.getValue()*comboCount;
         this.comboCount += 1;
         //TODO diriger le fantôme vers startGhostX et startGhostY
     }
 
+    /**
+     * Fin
+     */
     private void end() {
-        //affiche le score
+        //TODO end
     }
 
 
