@@ -11,9 +11,9 @@ public class Play {
      *
      * @param args NONE
      */
-    public static void main(String[] args)
-    {
-        Play play=new Play();
+    public static void main(String[] args) {
+        Fenetre fenetre = new Fenetre();
+        //Play play=new Play();
     }
 
     public Play() {

@@ -56,7 +56,7 @@ public class Canvas {
     /**
      * Create a Canvas.
      */
-    private Canvas() {
+    Canvas() {
         this.objects = new ConcurrentLinkedQueue<>();
         this.shapes = new ConcurrentHashMap<>();
 
