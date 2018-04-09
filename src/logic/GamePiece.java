@@ -6,4 +6,6 @@ package logic;
  * @author Théophile Chénais
  *
  */
-abstract class GamePiece { }
+abstract class GamePiece {
+
+}

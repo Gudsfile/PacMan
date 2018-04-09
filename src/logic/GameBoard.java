@@ -14,8 +14,8 @@ public class GameBoard {
     /**
      * Tableau de Piece de deux dimensions indiquant la position des dots, des murs et du pacman
      */
-    private GamePiece[][] gamePieceBoard;
-    private Ghost[][] gameGhostBoard;
+    protected GamePiece[][] gamePieceBoard;
+    protected Ghost[][] gameGhostBoard;
 
     /**
      * Construit un plateau de jeu
@@ -106,85 +106,33 @@ public class GameBoard {
     }
 
     /**
-     * Deplace un fantôme sur le plateau
-     * @param dx déplacement en x de la piece
-     * @param dy déplacement en y de la piece
-     * @param x position en x de la piece
-     * @param y position en y de la piece
-     * @pre
-     */
-    public void move(int dx, int dy, int x, int y) {
-        if (isValidMove(x + dx, y + dy)) {
-            if (getPiece(x, y) instanceof Ghost) {
-                moveGhost(dx, dy, x, y);
-            } else if (getPiece(x, y) instanceof PacMan) {
-                movePacMan(dx, dy, x, y);
-            }
-        }
-    }
-
-    /**
      * Vérifie la validité d'une position
      * @param x position en x
      * @param y position en y
+     * @param dx déplacement en x de la piece
+     * @param dy déplacement en y de la piece
      * @return un booléen indiquant la validité de la position donnée
      */
-    private boolean isValidMove(int x, int y) {
+    protected boolean isValidMove(int x, int y, int dx, int dy) {
         boolean result = true;
 
         if (x < 0 || x > gamePieceBoard.length) {
             result = false;
         } else if (y < 0 || y > gamePieceBoard[0].length) {
             result = false;
-        } else if (gamePieceBoard[x][y] instanceof Wall) {
+        } else if (!(gamePieceBoard[x][y] instanceof Ghost || gamePieceBoard[x][y] instanceof PacMan)){
+            result = false;
+        } else if (!((dx == 1 && dy == 0) || (dx == 0 && dy == 1))) {
+            result = false;
+        } else if (x+dx < 0 || x+dx > gamePieceBoard[0].length) { //largeur
+            result = false;
+        } else if (y+dy < 0 || y+dy > gamePieceBoard.length) { //hauteur
+            result = false;
+        } else if (gamePieceBoard[x+dx][y+dy] instanceof Wall) {
             result = false;
         }
 
         return result;
-    }
-
-    /**
-     * Déplace un fantôme
-     * @param dx déplacement en x du fantôme
-     * @param dy déplacement en y du fantôme
-     * @param x position en x du fantôme
-     * @param y position en y du fantôme
-     * @pre piece instanceof Ghost
-     * @pre x+dx and y+dy in the board
-     * @post piece.x = x+dx and piece.y = y+dy
-     */
-    private void moveGhost(int dx, int dy, int x, int y) {
-        gameGhostBoard[x+dx][y+dy] = gameGhostBoard[x][y];
-        gameGhostBoard[x][y] = null;
-    }
-
-    /**
-     * Déplace un PacMan
-     * @param dx déplacement en x du PacMan
-     * @param dy déplacement en y du PacMan
-     * @param x position en x du PacMan
-     * @param y position en y du PacMan
-     * @pre piece instanceof PacMan
-     * @pre x+dx and y+dy in the board
-     * @post piece.x = x+dx and piece.y = y+dy
-     */
-
-    private void movePacMan(int dx, int dy, int x, int y) {
-        //TODO Augmenter le score si pacdot + power ?
-        //TODO Cas où Fantôme ? Fantôme + Power ?
-        gamePieceBoard[x+dx][y+dy] = gamePieceBoard[x][y];
-        gamePieceBoard[x][y] = null;
-    }
-
-    /**
-     * Supprime une piece du plateau
-     * @param x position de la piece en x
-     * @param y position de la piece en y
-     * @pre piece instanceof PacDot
-     * @post gamePieceBoard[x][y] = null
-     */
-    private void erase(int x, int y) {
-        gamePieceBoard[x][y] = null;
     }
 
     /**
@@ -195,7 +143,7 @@ public class GameBoard {
      * @pre coordonnées valides (comprises dans le plateau)
      * @post result = plateau[x][y]
      */
-    private GamePiece getPiece(int x, int y) {
+    protected GamePiece getPiece(int x, int y) {
         GamePiece result =  null;
         // TODO vérification de la taille du tableau
         if (this.gamePieceBoard[x][y] == null || this.gamePieceBoard[x][y] instanceof PacDot){
