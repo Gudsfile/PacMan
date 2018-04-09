@@ -53,11 +53,7 @@ public class GameParam {
     /**
      * Le plateau de jeu contenant les différentes pièces (PacDot, Fruit, PacMan)
      */
-    private Entity[][] board;
-    /**
-     * Le plateau de jeu contenant seulement les fantômes
-     */
-    private EntityGhost[][] ghostBoard;
+    private int[][] board;
 
     /**
      * Constructeur, initialise les attribut de classe
@@ -86,7 +82,7 @@ public class GameParam {
             this.fruitValue = fruitValue;
             this.powerTime = powerTime;
             this.gameSpeed = gameSpeed;
-            this.board = initGameBoard(dataBoard);
+            this.board = dataBoard;
             this.startPacManX = startPacManX;
             this.startPacManY = startPacManY;
             this.startGhostX = startGhostX;
@@ -95,53 +91,11 @@ public class GameParam {
     }
 
     public boolean invarriant() {
-        if (this.level > 0 && this.pacDotValue > 0 && this.fruitValue > 0 && this.powerTime > 0 && this.gameSpeed > 0 && this.board != null && this.ghostBoard != null) {
+        if (this.level > 0 && this.pacDotValue > 0 && this.fruitValue > 0 && this.powerTime > 0 && this.gameSpeed > 0 && this.board != null) {
             return true;
         } else {
             return false;
         }
-    }
-
-    /**
-     * Initialise le plateau de jeu avec des objets entité
-     * @param dataBoard le plateau de jeu sous forme d'entier, i.e. un tableau 2D contenant des entier compris dans [0-6]
-     *                  chacun décrivant une pièce du jeu, 0 = vide, 1 = wall, etc.
-     * @return Un tableau d'entité correspondant au tableau passé en paramètre
-     * @pre {@code dataBoard != null}
-     */
-    private Entity[][] initGameBoard(int[][] dataBoard) {
-        EntityGhost.compteurGhost = 0;
-        this.board = new Entity[dataBoard.length][dataBoard[0].length];
-        this.ghostBoard = new EntityGhost[dataBoard.length][dataBoard[0].length];
-        for (int i = 0; i < dataBoard.length; i++) {
-            for (int j = 0; j < dataBoard[1].length; j++) {
-                switch(dataBoard[i][j]) {
-                    case 0:
-                        this.board[i][j] = null;
-                        break;
-                    case 1:
-                        this.board[i][j] = new EntityWall();
-                        break;
-                    case 2:
-                        this.board[i][j] = new EntityPacDot();
-                        break;
-                    case 3:
-                        this.board[i][j] = new EntityFruit(this.level);
-                        break;
-                    case 4:
-                        this.board[i][j] = new EntitySuperPacDot();
-                        break;
-                    case 5:
-                        this.ghostBoard[i][j] = new EntityGhost();
-                        break;
-                    case 6:
-                        this.board[i][j] = new EntityPacMan();
-                        System.out.println("i : "+i+" j : "+j);
-                        break;
-                }
-            }
-        }
-        return board;
     }
 
     public int getLevel() {
@@ -220,7 +174,7 @@ public class GameParam {
      * Get board
      * @return board
      */
-    public Entity[][] getBoard() {
+    public int[][] getBoard() {
         return board;
     }
 
@@ -228,24 +182,8 @@ public class GameParam {
      * Set board
      * @param board new board
      */
-    public void setBoard(Entity[][] board) {
+    public void setBoard(int[][] board) {
         this.board = board;
-    }
-
-    /**
-     * Get ghostBoard
-     * @return ghostBoard
-     */
-    public EntityGhost[][] getGhostBoard() {
-        return ghostBoard;
-    }
-
-    /**
-     * Set ghostBoard
-     * @param ghostBoard new ghostBoard
-     */
-    public void setGhostBoard(EntityGhost[][] ghostBoard) {
-        this.ghostBoard = ghostBoard;
     }
 
     public int getStartPacManX() {

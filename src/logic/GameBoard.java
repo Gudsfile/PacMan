@@ -2,6 +2,8 @@ package logic;
 
 import data.*;
 
+import java.util.ArrayList;
+
 /**
  *
  * Cette classe modélise le plateau de jeu de PacMan.
@@ -14,9 +16,10 @@ public class GameBoard {
     /**
      * Tableau de Piece de deux dimensions indiquant la position des dots, des murs et du pacman
      */
-    protected GamePiece[][] gamePieceBoard;
-    protected Ghost[][] gameGhostBoard;
-    protected PacMan pacMan;
+    private GamePiece[][] gamePieceBoard;
+    private Ghost[][] gameGhostBoard;
+    private ArrayList<Ghost> ghostList = new ArrayList<>();
+    private PacMan pacMan;
 
     /**
      * Construit un plateau de jeu
@@ -31,19 +34,26 @@ public class GameBoard {
 
             for (int i = 0; i < gameParam.getBoard().length; i++) {
                 for (int j = 0; j < gameParam.getBoard()[0].length; j++) {
-                    Entity e = gameParam.getBoard()[i][j];
-                    if (e instanceof EntityWall) {
-                        gamePieceBoard[i][j] = new Wall();
-                    } else if (e instanceof EntityFruit) {
-                        gamePieceBoard[i][j] = new Fruit(gameParam.getFruitValue(), e.getName());
-                    } else if (e instanceof EntitySuperPacDot) {
-                        gamePieceBoard[i][j] = new SuperPacDot(gameParam.getPowerTime());
-                    } else if (e instanceof EntityPacDot) {
-                        gamePieceBoard[i][j] = new PacDot(gameParam.getPacDotValue());
-                    } else if (e instanceof EntityGhost) {
-                        gameGhostBoard[i][j] = new Ghost(gameParam.getGameSpeed(), e.getName());
-                    } else if (e instanceof EntityPacMan) {
-                        this.pacMan = new PacMan(gameParam.getGameSpeed(), gameParam.getStartPacManX(), gameParam.getStartPacManY());
+                    switch(gameParam.getBoard()[i][j]) {
+                        case 1:
+                            gamePieceBoard[i][j] = new Wall();
+                            break;
+                        case 2:
+                            gamePieceBoard[i][j] = new PacDot(gameParam.getPacDotValue());
+                            break;
+                        case 3:
+                            gamePieceBoard[i][j] = new Fruit(gameParam.getLevel(), gameParam.getFruitValue());
+                            break;
+                        case 4 :
+                            gamePieceBoard[i][j] = new SuperPacDot(gameParam.getPowerTime());
+                            break;
+                        case 5 :
+                            Ghost g = new Ghost(gameParam.getGameSpeed(), gameParam.getStartGhostX(), gameParam.getStartGhostY(), j, i);
+                            ghostList.add(g);
+                            gameGhostBoard[i][j] = g;
+                            break;
+                        case 6 :
+                            this.pacMan = new PacMan(gameParam.getGameSpeed(), gameParam.getStartGhostX(), gameParam.getStartGhostY(), j, i);
                     }
                 }
             }

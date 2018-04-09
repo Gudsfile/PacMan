@@ -9,6 +9,8 @@ package logic;
  */
 public class Ghost extends GamePiece {
 
+    private static int countGhost = 0;
+
     /**
      * Vitesse du fantôme
      */
@@ -21,6 +23,11 @@ public class Ghost extends GamePiece {
      * Valeur du fantôme
      */
     private static int value = 200;
+    /**
+     * Position de départ
+     */
+    private static int startX;
+    private static int startY;
     /**
      * Coordonée x du fantôme
      */
@@ -37,10 +44,27 @@ public class Ghost extends GamePiece {
      * @post this.name = name
      * @post this.speed = speed
      */
-    Ghost(int speed, String name) {
+    Ghost(int speed, int startX, int startY, int x, int y) {
         super();
         this.speed = speed;
-        this.name = name;
+        Ghost.startX = startX;
+        Ghost.startY = startY;
+        this.x = x;
+        this.y = y;
+        switch (countGhost) {
+            case 0:
+                this.name = GhostNames.Oikake.toString();
+                break;
+            case 1 :
+                this.name = GhostNames.Machibuse.toString();
+                break;
+            case 2 :
+                this.name = GhostNames.Kimagure.toString();
+                break;
+            case 3 :
+                this.name = GhostNames.Otoboke.toString();
+                break;
+        }
     }
 
     /**
@@ -96,6 +120,23 @@ public class Ghost extends GamePiece {
     public void setValue(int value) {
         Ghost.value = value;
     }
+
+    public static int getStartX() {
+        return startX;
+    }
+
+    public static void setStartX(int startX) {
+        Ghost.startX = startX;
+    }
+
+    public static int getStartY() {
+        return startY;
+    }
+
+    public static void setStartY(int startY) {
+        Ghost.startY = startY;
+    }
+
     /**
      * get x
      * @return x
