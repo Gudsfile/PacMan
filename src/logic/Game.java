@@ -190,6 +190,7 @@ public class Game {
 
 
         for (Ghost g : this.gameBoard.getGhostList()) {
+             //Pour l'instant :
              dx = (int)(Math.random()*((399)+1));
              dy = (int)(Math.random()*((399)+1));
              if (dx < 100) {
@@ -205,9 +206,10 @@ public class Game {
                  dx = 0;
                  dy = -1;
              }
+
              if (g.isStateEaten()) {
                  //TODO aller vers g.getStartX && g.getStartY
-                 dx =  Ghost.getStartX();
+                 dx = Ghost.getStartX();
                  dy = Ghost.getStartY();
              } else if (g.getName().equals(GhostNames.Oikake.toString())) {
                 //TODO deplacement premier ghost
@@ -218,7 +220,8 @@ public class Game {
              } else if (g.getName().equals(GhostNames.Otoboke.toString())) {
                  //TODO deplacement quatrieme ghost
              }
-             System.out.println(g.getName());
+
+             //A revoir
              while(!this.gameBoard.isValidMove(g.getX(), g.getY(), dx, dy)) {
                  dx = (int)(Math.random()*((399)+1));
                  dy = (int)(Math.random()*((399)+1));
