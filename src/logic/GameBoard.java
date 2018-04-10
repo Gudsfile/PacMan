@@ -54,7 +54,7 @@ public class GameBoard {
                             Ghost.countGhost++;
                             break;
                         case 6 :
-                            this.pacMan = new PacMan(gameParam.getGameSpeed(), gameParam.getStartGhostX(), gameParam.getStartGhostY(), i, j);
+                            this.pacMan = new PacMan(gameParam.getGameSpeed(), i, j);
                     }
                 }
             }
@@ -145,9 +145,7 @@ public class GameBoard {
             result = false;
         } else if (y < 0 || y > gamePieceBoard[0].length) {
             result = false;
-        } /*else if (!(getPiece(x,y) instanceof Ghost)) {
-            result = false;
-        } */else if (!((Math.abs(dx) == 1 && dy == 0) || (dx == 0 && Math.abs(dy) == 1))) {
+        } else if (!((Math.abs(dx) == 1 && dy == 0) || (dx == 0 && Math.abs(dy) == 1))) {
             result = false;
         } else if (x+dx < 0 || x+dx > gamePieceBoard[0].length) { //largeur
             result = false;

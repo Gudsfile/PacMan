@@ -37,12 +37,12 @@ public class PacMan extends GamePiece {
      * @pre {@code speed > 0}
      * @post this.speed = speed
      */
-    PacMan(int speed, int startX, int startY, int x, int y) {
+    PacMan(int speed, int x, int y) {
         super();
-        this.name = "\033[34m" + "PC" + "\033[39m";
+        this.name = "\033[33m" + "PM" + "\033[39m";
         this.speed = speed;
-        this.startX = startX;
-        this.startY = startY;
+        this.startX = x;
+        this.startY = y;
         this.x = x;
         this.y = y;
     }
