@@ -139,64 +139,32 @@ public class Game {
         this.score = score;
     }
 
-    /**
-     * Jeu du pacman (choix du dx, dy)
-     */
+
     public void play(int mouvement) {
-        //int mouvement = Play.getTouche();
-        int dx = 0;
-        int dy = 0;
-
-        switch (mouvement) {
-            case 1:
-                dx = 0;
-                dy = 1;
+         switch (mouvement) {
+            case 1 : //Droite
+                if (this.gameBoard.isValidMovePacMan(0,1)) {
+                    movePacMan(0,1);
+                }
                 break;
-            case 2:
-                dx = -1;
-                dy = 0;
+            case 2 : //Haut
+                if (this.gameBoard.isValidMovePacMan(-1,0)) {
+                    movePacMan(-1,0);
+                }
                 break;
-            case 3:
-                dx = 1;
-                dy = 0;
+            case 3 : //Bas
+                if (this.gameBoard.isValidMovePacMan(1,0)) {
+                    movePacMan(1,0);
+                }
                 break;
-            case 4:
-                dx = 0;
-                dy = -1;
+            case 4 : // Gauche
+                if (this.gameBoard.isValidMovePacMan(0,-1)) {
+                    movePacMan(0,-1);
+                }
                 break;
-            default:
+            default :
                 break;
         }
-        if (this.gameBoard.isValidMovePacMan(dx, dy)) {
-            movePacMan(dx, dy);
-            this.previousX = dx;
-            this.previousY = dy;
-        } else {
-            if (this.gameBoard.isValidMovePacMan(this.previousX, this.previousY)) {
-                movePacMan(this.previousX, this.previousY);
-            }
-        }
-    }
-
-    /**
-     * Jeu d'un fantôme (choix du dx, dy)
-     */
-    public void play(Ghost g, int dx, int dy){
-
-        if (g.isStateEaten()) {
-            //TODO aller vers g.getStartX && g.getStartY
-        } else if (g.getName().equals(GhostNames.Oikake.toString())) {
-            //TODO deplacement premier ghost
-        } else if (g.getName().equals(GhostNames.Machibuse.toString())) {
-            //TODO deplacement deuxieme ghost
-        } else if (g.getName().equals(GhostNames.Kimagure.toString())) {
-            //TODO deplacement troisieme ghost
-        } else if (g.getName().equals(GhostNames.Otoboke.toString())) {
-            //TODO deplacement quatrieme ghost
-        }
-
-        moveGhost(g, dx, dy);
-
     }
 
     /**
@@ -218,18 +186,15 @@ public class Game {
         int y = ghost.getY();
 
         if (this.gameBoard.isValidMove(x, y, dx, dy)) {
-            if (this.gameBoard.getPacMan().getX() == x+dx && this.gameBoard.getPacMan().getY() == y+dy && !this.power) {
+            if (this.gameBoard.getPacMan().getX() == x+dx && this.gameBoard.getPacMan().getY() == y+dy) {
                 PacManEaten();
-            } else if (this.gameBoard.getPacMan().getX() == x+dx && this.gameBoard.getPacMan().getY() == y+dy && this.power) {
-                PacManEatsGhost(x+dx, y+dy);
             }
 
             ghost.setX(x+dx);
             ghost.setY(y+dy);
-            this.gameBoard.getGameGhostBoard()[x+dx][y+dy] = ghost;
+            this.gameBoard.getGameGhostBoard()[x+dx][y+dy] = this.gameBoard.getGameGhostBoard()[x][y];
             this.gameBoard.getGameGhostBoard()[x][y] = null;
         }
-
     }
 
     /**
@@ -252,13 +217,16 @@ public class Game {
         } else if (this.gameBoard.getGamePieceBoard()[x + dx][y + dy] instanceof SuperPacDot) {
             this.power = true;
             this.comboCount = 1;
+            //this.gameBoard.erase(x+dx, y+dx);
             //TODO gérer le temps
         } else if (this.gameBoard.getGamePieceBoard()[x + dx][y + dy] instanceof Fruit) {
             this.score += Fruit.value;
             //TODO gagner vie ?
+            //this.gameBoard.erase(x+dx, y+dx);
         } else if (gameBoard.getGamePieceBoard()[x + dx][y + dy] instanceof PacDot) {
             this.score += PacDot.value;
             //TODO gagner vie ?
+            this.gameBoard.erase(x+dx, y+dy);
         }
         this.gameBoard.getPacMan().setX(x+dx);
         this.gameBoard.getPacMan().setY(y+dy);
@@ -272,8 +240,7 @@ public class Game {
         if ( this.life < 0) {
             end();
         }
-        this.gameBoard.getPacMan().setX(this.gameBoard.getPacMan().getStartX());
-        this.gameBoard.getPacMan().setY(this.gameBoard.getPacMan().getStartY());
+        this.gameBoard.restartPacMan();
     }
 
     /**
@@ -296,7 +263,5 @@ public class Game {
     private void end() {
         //TODO end
     }
-
-
 }
 

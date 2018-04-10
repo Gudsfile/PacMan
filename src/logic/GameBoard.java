@@ -190,13 +190,18 @@ public class GameBoard {
     }
 
     protected void erase(int x, int y) {
-        this.gamePieceBoard[y][x] = null;
+        this.gamePieceBoard[x][y] = null;
+    }
+
+    protected void restartPacMan() {
+        this.pacMan.setX(this.pacMan.getStartX());
+        this.pacMan.setY(this.pacMan.getStartY());
+        this.gamePieceBoard[this.pacMan.getStartX()][this.pacMan.getStartY()] = this.pacMan;
     }
 
 
     public void displayBoard() {
         this.gamePieceBoard[this.pacMan.getX()][this.pacMan.getY()] = this.pacMan;
-
         for (int i = 0; i < this.gamePieceBoard.length; i++) {
             for (int j = 0; j < this.gamePieceBoard[0].length; j++) {
                 GamePiece g = this.gamePieceBoard[i][j];
@@ -213,8 +218,6 @@ public class GameBoard {
             }
             System.out.println("");
         }
-
-
         this.gamePieceBoard[this.pacMan.getX()][this.pacMan.getY()] = null;
     }
 
