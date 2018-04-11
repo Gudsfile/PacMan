@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * @inv {@code this.gameBoard.width > 0}
  * @inv {@code this.gameBoard.height > 0}
  * @inv {@code this.score >= 0}
+ * @inv {@code this.powerDuration > 0}
  *
  */
 public class Game {
@@ -25,16 +26,23 @@ public class Game {
     /**
      * Booléen indiquant si PacMan a un pouvoir ou non
      */
-    public boolean power;
+    private boolean power;
     /**
      * Entier contenant le score de la partie
      */
     private int score;
+    /**
+     * Score finale
+     */
     private int finalScore;
     /**
      * Compteur de combos fantômes mangés
      */
     private int comboCount;
+    /**
+     * Durée du pouvoir
+     */
+    private int powerDuration;
     private GamePiece[][] gameBoard;
     private Ghost[][] gameGhostBoard;
     private ArrayList<Ghost> ghostList = new ArrayList<>();
@@ -60,6 +68,7 @@ public class Game {
             this.comboCount = 1;
             this.power = false;
             Ghost.countGhost = 0;
+            this.powerDuration = gameParam.getPowerTime();
             this.gameBoard = new GamePiece[gameParam.getBoard().length][gameParam.getBoard()[0].length];
             this.gameGhostBoard = new Ghost[gameParam.getBoard().length][gameParam.getBoard()[0].length];
             for (int i = 0; i < gameParam.getBoard().length; i++) {
@@ -75,7 +84,7 @@ public class Game {
                             this.gameBoard[i][j] = new Fruit(gameParam.getLevel(), gameParam.getFruitValue());
                             break;
                         case 4 :
-                            this.gameBoard[i][j] = new SuperPacDot(gameParam.getPowerTime());
+                            this.gameBoard[i][j] = new SuperPacDot();
                             break;
                         case 5 :
                             Ghost g = new Ghost(gameParam.getGameSpeed(), gameParam.getStartGhostX(), gameParam.getStartGhostY(), i, j);
@@ -94,7 +103,7 @@ public class Game {
     /**
      * Jeu du pacman (choix du dx, dy)
      */
-    public void play(int mouvement) {
+    public synchronized void play(int mouvement) {
         int dx = 0;
         int dy = 0;
         switch (mouvement) {
@@ -131,9 +140,9 @@ public class Game {
     /**
      * Jeu d'un fantôme (choix du dx, dy)
      */
-    public void play(Ghost g){
-        int dx = 0;
-        int dy = 0;
+    public void play(Ghost g, int dx, int dy){
+        //int dx = 0;
+        //int dy = 0;
         if (g.isStateEaten()) {
             //TODO aller vers g.getStartX && g.getStartY
         } else if (g.getName().equals(GhostNames.Oikake.toString())) {
@@ -190,16 +199,17 @@ public class Game {
                 if (this.gameBoard[x + dx][y + dy] instanceof SuperPacDot) {
                     this.power = true;
                     this.comboCount = 1;
-                    this.erase(x+dx, y+dx);
+                    //this.erase(x+dx, y+dx);
                     //TODO gérer le temps du power
+
                 } else if (this.gameBoard[x + dx][y + dy] instanceof Fruit) {
                     this.score += Fruit.value;
                     this.winLife();
-                    this.erase(x+dx, y+dx);
+                    //this.erase(x+dx, y+dx);
                 } else if (this.gameBoard[x + dx][y + dy] instanceof PacDot) {
                     this.score += PacDot.value;
                     this.winLife();
-                    this.erase(x+dx, y+dy);
+                    //this.erase(x+dx, y+dy);
                 }
                 this.pacMan.setX(x+dx);
                 this.pacMan.setY(y+dy);
@@ -419,6 +429,30 @@ public class Game {
 
     public void setGhostList(ArrayList<Ghost> ghostList) {
         this.ghostList = ghostList;
+    }
+
+    public int getPreviousDX() {
+        return previousDX;
+    }
+
+    public void setPreviousDX(int previousDX) {
+        this.previousDX = previousDX;
+    }
+
+    public int getPreviousDY() {
+        return previousDY;
+    }
+
+    public void setPreviousDY(int previousDY) {
+        this.previousDY = previousDY;
+    }
+
+    public int getPowerDuration() {
+        return powerDuration;
+    }
+
+    public void setPowerDuration(int powerDuration) {
+        this.powerDuration = powerDuration;
     }
 }
 

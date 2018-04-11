@@ -20,7 +20,7 @@ public class Test {
         game.play(4);
         game.setPower(true);
 
-        game.getGameBoard().displayBoard();
+        game.displayBoard();
         System.out.println(game.getScore());
     }
 }
