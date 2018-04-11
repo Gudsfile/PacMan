@@ -23,6 +23,7 @@ public class SuperPacDot extends PacDot {
     SuperPacDot(int powerDuration) {
         super(0);
         this.powerDuration = powerDuration;
+        this.name = "\033[35m" + "SP" + "\033[39m";
     }
 
     /**

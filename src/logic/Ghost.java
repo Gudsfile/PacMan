@@ -59,15 +59,23 @@ public class Ghost extends GamePiece {
                 this.name = "\033[31m" + "G1" + "\033[39m";//GhostNames.Oikake.toString();
                 break;
             case 1 :
-                this.name = "\033[37m" + "G2" + "\033[39m";//GhostNames.Machibuse.toString();
+                this.name = "\033[32m" + "G2" + "\033[39m";//GhostNames.Machibuse.toString();
                 break;
             case 2 :
                 this.name = "\033[36m" + "G3" + "\033[39m";//GhostNames.Kimagure.toString();
                 break;
             case 3 :
-                this.name = "\033[34m" + "G4" + "\033[39m";//GhostNames.Otoboke.toString();
+                this.name = "\033[35m" + "G4" + "\033[39m";//GhostNames.Otoboke.toString();
                 break;
         }
+    }
+
+    public boolean isValidMove(int dx, int dy){
+        boolean ret = false;
+        if ((Math.abs(dx) == 1 && dy == 0) || (dx == 0 && Math.abs(dy) == 1)) {
+            ret = true;
+        }
+        return ret;
     }
 
     /**

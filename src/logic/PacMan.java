@@ -47,6 +47,14 @@ public class PacMan extends GamePiece {
         this.y = y;
     }
 
+    public boolean isValidMove(int dx, int dy){
+        boolean ret = false;
+        if ((Math.abs(dx) == 1 && dy == 0) || (dx == 0 && Math.abs(dy) == 1)) {
+            ret = true;
+        }
+        return ret;
+    }
+
     /**
      * Get speed
      * @return speed
@@ -66,18 +74,34 @@ public class PacMan extends GamePiece {
         this.speed = speed;
     }
 
+    /**
+     * get startX
+     * @return startX
+     */
     public int getStartX() {
         return startX;
     }
 
+    /**
+     * set startX
+     * @param startX  new startX
+     */
     public void setStartX(int startX) {
         this.startX = startX;
     }
 
+    /**
+     * get startY
+     * @return startY
+     */
     public int getStartY() {
         return startY;
     }
 
+    /**
+     * set startY
+     * @param startY new startY
+     */
     public void setStartY(int startY) {
         this.startY = startY;
     }
