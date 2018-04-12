@@ -1,4 +1,3 @@
-package view;
 
 import logic.Game;
 
@@ -8,7 +7,7 @@ public class TestPlayGame {
 
         Game g = new Game(1);
         g.displayBoard();
-        System.out.println(g.getPacMan().getX());
+        System.out.println(g.getGameGhostBoard()[0].length);
 
         TestPlayThread tpc = new TestPlayThread("PC", g);
         TestPlayThread tg1 = new TestPlayThread("G1", g);

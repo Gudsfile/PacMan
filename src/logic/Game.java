@@ -43,11 +43,29 @@ public class Game {
      * Durée du pouvoir
      */
     private int powerDuration;
+    /**
+     * Tableau des éléments du jeux (mur et PacDot)
+     */
     private GamePiece[][] gameBoard;
+    /**
+     * Tableau des fantômes
+     */
     private Ghost[][] gameGhostBoard;
+    /**
+     * Liste des fantômes
+     */
     private ArrayList<Ghost> ghostList = new ArrayList<>();
+    /**
+     * Objet PacMan
+     */
     private PacMan pacMan;
+    /**
+     * Dernier déplacement de pacMan en x
+     */
     private int previousDX;
+    /**
+     * Dernier déplacement de pacMan en y
+     */
     private int previousDY;
 
     /**
@@ -57,6 +75,7 @@ public class Game {
      * @post life = 3
      * @post score = 0
      * @post countGhost = 1
+     * @post power = false
      */
     public Game(int level) {
         FileReader in = new FileReader("res/Levels/Level"+level+".json");
@@ -101,7 +120,8 @@ public class Game {
     }
 
     /**
-     * Jeu du pacman (choix du dx, dy)
+     * Jeu du PacMan, choix du déplacement (dx, dy)
+     * @param mouvement paramètre tempraire
      */
     public synchronized void play(int mouvement) {
         int dx = 0;
@@ -138,7 +158,11 @@ public class Game {
     }
 
     /**
-     * Jeu d'un fantôme (choix du dx, dy)
+     * Jeu des fantomes, choix du déplacement (dx, dy)
+     * @param g le fantôme concerné
+     * @param dx paramètre temporaire
+     * @param dy paramètre temporaire
+     * @pre g != null
      */
     public void play(Ghost g, int dx, int dy){
         //int dx = 0;
@@ -157,6 +181,12 @@ public class Game {
         moveGhost(g, dx, dy);
     }
 
+    /**
+     * Vérifie qu'un mouvement n'est que d'une case et pas en diagonale
+     * @param dx déplacement sur les x
+     * @param dy déplacement sur les y
+     * @return vrai si le déplacement est valide, false dans le cas contraire
+     */
     private boolean isValidMove(int dx, int dy){
         boolean ret = false;
         if ((Math.abs(dx) == 1 && dy == 0) || (dx == 0 && Math.abs(dy) == 1)) {
@@ -165,10 +195,20 @@ public class Game {
         return ret;
     }
 
+    /**
+     * Vérifie si le mouvement est valide sur le plateau (pas dans un mur, etc)
+     * @param x position en x de l'élément à déplacer
+     * @param y position en y de l'élément à déplacer
+     * @param dx déplacement en x à effectuer
+     * @param dy déplacement en y à effectuer
+     * @return vrai si le déplacement est valide, false dans le cas contraire
+     */
     private boolean isValidBoardMove(int x, int y, int dx, int dy) {
         boolean result = true;
         if (this.isValidMove(dx, dy)) {
-            if (x+dx < 0 || x+dx > gameBoard[0].length || y+dy < 0 || y+dy > gameBoard.length) {
+            if (y == 0 && dy == -1 || y == this.gameBoard[0].length-1 && dy == 1) {
+                result = true;
+            } else if (x+dx < 0 || x+dx > gameBoard[0].length || y+dy < 0 || y+dy > gameBoard.length) {
                 result = false;
             } else if (this.gameBoard[x+dx][y+dy] instanceof Wall) {
                 result = false;
@@ -186,7 +226,17 @@ public class Game {
 
         int x = this.pacMan.getX();
         int y = this.pacMan.getY();
-        if (this.isValidBoardMove(this.pacMan.getX(), this.pacMan.getY(), dx, dy)) {
+
+        if (y == 0 && dy == -1) {
+            dy = this.gameBoard[0].length-1;
+            System.out.println("1-dx:"+dx+" dy:"+dy);
+        } else if (y == this.gameBoard[0].length-1 && dy == 1) {
+            dy = -(this.gameBoard[0].length-1);
+            System.out.println(this.gameBoard[0].length);
+            System.out.println("2-dx:"+dx+" dy:"+dy);
+        }
+
+        //if (this.isValidBoardMove(this.pacMan.getX(), this.pacMan.getY(), dx, dy)) {
             if (this.gameGhostBoard[x + dx][y + dy] != null && !this.gameGhostBoard[x + dx][y + dy].isStateEaten()) {
                 if (this.power) {
                     killGhost(x+dx, y+dy);
@@ -214,9 +264,9 @@ public class Game {
                 this.pacMan.setX(x+dx);
                 this.pacMan.setY(y+dy);
             }
-        } else {
-            System.out.println("error invalid move");
-        }
+        //} else {
+        //    System.out.println("error invalid move");
+        //} Inutile ? déja testé dans play ?
     }
 
     /**
@@ -276,6 +326,9 @@ public class Game {
 
     }
 
+    /**
+     * Augmente le nombre de vie à chaque tranche de 10k points
+     */
     private void winLife() {
         if (this.score >= 10000) {
             this.life += 1;
@@ -284,6 +337,12 @@ public class Game {
         }
     }
 
+    /**
+     * Retourne la piece à la position (x,y) donnée (hors PacMan)
+     * @param x position en x
+     * @param y position en y
+     * @return la pièce en (x,y)
+     */
     protected GamePiece getPiece(int x, int y) {
         GamePiece result =  null;
 
@@ -295,10 +354,18 @@ public class Game {
         return result;
     }
 
+    /**
+     * Efface un élément à la position x, y donnée
+     * @param x position en x
+     * @param y position en y
+     */
     protected void erase(int x, int y) {
         this.gameBoard[x][y] = null;
     }
 
+    /**
+     * Affiche le plateau de jeu et ses éléments dans la console
+     */
     public void displayBoard() {
         this.gameBoard[this.pacMan.getX()][this.pacMan.getY()] = this.pacMan;
         for (int i = 0; i < this.gameBoard.length; i++) {
@@ -383,10 +450,20 @@ public class Game {
         this.score = score;
     }
 
+    /**
+     * Retourne le score finale
+     * @return le score finale
+     * @post result = finalScore
+     */
     public int getFinalScore() {
         return finalScore;
     }
 
+    /**
+     * Modifie le score finale
+     * @param finalScore new finalScore
+     * @pre this.finalScore = finalScore
+     */
     public void setFinalScore(int finalScore) {
         this.finalScore = finalScore;
     }

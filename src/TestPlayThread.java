@@ -13,8 +13,10 @@ public class TestPlayThread extends Thread {
     }
 
     public void run() {
-        int[] mo = {1,1,1,1,1,2,2,2,2,2,2,4,2,2,2,4,4,4,4,3,3,3,4}; // va à l'entrée des fantômes
+        // int[] mo = {1,1,1,1,1,2,2,2,2,2,2,4,2,2,2,4,4,4,4,3,3,3,4}; // va à l'entrée des fantômes
         // int[] mo = {1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,1,1,1,3,1,2,2,2}; // va au SP en haut à droite
+        // int[] mo = {1,1,1,1,1,2,2,2,2,2,2,1,1,1,1,1}; // va dans un tp à droite
+        int[] mo = {4,4,4,4,4,2,2,2,2,2,2,4,4,4,4,4}; // va dans un tp à gauche
 
         switch (this.getName()) {
             case "PC":
