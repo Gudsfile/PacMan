@@ -178,7 +178,9 @@ public class Game {
         } else if (g.getName().equals(GhostNames.Otoboke.toString())) {
             //TODO deplacement quatrieme ghost
         }
-        moveGhost(g, dx, dy);
+        if (this.isValidBoardMove(g.getX(), g.getY(), dx, dy)) {
+            moveGhost(g, dx, dy);
+        }
     }
 
     /**
@@ -239,37 +241,33 @@ public class Game {
             dx = -(this.gameBoard.length-1);
         }
 
-        //if (this.isValidBoardMove(this.pacMan.getX(), this.pacMan.getY(), dx, dy)) {
-            if (this.gameGhostBoard[x + dx][y + dy] != null && !this.gameGhostBoard[x + dx][y + dy].isStateEaten()) {
-                if (this.power) {
-                    killGhost(x+dx, y+dy);
-                    this.pacMan.setX(x+dx);
-                    this.pacMan.setY(y+dy);
-                } else {
-                    killPacMan();
-                }
-            } else {
-                if (this.gameBoard[x + dx][y + dy] instanceof SuperPacDot) {
-                    this.power = true;
-                    this.comboCount = 1;
-                    //this.erase(x+dx, y+dx);
-                    //TODO gérer le temps du power
-
-                } else if (this.gameBoard[x + dx][y + dy] instanceof Fruit) {
-                    this.score += Fruit.value;
-                    this.winLife();
-                    //this.erase(x+dx, y+dx);
-                } else if (this.gameBoard[x + dx][y + dy] instanceof PacDot) {
-                    this.score += PacDot.value;
-                    this.winLife();
-                    //this.erase(x+dx, y+dy);
-                }
+        if (this.gameGhostBoard[x + dx][y + dy] != null && !this.gameGhostBoard[x + dx][y + dy].isStateEaten()) {
+            if (this.power) {
+                killGhost(x+dx, y+dy);
                 this.pacMan.setX(x+dx);
                 this.pacMan.setY(y+dy);
+            } else {
+                killPacMan();
             }
-        //} else {
-        //    System.out.println("error invalid move");
-        //} Inutile ? déja testé dans play ?
+        } else {
+            if (this.gameBoard[x + dx][y + dy] instanceof SuperPacDot) {
+                this.power = true;
+                this.comboCount = 1;
+                //this.erase(x+dx, y+dx);
+                //TODO gérer le temps du power
+
+            } else if (this.gameBoard[x + dx][y + dy] instanceof Fruit) {
+                this.score += Fruit.value;
+                this.winLife();
+                //this.erase(x+dx, y+dx);
+            } else if (this.gameBoard[x + dx][y + dy] instanceof PacDot) {
+                this.score += PacDot.value;
+                this.winLife();
+                //this.erase(x+dx, y+dy);
+            }
+            this.pacMan.setX(x+dx);
+            this.pacMan.setY(y+dy);
+        }
     }
 
     /**
@@ -288,15 +286,24 @@ public class Game {
     private void moveGhost(Ghost ghost, int dx, int dy) {
         int x = ghost.getX();
         int y = ghost.getY();
-        if (this.isValidBoardMove(x, y, dx, dy)) {
-            ghost.setX(x+dx);
-            ghost.setY(y+dy);
-            if (this.gameGhostBoard[x+dx][y+dy] == null) {
-                this.gameGhostBoard[x+dx][y+dy] = ghost;
-                this.gameGhostBoard[x][y] = null;
-            } else {
-                this.gameGhostBoard[x][y] = null;
-            }
+
+        if (y == 0 && dy == -1) {
+            dy = this.gameBoard[0].length-1;
+        } else if (y == this.gameBoard[0].length-1 && dy == 1) {
+            dy = -(this.gameBoard[0].length-1);
+        } else if (x == 0 && dx == -1) {
+            dx = this.gameBoard.length-1;
+        } else if (x == this.gameBoard.length-1 && dx == 1) {
+            dx = -(this.gameBoard.length-1);
+        }
+
+        ghost.setX(x+dx);
+        ghost.setY(y+dy);
+        if (this.gameGhostBoard[x+dx][y+dy] == null) {
+            this.gameGhostBoard[x+dx][y+dy] = ghost;
+            this.gameGhostBoard[x][y] = null;
+        } else {
+            this.gameGhostBoard[x][y] = null;
         }
     }
 
@@ -305,7 +312,7 @@ public class Game {
      * @param x position du fantôme mangé
      * @param y position du fantôme mangé
      */
-    private void killGhost (int x, int y) {
+    public void killGhost (int x, int y) {
         this.score += Ghost.getValue()*comboCount;
         this.winLife();
         this.comboCount += 1;
@@ -316,7 +323,7 @@ public class Game {
     /**
      * Evenement lorsque PacMan est mangé
      */
-    private void killPacMan () {
+    public void killPacMan() {
         this.life -= 1;
         if ( this.life < 0) {
             end();

@@ -70,6 +70,15 @@ public class TestPlayThread extends Thread {
                     g.displayBoard();
                     System.out.println("Score:" + g.getScore() + " Life:" + g.getLife() + " Power: " + g.isPower());
                     System.out.println("");
+                    for (Ghost temp : g.getGhostList()) {
+                        if (g.getPacMan().getX() == temp.getX() && g.getPacMan().getY() == temp.getY()) {
+                            if (!g.isPower()) {
+                                g.killPacMan();
+                            } else if (g.isPower()) {
+                                g.killGhost(temp.getX(), temp.getY());
+                            }
+                        }
+                    }
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
