@@ -208,6 +208,8 @@ public class Game {
         if (this.isValidMove(dx, dy)) {
             if (y == 0 && dy == -1 || y == this.gameBoard[0].length-1 && dy == 1) {
                 result = true;
+            } else if (x == 0 && dx == -1 || x == this.gameBoard.length-1 && dx == 1) {
+                result = true;
             } else if (x+dx < 0 || x+dx > gameBoard[0].length || y+dy < 0 || y+dy > gameBoard.length) {
                 result = false;
             } else if (this.gameBoard[x+dx][y+dy] instanceof Wall) {
@@ -229,11 +231,12 @@ public class Game {
 
         if (y == 0 && dy == -1) {
             dy = this.gameBoard[0].length-1;
-            System.out.println("1-dx:"+dx+" dy:"+dy);
         } else if (y == this.gameBoard[0].length-1 && dy == 1) {
             dy = -(this.gameBoard[0].length-1);
-            System.out.println(this.gameBoard[0].length);
-            System.out.println("2-dx:"+dx+" dy:"+dy);
+        } else if (x == 0 && dx == -1) {
+            dx = this.gameBoard.length-1;
+        } else if (x == this.gameBoard.length-1 && dx == 1) {
+            dx = -(this.gameBoard.length-1);
         }
 
         //if (this.isValidBoardMove(this.pacMan.getX(), this.pacMan.getY(), dx, dy)) {
