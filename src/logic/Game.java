@@ -146,6 +146,7 @@ public class Game {
             default:
                 break;
         }
+
         if (this.isValidBoardMove(this.pacMan.getX(), this.pacMan.getY(), dx, dy)) {
             movePacMan(dx, dy);
             this.previousDX = dx;
@@ -165,10 +166,10 @@ public class Game {
      * @pre g != null
      */
     public void play(Ghost g, int dx, int dy){
-        //int dx = 0;
-        //int dy = 0;
+        // int dx = 0;
+        // int dy = 0;
+
         if (g.isStateEaten()) {
-            //TODO aller vers g.getStartX && g.getStartY
         } else if (g.getName().equals(GhostNames.Oikake.toString())) {
             //TODO deplacement premier ghost
         } else if (g.getName().equals(GhostNames.Machibuse.toString())) {
@@ -178,6 +179,7 @@ public class Game {
         } else if (g.getName().equals(GhostNames.Otoboke.toString())) {
             //TODO deplacement quatrieme ghost
         }
+
         if (this.isValidBoardMove(g.getX(), g.getY(), dx, dy)) {
             moveGhost(g, dx, dy);
         }

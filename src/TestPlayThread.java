@@ -6,7 +6,7 @@ public class TestPlayThread extends Thread {
     private Game g;
     private static int temp = 0;
 
-    public TestPlayThread(String name, Game g){
+    TestPlayThread(String name, Game g){
         super(name);
         this.g = g;
         this.start();
@@ -20,9 +20,10 @@ public class TestPlayThread extends Thread {
 
         switch (this.getName()) {
             case "PC":
-                while (g.getPacMan() != null) {
+                while (g.getLife() >= 0) {
                     g.play(mo[temp]);
                     temp = (temp + 1) % mo.length;
+                    //verification();
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
@@ -30,8 +31,9 @@ public class TestPlayThread extends Thread {
                     }
                 }
             case "G1":
-                while (g.getPacMan() != null) {
+                while (g.getLife() >= 0) {
                     threadGhost(g.getGhostList().get(0));
+                    //verification();
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
@@ -39,8 +41,9 @@ public class TestPlayThread extends Thread {
                     }
                 }
             case "G2":
-                while (g.getPacMan() != null) {
+                while (g.getLife() >= 0) {
                     threadGhost(g.getGhostList().get(1));
+                    //verification();
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
@@ -48,8 +51,9 @@ public class TestPlayThread extends Thread {
                     }
                 }
             case "G3":
-                while (g.getPacMan() != null) {
+                while (g.getLife() >= 0) {
                     threadGhost(g.getGhostList().get(2));
+                    //verification();
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
@@ -57,8 +61,9 @@ public class TestPlayThread extends Thread {
                     }
                 }
             case "G4":
-                while (g.getPacMan() != null) {
+                while (g.getLife() >= 0) {
                     threadGhost(g.getGhostList().get(3));
+                    //verification();
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
@@ -66,19 +71,11 @@ public class TestPlayThread extends Thread {
                     }
                 }
             case "VE":
-                while (g.getPacMan() != null) {
+                while (g.getLife() >= 0) {
                     g.displayBoard();
                     System.out.println("Score:" + g.getScore() + " Life:" + g.getLife() + " Power: " + g.isPower());
                     System.out.println("");
-                    for (Ghost temp : g.getGhostList()) {
-                        if (g.getPacMan().getX() == temp.getX() && g.getPacMan().getY() == temp.getY()) {
-                            if (!g.isPower()) {
-                                g.killPacMan();
-                            } else if (g.isPower()) {
-                                g.killGhost(temp.getX(), temp.getY());
-                            }
-                        }
-                    }
+                    verification();
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
@@ -87,7 +84,7 @@ public class TestPlayThread extends Thread {
                 }
                 break;
             case "PO":
-                while (g.getPacMan() != null) {
+                while (g.getLife() >= 0) {
                     if(g.isPower()){
                         long now = System.currentTimeMillis();
                         while(System.currentTimeMillis()-now < g.getPowerDuration()*1000){
@@ -121,5 +118,17 @@ public class TestPlayThread extends Thread {
                 dy = -1;
             }
             g.play(ghost, dx, dy);
+    }
+
+    private void verification() {
+        for (Ghost temp : g.getGhostList()) {
+            if (g.getPacMan().getX() == temp.getX() && g.getPacMan().getY() == temp.getY()) {
+                if (!g.isPower()) {
+                    g.killPacMan();
+                } else if (g.isPower()) {
+                    g.killGhost(temp.getX(), temp.getY());
+                }
+            }
+        }
     }
 }
