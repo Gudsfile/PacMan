@@ -6,7 +6,7 @@ package logic;
  * @author Théophile Chénais
  *
  */
-abstract class GamePiece {
+public abstract class GamePiece {
     public String name;
 
     public String getName() {

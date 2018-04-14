@@ -6,7 +6,7 @@ package logic;
  * @author Théophile Chénais
  *
  */
-class SuperPacDot extends PacDot {
+public class SuperPacDot extends PacDot {
 
     /**
      * Construit un SuperPacDot
