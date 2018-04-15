@@ -1,13 +1,13 @@
 package logic;
 
 /**
- *
  * Cette classe modélise les fantôme du jeu PacMan.
- * @author Théophile Chénais
  *
+ * @author Théophile Chénais
  * @inv {@code speed >= 0}
  */
 public class Ghost extends GamePiece {
+
 
     protected static int countGhost = 0;
 
@@ -42,6 +42,7 @@ public class Ghost extends GamePiece {
 
     /**
      * Construit un fantôme
+     *
      * @pre name != null
      * @pre speed >= 0
      * @post this.name = name
@@ -54,32 +55,26 @@ public class Ghost extends GamePiece {
         Ghost.startY = startY;
         this.x = x;
         this.y = y;
+        this.stateEaten = false;
         switch (countGhost) {
             case 0:
                 this.name = "\033[31m" + "G1" + "\033[39m";//GhostNames.Blinky.toString();
                 break;
-            case 1 :
+            case 1:
                 this.name = "\033[32m" + "G2" + "\033[39m";//GhostNames.Pinky.toString();
                 break;
-            case 2 :
+            case 2:
                 this.name = "\033[36m" + "G3" + "\033[39m";//GhostNames.Inky.toString();
                 break;
-            case 3 :
+            case 3:
                 this.name = "\033[35m" + "G4" + "\033[39m";//GhostNames.Clyde.toString();
                 break;
         }
     }
 
-    public boolean isValidMove(int dx, int dy){
-        boolean ret = false;
-        if ((Math.abs(dx) == 1 && dy == 0) || (dx == 0 && Math.abs(dy) == 1)) {
-            ret = true;
-        }
-        return ret;
-    }
-
     /**
      * Get speed
+     *
      * @return speed
      * @post result = speed
      */
@@ -89,6 +84,7 @@ public class Ghost extends GamePiece {
 
     /**
      * set speed
+     *
      * @param speed new speed
      * @pre speed >= 0
      * @post this.speed = speed
@@ -99,6 +95,7 @@ public class Ghost extends GamePiece {
 
     /**
      * get name
+     *
      * @return name
      * @post result = name
      */
@@ -108,6 +105,7 @@ public class Ghost extends GamePiece {
 
     /**
      * set name
+     *
      * @param name new name
      * @post this.name = name
      */
@@ -117,6 +115,7 @@ public class Ghost extends GamePiece {
 
     /**
      * get value
+     *
      * @return value
      * @post result = value
      */
@@ -126,6 +125,7 @@ public class Ghost extends GamePiece {
 
     /**
      * set value
+     *
      * @param value new value
      * @post this.value = value
      */
@@ -135,6 +135,7 @@ public class Ghost extends GamePiece {
 
     /**
      * Retourne la position de départ du fantôme
+     *
      * @return startX
      * @post result = startX
      */
@@ -144,6 +145,7 @@ public class Ghost extends GamePiece {
 
     /**
      * set startX
+     *
      * @param startX new startX
      * @post Ghost.startX = startX
      */
@@ -153,6 +155,7 @@ public class Ghost extends GamePiece {
 
     /**
      * get startY
+     *
      * @return startY
      * @post result = startY
      */
@@ -162,6 +165,7 @@ public class Ghost extends GamePiece {
 
     /**
      * set startY
+     *
      * @param startY new startY
      * @post Ghost.startY = startY
      */
@@ -171,6 +175,7 @@ public class Ghost extends GamePiece {
 
     /**
      * get x
+     *
      * @return x
      */
     public int getX() {
@@ -179,6 +184,7 @@ public class Ghost extends GamePiece {
 
     /**
      * set x
+     *
      * @param x new x
      */
     public void setX(int x) {
@@ -187,6 +193,7 @@ public class Ghost extends GamePiece {
 
     /**
      * get y
+     *
      * @return set y
      */
     public int getY() {
@@ -195,6 +202,7 @@ public class Ghost extends GamePiece {
 
     /**
      * set y
+     *
      * @param y set y
      */
     public void setY(int y) {
@@ -203,6 +211,7 @@ public class Ghost extends GamePiece {
 
     /**
      * get stateEaten
+     *
      * @return stateEaten
      * @post result = stateEaten
      */
@@ -212,10 +221,12 @@ public class Ghost extends GamePiece {
 
     /**
      * set stateEaten
+     *
      * @param stateEaten new stateEaten
      * @post this.stateEaten = stateEaten
      */
     public void setStateEaten(boolean stateEaten) {
         this.stateEaten = stateEaten;
     }
+
 }

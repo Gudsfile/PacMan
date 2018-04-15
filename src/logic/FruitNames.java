@@ -1,6 +1,6 @@
 package logic;
 
-public enum  FruitNames {
+public enum FruitNames {
     Cerise,
     Fraise,
     Orange,

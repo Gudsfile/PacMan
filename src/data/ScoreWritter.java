@@ -10,6 +10,7 @@ import java.io.FileWriter;
 
 /**
  * Cette classe écrit dans un fichier JSON les scores des joueurs
+ *
  * @author Alexis CANO
  */
 public class ScoreWritter {
@@ -22,7 +23,8 @@ public class ScoreWritter {
     /**
      * Méthode permettant d'écrire un nouveau score dans le fichier scores.json
      * La donnée "Highscore" est réécrite si le nouveau score est supérieur
-     * @param name le nom du joueur
+     *
+     * @param name  le nom du joueur
      * @param score le score du joueur
      * @pre name != null
      * @pre {@code score >= 0}

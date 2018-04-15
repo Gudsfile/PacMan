@@ -1,16 +1,14 @@
 package logic;
 
 /**
- *
  * Cette classe modélise les fruits du jeu PacMan.
- * @author Théophile Chénais
  *
- * @inv name != null
+ * @author Théophile Chénais
  */
 public class Fruit extends PacDot {
 
     /**
-     * Nom du fruit
+     * Valeur du fruit
      */
     protected static int value;
 
@@ -38,6 +36,7 @@ public class Fruit extends PacDot {
 
     /**
      * get name
+     *
      * @return name
      * @post result = name
      */
@@ -47,6 +46,7 @@ public class Fruit extends PacDot {
 
     /**
      * set name
+     *
      * @param name new name
      * @pre name != null
      * @post this.name = name

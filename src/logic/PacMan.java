@@ -2,12 +2,10 @@ package logic;
 
 
 /**
- *
  * Cette classe modélise PacMan du jeu PacMan.
+ *
  * @author Théophile Chénais
- *
  * @inv {@code speed > 0}
- *
  */
 public class PacMan extends GamePiece {
 
@@ -34,6 +32,7 @@ public class PacMan extends GamePiece {
 
     /**
      * Construit un PacMan
+     *
      * @pre {@code speed > 0}
      * @post this.speed = speed
      */
@@ -47,16 +46,9 @@ public class PacMan extends GamePiece {
         this.y = y;
     }
 
-    public boolean isValidMove(int dx, int dy){
-        boolean ret = false;
-        if ((Math.abs(dx) == 1 && dy == 0) || (dx == 0 && Math.abs(dy) == 1)) {
-            ret = true;
-        }
-        return ret;
-    }
-
     /**
      * Get speed
+     *
      * @return speed
      * @post result = speed
      */
@@ -66,6 +58,7 @@ public class PacMan extends GamePiece {
 
     /**
      * set speed
+     *
      * @param speed new speed
      * @pre {@code speed >= 0}
      * @post this.speed = speed
@@ -76,6 +69,7 @@ public class PacMan extends GamePiece {
 
     /**
      * get startX
+     *
      * @return startX
      */
     public int getStartX() {
@@ -84,7 +78,8 @@ public class PacMan extends GamePiece {
 
     /**
      * set startX
-     * @param startX  new startX
+     *
+     * @param startX new startX
      */
     public void setStartX(int startX) {
         this.startX = startX;
@@ -92,6 +87,7 @@ public class PacMan extends GamePiece {
 
     /**
      * get startY
+     *
      * @return startY
      */
     public int getStartY() {
@@ -100,6 +96,7 @@ public class PacMan extends GamePiece {
 
     /**
      * set startY
+     *
      * @param startY new startY
      */
     public void setStartY(int startY) {
@@ -108,6 +105,7 @@ public class PacMan extends GamePiece {
 
     /**
      * get x
+     *
      * @return x
      */
     public int getX() {
@@ -116,6 +114,7 @@ public class PacMan extends GamePiece {
 
     /**
      * set x
+     *
      * @param x new x
      */
     public void setX(int x) {
@@ -124,6 +123,7 @@ public class PacMan extends GamePiece {
 
     /**
      * get y
+     *
      * @return set y
      */
     public int getY() {
@@ -132,9 +132,11 @@ public class PacMan extends GamePiece {
 
     /**
      * set y
+     *
      * @param y set y
      */
     public void setY(int y) {
         this.y = y;
     }
+
 }

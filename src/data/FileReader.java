@@ -10,6 +10,7 @@ import static java.lang.Math.toIntExact;
 
 /**
  * Cette classe lit les fichiers JSON permettant de paramétrer une partie de PacMan
+ *
  * @author Alexis CANO
  */
 public class FileReader {
@@ -21,6 +22,7 @@ public class FileReader {
 
     /**
      * Constructeur de la classe, initialise filename
+     *
      * @param fileName le nom du fichier paramètre
      * @pre fileName != null
      * @post filename = filename
@@ -33,6 +35,7 @@ public class FileReader {
 
     /**
      * Lit le fichier JSON contenant les paramètre d'une partie de PACMAN et créée un objet GameParam contenant ces paramètres
+     *
      * @return les paramètre de la partie
      * @post game != null
      */

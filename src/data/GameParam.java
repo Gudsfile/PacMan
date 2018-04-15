@@ -2,6 +2,7 @@ package data;
 
 /**
  * Cette class permet de stocker les paramètre d'une partie de PacMan lu à partir d'un fichier JSON de paramètre
+ *
  * @author Alexis Cano
  * @inv {@code this.level > 0}
  * @inv {@code this.pacDotValue > 0}
@@ -57,12 +58,13 @@ public class GameParam {
 
     /**
      * Constructeur, initialise les attribut de classe
-     * @param level le niveau de jeu
+     *
+     * @param level       le niveau de jeu
      * @param pacDotValue le nombre de point pour un PacDot
-     * @param fruitValue le nombre de point pour un Fruit
-     * @param powerTime le temps en seconde du power
-     * @param gameSpeed la vitesse du jeu
-     * @param dataBoard le plateau de jeu (tableau d'entier, 0 = vide, 1 = wall, 2 = regularPacDot, 3 = fruit, 4 = SuperPacDot, 5 = ghost, 6 = pacMan
+     * @param fruitValue  le nombre de point pour un Fruit
+     * @param powerTime   le temps en seconde du power
+     * @param gameSpeed   la vitesse du jeu
+     * @param dataBoard   le plateau de jeu (tableau d'entier, 0 = vide, 1 = wall, 2 = regularPacDot, 3 = fruit, 4 = SuperPacDot, 5 = ghost, 6 = pacMan
      * @pre {@code level > 0}
      * @pre {@code pacDotValue > 0}
      * @pre {@code fruitValue > 0}
@@ -108,6 +110,7 @@ public class GameParam {
 
     /**
      * Get pacDotValue
+     *
      * @return pacDotValue
      */
     public int getPacDotValue() {
@@ -116,6 +119,7 @@ public class GameParam {
 
     /**
      * Set pacDotValue
+     *
      * @param pacDotValue new pacDotValue
      */
     public void setPacDotValue(int pacDotValue) {
@@ -124,6 +128,7 @@ public class GameParam {
 
     /**
      * Get fruitValue
+     *
      * @return fruitValue
      */
     public int getFruitValue() {
@@ -132,6 +137,7 @@ public class GameParam {
 
     /**
      * Set fruitValue
+     *
      * @param fruitValue new fruitValue
      */
     public void setFruitValue(int fruitValue) {
@@ -140,6 +146,7 @@ public class GameParam {
 
     /**
      * Get powerTime
+     *
      * @return powerTime
      */
     public int getPowerTime() {
@@ -148,6 +155,7 @@ public class GameParam {
 
     /**
      * Set powerTime
+     *
      * @param powerTime new powerTime
      */
     public void setPowerTime(int powerTime) {
@@ -156,6 +164,7 @@ public class GameParam {
 
     /**
      * Get gameSpeed
+     *
      * @return gameSpeed
      */
     public int getGameSpeed() {
@@ -164,6 +173,7 @@ public class GameParam {
 
     /**
      * Set gameSpeed
+     *
      * @param gameSpeed new gameSpeed
      */
     public void setGameSpeed(int gameSpeed) {
@@ -172,6 +182,7 @@ public class GameParam {
 
     /**
      * Get board
+     *
      * @return board
      */
     public int[][] getBoard() {
@@ -180,6 +191,7 @@ public class GameParam {
 
     /**
      * Set board
+     *
      * @param board new board
      */
     public void setBoard(int[][] board) {
