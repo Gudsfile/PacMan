@@ -23,7 +23,7 @@ public class Fenetre extends JFrame {
 
     public void go(){
         while(true){
-            
+
             try {
 
                 Thread.sleep(3);

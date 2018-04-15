@@ -1,5 +1,6 @@
 package view;
 import logic.GamePiece;
+import java.awt.Font;
 
 import java.awt.Graphics;
 import javax.swing.JPanel;
@@ -28,15 +29,14 @@ public class Panneau extends JPanel {
         paintDots(g);
         paintPacMan(g);
         paintGhost(g);
-        
+        paintScore(g);
+
     }
     public void paintWall(Graphics g) {
         Wall w = new Wall();
-        g.drawLine(50, 100, 50+gp[0].length*25, 100);
-        g.drawLine(50, 100, 50, 100+gp[0].length*25);
-        g.drawLine(50, 100+gp[0].length*25, 50+gp[0].length*25, 100+gp[0].length*25);//ligne bas
-        g.drawLine(50+gp[0].length*25, 100, 50+gp[0].length*25, 100+gp[0].length*25);
-        for (int i = 0; i < gp[0].length; i++) {
+        g.drawLine(50, 100, 50, 100+gp.length*25);
+        g.drawLine(50+gp[0].length*25, 100, 50+gp[0].length*25, 100+gp.length*25);
+        for (int i = 0; i < gp.length; i++) {
             for (int j = 0; j < gp[0].length; j++) {
                 if(gp[i][j] instanceof Wall) {
                         g.fillRect(25 * j+50, 25 * i+100, 25, 25);
@@ -57,7 +57,7 @@ public class Panneau extends JPanel {
     }
 
     public void paintDots(Graphics g){
-        for (int i = 0; i < gp[0].length; i++) {
+        for (int i = 0; i < gp.length; i++) {
             for (int j = 0; j < gp[0].length; j++) {
                 if(gp[i][j] instanceof PacDot) {
                     g.setColor(Color.CYAN);
@@ -132,7 +132,7 @@ public class Panneau extends JPanel {
     }
 
     public void paintGhost(Graphics g){
-        for (int i = 0; i < ghostboard[0].length; i++) {
+        for (int i = 0; i < ghostboard.length; i++) {
             for (int j = 0; j < ghostboard[0].length; j++) {
                 if(ghostboard[i][j] instanceof Ghost) {
                     if((ghostboard[i][j].isStateEaten())){
@@ -175,6 +175,24 @@ public class Panneau extends JPanel {
                 }
             }
         }
+    }
+
+    public void paintScore(Graphics g){
+        String s= Integer.toString(game.getScore());
+        String sf=Integer.toString(game.getFinalScore());
+        String v=Integer.toString(game.getLife());
+
+        Font font = new Font("Courier", Font.BOLD, 20);
+        g.setFont(font);
+        g.setColor(Color.red);
+        g.drawString("Score actuel :", 10, 50);
+        g.drawString(s,150,50);
+        g.setColor(Color.black);
+        g.drawString("Score final :", 10, 70);
+        g.drawString(sf,130,70);
+        g.setColor(Color.green);
+        g.drawString("Vie :", 390, 60);
+        g.drawString(v,435,60);
     }
 
 }
