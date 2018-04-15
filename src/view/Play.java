@@ -12,19 +12,21 @@ public class Play {
      * @param args NONE
      */
     public static void main(String[] args) {
-        Fenetre fenetre = new Fenetre();
-        //Play play=new Play();
+
+        Play play=new Play();
+
     }
 
     public Play() {
         this.game=new Game(this.level);
+        Fenetre fenetre = new Fenetre(game);
     }
 
     /**
      * Recupère la touche appuyé par l'utilisateur
      * @return un entier correspondant à la touche appuyé et 0 si aucune touche n'a été appuyé
      */
-    public int getTouche(){
+    public int getKeys(){
         Canvas canvas = Canvas.getCanvas();
         if(canvas.isDownPressed()) {return 1;}
         else if (canvas.isLeftPressed()) {return 2;}
@@ -37,6 +39,9 @@ public class Play {
 
     }
 
+    public void repaint(){
+
+    }
 
 
 }

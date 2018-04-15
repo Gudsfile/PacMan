@@ -1,4 +1,5 @@
 import logic.Game;
+import view.Fenetre;
 
 public class Test {
 
