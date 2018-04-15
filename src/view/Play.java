@@ -5,6 +5,7 @@ public class Play {
 
     private Game game;
     private int level=1;
+    private MainFrame mainFrame;
 
     /**
      * animates
@@ -19,7 +20,7 @@ public class Play {
 
     public Play() {
         this.game=new Game(this.level);
-        Fenetre fenetre = new Fenetre(game);
+        this.mainFrame = new MainFrame(game);
     }
 
     /**
@@ -27,12 +28,18 @@ public class Play {
      * @return un entier correspondant à la touche appuyé et 0 si aucune touche n'a été appuyé
      */
     public int getKeys(){
-        Canvas canvas = Canvas.getCanvas();
-        if(canvas.isDownPressed()) {return 1;}
-        else if (canvas.isLeftPressed()) {return 2;}
-        else if (canvas.isRightPressed()){return 3;}
-        else if (canvas.isUpPressed()) { return 4;}
-        else{return 0;}
+        if(mainFrame.isDownPressed()) {
+            System.out.println("Ok");
+            return 1;
+        } else if (mainFrame.isLeftPressed()) {
+            return 2;
+        } else if (mainFrame.isRightPressed()) {
+            return 3;
+        } else if (mainFrame.isUpPressed()) {
+            return 4;
+        } else{
+            return 0;
+        }
     }
 
     public void draw(){

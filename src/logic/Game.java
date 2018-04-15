@@ -4,6 +4,7 @@ import data.FileReader;
 import data.GameParam;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -127,21 +128,21 @@ public class Game {
         int dx = 0;
         int dy = 0;
         switch (mouvement) {
-            case 1: // Droite
-                dx = 0;
-                dy = 1;
-                break;
-            case 2: // haut
+            case 1: // haut
                 dx = -1;
                 dy = 0;
                 break;
-            case 3: // Bas
+            case 2: // Bas
                 dx = 1;
                 dy = 0;
                 break;
-            case 4: // Gauche
+            case 3: // Gauche
                 dx = 0;
                 dy = -1;
+                break;
+            case 4: // Droite
+                dx = 0;
+                dy = 1;
                 break;
             default:
                 break;
@@ -170,13 +171,13 @@ public class Game {
         // int dy = 0;
 
         if (g.isStateEaten()) {
-        } else if (g.getName().equals(GhostNames.Oikake.toString())) {
+        } else if (g.getName().equals(GhostNames.Blinky.toString())) {
             //TODO deplacement premier ghost
-        } else if (g.getName().equals(GhostNames.Machibuse.toString())) {
+        } else if (g.getName().equals(GhostNames.Pinky.toString())) {
             //TODO deplacement deuxieme ghost
-        } else if (g.getName().equals(GhostNames.Kimagure.toString())) {
+        } else if (g.getName().equals(GhostNames.Inky.toString())) {
             //TODO deplacement troisieme ghost
-        } else if (g.getName().equals(GhostNames.Otoboke.toString())) {
+        } else if (g.getName().equals(GhostNames.Clyde.toString())) {
             //TODO deplacement quatrieme ghost
         }
 
@@ -335,7 +336,6 @@ public class Game {
     }
 
     private void restartGhost(Ghost ghost) {
-
     }
 
     /**

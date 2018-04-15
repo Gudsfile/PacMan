@@ -56,16 +56,16 @@ public class Ghost extends GamePiece {
         this.y = y;
         switch (countGhost) {
             case 0:
-                this.name = "\033[31m" + "G1" + "\033[39m";//GhostNames.Oikake.toString();
+                this.name = "\033[31m" + "G1" + "\033[39m";//GhostNames.Blinky.toString();
                 break;
             case 1 :
-                this.name = "\033[32m" + "G2" + "\033[39m";//GhostNames.Machibuse.toString();
+                this.name = "\033[32m" + "G2" + "\033[39m";//GhostNames.Pinky.toString();
                 break;
             case 2 :
-                this.name = "\033[36m" + "G3" + "\033[39m";//GhostNames.Kimagure.toString();
+                this.name = "\033[36m" + "G3" + "\033[39m";//GhostNames.Inky.toString();
                 break;
             case 3 :
-                this.name = "\033[35m" + "G4" + "\033[39m";//GhostNames.Otoboke.toString();
+                this.name = "\033[35m" + "G4" + "\033[39m";//GhostNames.Clyde.toString();
                 break;
         }
     }
