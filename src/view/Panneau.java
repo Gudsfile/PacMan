@@ -169,7 +169,6 @@ public class Panneau extends JPanel {
                             e.printStackTrace();
                         }
                     }else if(ghostboard[i][j].getName()=="\033[35m" + "G4" + "\033[39m") {
-                        System.out.println("4");
                         try {
                             Image img = ImageIO.read(new File("res/Img/ghost4.png"));
                             g.drawImage(img, 50+j*25, 100+i*25,25,25, this);
