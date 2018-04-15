@@ -28,11 +28,7 @@ public class Panneau extends JPanel {
         paintDots(g);
         paintPacMan(g);
         paintGhost(g);
-        while(true){
-            paintDots(g);
-            paintPacMan(g);
-            paintGhost(g);
-        }
+        
     }
     public void paintWall(Graphics g) {
         Wall w = new Wall();

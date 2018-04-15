@@ -22,6 +22,18 @@ public class Fenetre extends JFrame {
     }
 
     public void go(){
-        pan.repaint();
+        while(true){
+            
+            try {
+
+                Thread.sleep(3);
+
+            } catch (InterruptedException e) {
+
+                e.printStackTrace();
+
+            }
+            pan.repaint();
+        }
     }
 }
