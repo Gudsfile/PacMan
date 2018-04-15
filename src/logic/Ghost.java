@@ -44,7 +44,7 @@ public class Ghost extends GamePiece {
      * Construit un fantôme
      *
      * @pre name != null
-     * @pre speed >= 0
+     * @pre {@code speed >= 0}
      * @post this.name = name
      * @post this.speed = speed
      */
