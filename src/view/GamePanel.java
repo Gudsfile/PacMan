@@ -16,10 +16,15 @@ public class GamePanel extends JPanel {
     }
 
     public void paintComponent(Graphics g) {
+
         paintStaticGamePiece(g);
         paintPacMan(g);
         paintGhost(g);
         paintLife(g);
+        paintScore(g);
+        if(game.getLife()<0){
+            getCardLayout().show(pan,"GAMEPANEL");
+        }
     }
 
     public void paintStaticGamePiece(Graphics g) {
@@ -131,4 +136,15 @@ public class GamePanel extends JPanel {
             g.drawImage(img, i * 50, 0, 50, 50, this);
         }
     }
+
+    public void paintScore(Graphics g){
+        g.setColor(Color.WHITE);
+        Font font = new Font("Courier", Font.BOLD, 40);
+        g.setFont(font);
+        g.drawString("Score :", 350, 40);
+        String score=String.valueOf(game.getFinalScore());
+        g.drawString(score, 490, 40);
+    }
+
+
 }
