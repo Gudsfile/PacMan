@@ -2,6 +2,9 @@ package logic;
 
 import data.FileReader;
 import data.GameParam;
+import data.ScoreWritter;
+import logic.dijkstraAI.Maze;
+import logic.dijkstraAI.Node;
 
 import java.util.ArrayList;
 
@@ -51,6 +54,10 @@ public class Game {
      */
     private Ghost[][] gameGhostBoard;
     /**
+     * Objet permettant d'utilisé l'algorithme de recherche de chemin Dijkstra
+     */
+    private Maze maze;
+    /**
      * Liste des fantômes
      */
     private ArrayList<Ghost> ghostList = new ArrayList<>();
@@ -66,6 +73,8 @@ public class Game {
      * Dernier déplacement de pacMan en y
      */
     private int previousDY;
+    private int pacDotCount = 0;
+    private boolean finished = false;
 
     /**
      * Construit une partie
@@ -98,12 +107,14 @@ public class Game {
                             break;
                         case 2:
                             this.gameBoard[i][j] = new PacDot(gameParam.getPacDotValue());
+                            this.pacDotCount++;
                             break;
                         case 3:
                             this.gameBoard[i][j] = new Fruit(gameParam.getLevel(), gameParam.getFruitValue());
                             break;
                         case 4:
                             this.gameBoard[i][j] = new SuperPacDot();
+                            this.pacDotCount++;
                             break;
                         case 5:
                             Ghost g = new Ghost(gameParam.getGameSpeed(), gameParam.getStartGhostX(), gameParam.getStartGhostY(), i, j);
@@ -117,6 +128,7 @@ public class Game {
                 }
             }
         }
+        this.maze = new Maze(this.gameBoard);
     }
 
     /**
@@ -147,13 +159,12 @@ public class Game {
             default:
                 break;
         }
-
         if (this.isValidBoardMove(this.pacMan.getX(), this.pacMan.getY(), dx, dy)) {
             movePacMan(dx, dy);
             this.previousDX = dx;
             this.previousDY = dy;
         } else {
-            if (this.isValidBoardMove(this.getPacMan().getX(), this.getPacMan().getY(), this.previousDX, this.previousDY)) {
+            if (this.isValidBoardMove(this.pacMan.getX(), this.pacMan.getY(), this.previousDX, this.previousDY)) {
                 movePacMan(this.previousDX, this.previousDY);
             }
         }
@@ -162,28 +173,50 @@ public class Game {
     /**
      * Jeu des fantomes, choix du déplacement (dx, dy)
      *
-     * @param g  le fantôme concerné
-     * @param dx paramètre temporaire
-     * @param dy paramètre temporaire
+     * @param ghost  le fantôme concerné
      * @pre g != null
      */
-    public void play(Ghost g, int dx, int dy) {
-        // int dx = 0;
-        // int dy = 0;
-
-        if (g.isStateEaten()) {
-        } else if (g.getName().equals(GhostNames.Blinky.toString())) {
-            //TODO deplacement premier ghost
-        } else if (g.getName().equals(GhostNames.Pinky.toString())) {
-            //TODO deplacement deuxieme ghost
-        } else if (g.getName().equals(GhostNames.Inky.toString())) {
-            //TODO deplacement troisieme ghost
-        } else if (g.getName().equals(GhostNames.Clyde.toString())) {
-            //TODO deplacement quatrieme ghost
+    public void play(Ghost ghost) {
+        int dx = 0;
+        int dy = 0;
+        Node node;
+        if (ghost.isStateEaten()) { // Retour au départ
+            node = maze.getShortestPath(ghost.getX(), ghost.getY(), Ghost.getStartX(), Ghost.getStartY());
+            if (node != null) {
+                dx = node.getShortestPath().get(1).getX() - ghost.getX();
+                dy = node.getShortestPath().get(1).getY() - ghost.getY();
+            } else {
+                dx = Ghost.getStartX() - ghost.getX();
+                dy = Ghost.getStartY() - ghost.getY();
+            }
+        } else if (this.power || ghost.getName().equals(GhostNames.Pinky.toString()) || ghost.getName().equals(GhostNames.Inky.toString()) || ghost.getName().equals(GhostNames.Clyde.toString())) { // En danger
+            int endX = 0;
+            int endY = 0;
+            while(this.gameBoard[endX][endY] instanceof Wall) {
+                endX = (int)(Math.random() * (this.gameBoard.length) + 1);
+                endY = (int)(Math.random() * (this.gameBoard[0].length) + 1);
+            }
+            node = maze.getShortestPath(ghost.getX(), ghost.getY(), endX, endY);
+            if (node != null) {
+                dx = node.getShortestPath().get(1).getX() - ghost.getX();
+                dy = node.getShortestPath().get(1).getY() - ghost.getY();
+            } else {
+                dx = endX - ghost.getX();
+                dy = endY - ghost.getY();
+            }
+        } else if (ghost.getName().equals(GhostNames.Blinky.toString())) { // Poursuite
+            node = maze.getShortestPath(ghost.getX(), ghost.getY(), this.pacMan.getX(), this.pacMan.getY());
+            if (node != null) {
+                dx = node.getShortestPath().get(1).getX() - ghost.getX();
+                dy = node.getShortestPath().get(1).getY() - ghost.getY();
+            } else {
+                dx = this.pacMan.getX() - ghost.getX();
+                dy = this.pacMan.getY() - ghost.getY();
+            }
         }
 
-        if (this.isValidBoardMove(g.getX(), g.getY(), dx, dy)) {
-            moveGhost(g, dx, dy);
+        if (this.isValidBoardMove(ghost.getX(), ghost.getY(), dx, dy)) {
+            moveGhost(ghost, dx, dy);
         }
     }
 
@@ -260,17 +293,18 @@ public class Game {
             if (this.gameBoard[x + dx][y + dy] instanceof SuperPacDot) {
                 this.power = true;
                 this.comboCount = 1;
-                //this.erase(x+dx, y+dx);
-                //TODO gérer le temps du power
-
+                this.pacDotCount--;
+                this.finished = (pacDotCount == 0);
             } else if (this.gameBoard[x + dx][y + dy] instanceof Fruit) {
                 this.score += Fruit.value;
-                this.winLife();
-                //this.erase(x+dx, y+dx);
+                this.finalScore += Fruit.value;
+                this.updateLifeCount();
             } else if (this.gameBoard[x + dx][y + dy] instanceof PacDot) {
                 this.score += PacDot.value;
-                this.winLife();
-                //this.erase(x+dx, y+dy);
+                this.finalScore += PacDot.value;
+                this.pacDotCount--;
+                this.updateLifeCount();
+                this.finished = (pacDotCount == 0);
             }
             this.pacMan.setX(x + dx);
             this.pacMan.setY(y + dy);
@@ -322,12 +356,11 @@ public class Game {
      * @param y position du fantôme mangé
      */
     public void killGhost(int x, int y) {
-        //TODO vérifier si il est mangé (si déjà mangé on ne regagne pas les points !
-        this.score += Ghost.getValue() * comboCount;
-        this.winLife();
-        this.comboCount += 1;
         this.gameGhostBoard[x][y].setStateEaten(true);
-        this.restartGhost(gameGhostBoard[x][y]);
+        this.score += Ghost.getValue() * comboCount;
+        this.updateLifeCount();
+        this.comboCount += 1;
+        this.play(gameGhostBoard[x][y]);
     }
 
     /**
@@ -344,46 +377,15 @@ public class Game {
         this.pacMan.setY(this.pacMan.getStartY());
     }
 
-    private void restartGhost(Ghost ghost) {
-    }
 
     /**
      * Augmente le nombre de vie à chaque tranche de 10k points
      */
-    private void winLife() {
+    private void updateLifeCount() {
         if (this.score >= 10000) {
             this.life += 1;
-            this.finalScore += score;
             this.score = 0;
         }
-    }
-
-    /**
-     * Retourne la piece à la position (x,y) donnée (hors PacMan)
-     *
-     * @param x position en x
-     * @param y position en y
-     * @return la pièce en (x,y)
-     */
-    protected GamePiece getPiece(int x, int y) {
-        GamePiece result = null;
-
-        if (this.gameGhostBoard[x][y] != null) {
-            result = this.gameGhostBoard[x][y];
-        } else {
-            result = this.gameBoard[x][y];
-        }
-        return result;
-    }
-
-    /**
-     * Efface un élément à la position x, y donnée
-     *
-     * @param x position en x
-     * @param y position en y
-     */
-    protected void erase(int x, int y) {
-        this.gameBoard[x][y] = null;
     }
 
     /**
@@ -408,6 +410,10 @@ public class Game {
             System.out.println("");
         }
         this.gameBoard[this.pacMan.getX()][this.pacMan.getY()] = null;
+    }
+
+    public void writeScore(String name) {
+        ScoreWritter.writeScore(name, this.finalScore);
     }
 
     /**

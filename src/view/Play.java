@@ -35,8 +35,6 @@ public class Play {
     public Play() {
         this.game = new Game(this.level);
         this.mainFrame = new MainFrame(game);
-
-
     }
 
     /**

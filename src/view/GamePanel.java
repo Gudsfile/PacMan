@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class GamePanel extends JPanel {
     private Game game;
@@ -21,6 +22,7 @@ public class GamePanel extends JPanel {
         paintPacMan(g);
         paintGhost(g);
         paintLife(g);
+        paintScore(g);
         paintScore(g);
         if(game.getLife()<0){
             getCardLayout().show(pan,"GAMEPANEL");
@@ -83,12 +85,8 @@ public class GamePanel extends JPanel {
     public void paintPacMan(Graphics g) {
         int pcX = game.getPacMan().getX();
         int pcY = game.getPacMan().getY();
-        try {
-            Image img = ImageIO.read(new File("res/Img/pacman.png"));
-            g.drawImage(img, pcY * 35, 50 + pcX * 35, 35, 35, this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Image img = new ImageIcon("res/Img/pacman.gif").getImage();
+        g.drawImage(img, pcY * 35, 50 + pcX * 35, 35, 35, this);
     }
 
     public void paintGhost(Graphics g) {
@@ -97,28 +95,24 @@ public class GamePanel extends JPanel {
             for (int j = 0; j < game.getGameGhostBoard()[0].length; j++) {
                 ghost = game.getGameGhostBoard()[i][j];
                 if (ghost != null) {
-                    try {
-                        if (game.isPower()) {
-                            Image img = ImageIO.read(new File("res/Img/ghost_danger.gif"));
-                            g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
-                        } else if (ghost.isStateEaten()) {
-                            Image img = ImageIO.read(new File("res/Img/ghost_killed.png"));
-                            g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
-                        } else if (ghost.getName().equals("\033[31m" + "G1" + "\033[39m")) {
-                            Image img = ImageIO.read(new File("res/Img/blinky.gif"));
-                            g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
-                        } else if (ghost.getName().equals("\033[32m" + "G2" + "\033[39m")) {
-                            Image img = ImageIO.read(new File("res/Img/pinky.gif"));
-                            g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
-                        } else if (ghost.getName().equals("\033[36m" + "G3" + "\033[39m")) {
-                            Image img = ImageIO.read(new File("res/Img/inky.gif"));
-                            g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
-                        } else if (ghost.getName().equals("\033[35m" + "G4" + "\033[39m")) {
-                            Image img = ImageIO.read(new File("res/Img/clyde.gif"));
-                            g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    if (game.isPower()) {
+                        Image img = new ImageIcon("res/Img/ghost_danger.gif").getImage();
+                        g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
+                    } else if (ghost.isStateEaten()) {
+                        Image img = new ImageIcon("res/Img/ghost_killed.png").getImage();
+                        g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
+                    } else if (ghost.getName().equals("\033[31m" + "G1" + "\033[39m")) {
+                        Image img = new ImageIcon("res/Img/blinky.gif").getImage();
+                        g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
+                    } else if (ghost.getName().equals("\033[32m" + "G2" + "\033[39m")) {
+                        Image img = new ImageIcon("res/Img/pinky.gif").getImage();
+                        g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
+                    } else if (ghost.getName().equals("\033[36m" + "G3" + "\033[39m")) {
+                        Image img = new ImageIcon("res/Img/inky.gif").getImage();
+                        g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
+                    } else if (ghost.getName().equals("\033[35m" + "G4" + "\033[39m")) {
+                        Image img = new ImageIcon("res/Img/clyde.gif").getImage();
+                        g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
                     }
                 }
             }
@@ -128,11 +122,7 @@ public class GamePanel extends JPanel {
     public void paintLife(Graphics g) {
         for (int i = 0; i < game.getLife(); i++) {
             Image img = null;
-            try {
-                img = ImageIO.read(new File("res/Img/pacman.png"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            img = new ImageIcon("res/Img/pacman.png").getImage();
             g.drawImage(img, i * 50, 0, 50, 50, this);
         }
     }
@@ -141,10 +131,6 @@ public class GamePanel extends JPanel {
         g.setColor(Color.WHITE);
         Font font = new Font("Courier", Font.BOLD, 40);
         g.setFont(font);
-        g.drawString("Score :", 350, 40);
-        String score=String.valueOf(game.getFinalScore());
-        g.drawString(score, 490, 40);
+        g.drawString("Score : "+this.game.getFinalScore(), 300, 40);
     }
-
-
 }
