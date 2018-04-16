@@ -1,6 +1,7 @@
 package logic.dijkstraAI;
 
 import logic.GamePiece;
+import logic.Ghost;
 
 /**
  * Cette clase représente,
@@ -57,10 +58,14 @@ public class Maze {
 
     public Node getShortestPath(int xStart, int yStart, int xEnd, int yEnd){
         Node res = null;
-        Graph shortestPathGraph = Dijkstra.calculateShortestPathFromSource(this.graph, this.nodeBoard[xStart][yStart]);
-        for (Node node : shortestPathGraph.getNodes()) {
-            if(node.getX() == xEnd && node.getY() == yEnd) {
-                res = node;
+        if (Math.abs(xStart - xEnd) == 1 || Math.abs(yStart - yEnd) == 1) {
+            return null;
+        } else {
+            Graph shortestPathGraph = Dijkstra.calculateShortestPathFromSource(this.graph, this.nodeBoard[xStart][yStart]);
+            for (Node node : shortestPathGraph.getNodes()) {
+                if(node.getX() == xEnd && node.getY() == yEnd) {
+                    res = node;
+                }
             }
         }
         return res;

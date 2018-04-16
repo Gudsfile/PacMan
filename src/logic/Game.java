@@ -179,45 +179,39 @@ public class Game {
     public void play(Ghost ghost) {
         int dx = 0;
         int dy = 0;
-        Node node ;
+        Node node;
         if (ghost.isStateEaten()) { // Retour au départ
-            if (Math.abs(ghost.getX() - Ghost.getStartX()) == 1 || Math.abs(ghost.getY() - Ghost.getStartY()) == 1) {
+            node = maze.getShortestPath(ghost.getX(), ghost.getY(), Ghost.getStartX(), Ghost.getStartY());
+            if (node != null) {
+                dx = node.getShortestPath().get(1).getX() - ghost.getX();
+                dy = node.getShortestPath().get(1).getY() - ghost.getY();
+            } else {
                 dx = Ghost.getStartX() - ghost.getX();
                 dy = Ghost.getStartY() - ghost.getY();
-            } else {
-                node = maze.getShortestPath(ghost.getX(), ghost.getY(), Ghost.getStartX(), Ghost.getStartX());
-                dx = node.getShortestPath().get(1).getX() - ghost.getX();
-                dy = node.getShortestPath().get(1).getY() - ghost.getY();
             }
-        } else if (this.power) { // En danger
-
-        } else if (ghost.getName().equals(GhostNames.Blinky.toString())) { // Poursuite
-            if (Math.abs(ghost.getX()-this.pacMan.getX()) == 1 || Math.abs(ghost.getY()-this.pacMan.getY()) == 1) {
-                dx = this.pacMan.getX() - ghost.getX();
-                dy = this.pacMan.getY() - ghost.getY();
-            } else {
-                node = maze.getShortestPath(ghost.getX(), ghost.getY(), pacMan.getX(), pacMan.getY());
-                dx = node.getShortestPath().get(1).getX() - ghost.getX();
-                dy = node.getShortestPath().get(1).getY() - ghost.getY();
-            }
-        } else if (ghost.getName().equals(GhostNames.Pinky.toString())) { // Embuscade
-
-        } else if (ghost.getName().equals(GhostNames.Inky.toString())) { // Direction opposé
-
-        } else if (ghost.getName().equals(GhostNames.Clyde.toString())) { // Hasard
+        } else if (this.power || ghost.getName().equals(GhostNames.Pinky.toString()) || ghost.getName().equals(GhostNames.Inky.toString()) || ghost.getName().equals(GhostNames.Clyde.toString())) { // En danger
             int endX = 0;
             int endY = 0;
-            while(this.gameBoard[endX][endY] == null) {
+            while(this.gameBoard[endX][endY] instanceof Wall) {
                 endX = (int)(Math.random() * (this.gameBoard.length) + 1);
                 endY = (int)(Math.random() * (this.gameBoard[0].length) + 1);
             }
-            if (Math.abs(ghost.getX()-endX) == 1 || Math.abs(ghost.getY()-endY) == 1) {
-                dx = this.pacMan.getX() - ghost.getX();
-                dy = this.pacMan.getY() - ghost.getY();
-            } else {
-                node = maze.getShortestPath(ghost.getX(), ghost.getY(), endX, endY);
+            node = maze.getShortestPath(ghost.getX(), ghost.getY(), endX, endY);
+            if (node != null) {
                 dx = node.getShortestPath().get(1).getX() - ghost.getX();
                 dy = node.getShortestPath().get(1).getY() - ghost.getY();
+            } else {
+                dx = endX - ghost.getX();
+                dy = endY - ghost.getY();
+            }
+        } else if (ghost.getName().equals(GhostNames.Blinky.toString())) { // Poursuite
+            node = maze.getShortestPath(ghost.getX(), ghost.getY(), this.pacMan.getX(), this.pacMan.getY());
+            if (node != null) {
+                dx = node.getShortestPath().get(1).getX() - ghost.getX();
+                dy = node.getShortestPath().get(1).getY() - ghost.getY();
+            } else {
+                dx = this.pacMan.getX() - ghost.getX();
+                dy = this.pacMan.getY() - ghost.getY();
             }
         }
 
