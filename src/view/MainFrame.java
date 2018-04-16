@@ -3,6 +3,7 @@ package view;
 import logic.Game;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -20,6 +21,7 @@ public class MainFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         gamePanel = new GamePanel(game);
+        setBackground(Color.BLACK);
         this.add(gamePanel);
 
         this.setVisible(true);

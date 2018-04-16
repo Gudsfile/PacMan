@@ -1,13 +1,5 @@
 {
-  "Highscore": 888888888,
+  "Highscore": 0,
   "Scores": [
-    {
-      "Score": 888888888,
-      "Name": "Test++"
-    },
-    {
-      "Score": 20,
-      "Name": "Test++++"
-    }
   ]
 }
