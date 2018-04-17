@@ -14,7 +14,7 @@ public class Ghost extends GamePiece {
     /**
      * Vitesse du fantôme
      */
-    private int speed;
+    private static int speed;
     /**
      * Valeur du fantôme
      */
@@ -78,8 +78,8 @@ public class Ghost extends GamePiece {
      * @return speed
      * @post result = speed
      */
-    public int getSpeed() {
-        return this.speed;
+    public static int getSpeed() {
+        return speed;
     }
 
     /**
@@ -89,8 +89,8 @@ public class Ghost extends GamePiece {
      * @pre speed >= 0
      * @post this.speed = speed
      */
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    public static void setSpeed(int speed) {
+        Ghost.speed = speed;
     }
 
     /**

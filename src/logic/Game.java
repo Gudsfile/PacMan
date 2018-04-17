@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * @inv {@code this.score >= 0}
  * @inv {@code this.powerDuration > 0}
  */
-public class Game {
+public class Game implements Runnable {
 
     /**
      * Entier représentant le nombre de vie de PacMan
@@ -193,21 +193,21 @@ public class Game {
                 dx = movement[0];
                 dy = movement[1];
             } else {
-                System.out.println("Ghost eaten -> movement is null");
+                //System.out.println("Ghost eaten -> movement is null");
             }
         } else if (this.power || ghost.getName().equals(GhostNames.Pinky.toString()) || ghost.getName().equals(GhostNames.Inky.toString()) || ghost.getName().equals(GhostNames.Clyde.toString())) { // En danger
             int endX = 0;
             int endY = 0;
             while (this.gameBoard[endX][endY] instanceof Wall) {
-                endX = (int) (Math.random() * (this.gameBoard.length-1) + 1);
-                endY = (int) (Math.random() * (this.gameBoard[0].length-1) + 1);
+                endX = (int) (Math.random() * (this.gameBoard.length - 1) + 1);
+                endY = (int) (Math.random() * (this.gameBoard[0].length - 1) + 1);
             }
             movement = getMovement(ghost.getX(), ghost.getY(), endX, endY);
             if (movement != null) {
                 dx = movement[0];
                 dy = movement[1];
             } else {
-                System.out.println("Fantômes effrayés + fantôme autre que G1 -> movement is null");
+                //System.out.println("Fantômes effrayés + fantôme autre que G1 -> movement is null");
             }
         } else if (ghost.getName().equals(GhostNames.Blinky.toString())) { // Poursuite
             movement = getMovement(ghost.getX(), ghost.getY(), this.pacMan.getX(), this.pacMan.getY());
@@ -215,13 +215,16 @@ public class Game {
                 dx = movement[0];
                 dy = movement[1];
             } else {
-                System.out.println("Fantôme G1 -> movement is null");
+                //System.out.println("Fantôme G1 -> movement is null");
             }
         }
-        System.out.println("dx: " + dx + " dy: " + dy);
+        //System.out.println("dx: " + dx + " dy: " + dy);
         if (this.isValidBoardMove(ghost.getX(), ghost.getY(), dx, dy)) {
-            System.out.println();
+            //System.out.println();
             moveGhost(ghost, dx, dy);
+            if (!isPower() && ghost.getX() == pacMan.getX() && ghost.getY() == pacMan.getY()) {
+                killPacMan();
+            }
         }
     }
 
@@ -252,9 +255,9 @@ public class Game {
     private boolean isValidBoardMove(int x, int y, int dx, int dy) {
         boolean result = false;
         if (this.isValidMove(dx, dy)) {
-           if (x+dx >= 0 && y+dy >= 0 && x+dx < this.gameBoard.length && y+dy < this.gameBoard[0].length && !(this.gameBoard[x+dx][y+dy] instanceof Wall)) {
-               result = true;
-           }
+            if (x + dx >= 0 && y + dy >= 0 && x + dx < this.gameBoard.length && y + dy < this.gameBoard[0].length && !(this.gameBoard[x + dx][y + dy] instanceof Wall)) {
+                result = true;
+            }
         }
         return result;
     }
@@ -353,7 +356,7 @@ public class Game {
     private int[] getMovement(int xStart, int yStart, int xEnd, int yEnd) {
         int[] movement = new int[2];
         if (this.mazeTab == null) {
-            System.out.println("Aïe");
+            //System.out.println("Aïe");
         }
         if (this.mazeTab[xStart][yStart] != null) {
             Node node = this.mazeTab[xStart][yStart].getPath(xEnd, yEnd);
@@ -364,11 +367,11 @@ public class Game {
                 movement[0] = xEnd - xStart;
                 movement[1] = yEnd - yStart;
             } else {
-                System.out.println("Impossible node null");
+                //System.out.println("Impossible node null");
                 movement = null;
             }
         } else {
-            System.out.println("Impossible maze null");
+            //System.out.println("Impossible maze null");
             movement = null;
         }
         return movement;
@@ -399,6 +402,10 @@ public class Game {
         this.previousDY = 0;
         this.pacMan.setX(this.pacMan.getStartX());
         this.pacMan.setY(this.pacMan.getStartY());
+        for (Ghost g:this.ghostList) {
+            g.setX(Ghost.getStartX());
+            g.setY(Ghost.getStartY());
+        }
     }
 
 
@@ -710,6 +717,76 @@ public class Game {
 
     public void setFinished(boolean finished) {
         this.finished = finished;
+    }
+
+    @Override
+    public void run() {
+        switch (Thread.currentThread().getName()) {
+            case "G1":
+                while (!this.finished) {
+                    play(this.ghostList.get(0));
+                    try {
+                        Thread.sleep(getGhostSpeed());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case "G2":
+                while (!this.finished) {
+                    play(this.ghostList.get(1));
+                    try {
+                        Thread.sleep(getGhostSpeed());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case "G3":
+                while (!this.finished) {
+                    play(this.ghostList.get(2));
+                    try {
+                        Thread.sleep(getGhostSpeed());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case "G4":
+                while (!this.finished) {
+                    play(this.ghostList.get(3));
+                    try {
+                        Thread.sleep(getGhostSpeed());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case "PO":
+                while (!this.finished) {
+                    if (this.power) {
+                        long now = System.currentTimeMillis();
+                        while (System.currentTimeMillis() - now < this.powerDuration * 1000) {
+
+                        }
+                        this.power = false;
+                    }
+                    try {
+                        Thread.sleep(Ghost.getSpeed());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+        }
+    }
+
+    private int getGhostSpeed() {
+        int result = Ghost.getSpeed();
+        if (power) {
+            result = result+result;
+        }
+        return result;
     }
 }
 
