@@ -4,10 +4,12 @@ import logic.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-public class LosePanel extends JPanel {
+public class LosePanel extends JPanel implements ActionListener {
     private Game game;
     public LosePanel(Game game) {
 
@@ -16,12 +18,13 @@ public class LosePanel extends JPanel {
         this.setLayout(new GridLayout(2,2));
         JLabel pseudo=new JLabel("Pseudo : ");
         JTextField pseudoTextField = new JTextField("");
-        JButton playButton = new JButton( "Nouvelle Partie", game.writeScore(pseudoTextField.getText()));
-        JButton stopButton = new JButton( "Stop",game.writeScore(pseudoTextField.getText()));
+        JButton playButton = new JButton( "Nouvelle Partie");
+       // playButton.addActionListener(this); , game.writeScore(pseudoTextField.getText()));
+        //JButton stopButton = new JButton( "Stop",game.writeScore(pseudoTextField.getText()));
         this.add(pseudo);
         this.add(pseudoTextField);
         this.add(playButton);
-        this.add(stopButton);
+       // this.add(stopButton);
 
     }
 
@@ -38,7 +41,9 @@ public class LosePanel extends JPanel {
         g.drawString("Your score :"+fs,432 ,100);
     }
 
-
+    @Override
+    public void actionPerformed(ActionEvent e) {
 
     }
+}
 

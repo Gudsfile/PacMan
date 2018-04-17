@@ -16,12 +16,13 @@ public class WinPanel extends JPanel {
         this.setLayout(new GridLayout(2,2));
         JLabel pseudo=new JLabel("Pseudo : ");
         JTextField pseudoTextField = new JTextField("");
-        JButton playButton = new JButton( "Nouvelle Partie", game.writeScore(pseudoTextField.getText()));
-        JButton stopButton = new JButton( "Stop");
+        JButton playButton = new JButton( "Nouvelle Partie");
+        //game.writeScore(pseudoTextField.getText()));
+        //JButton stopButton = new JButton( "Stop");
         this.add(pseudo);
         this.add(pseudoTextField);
         this.add(playButton);
-        this.add(stopButton);
+        //this.add(stopButton);
     }
     public void paintComponent(Graphics g) {
         Image img = null;

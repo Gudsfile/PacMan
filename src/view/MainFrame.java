@@ -12,6 +12,7 @@ public class MainFrame extends JFrame {
     private Game game;
     private static boolean upPressed, downPressed, leftPressed, rightPressed;
     private GamePanel gamePanel;
+    private CardLayout cl;
 
     public MainFrame(Game game) {
         this.game = game;
@@ -19,25 +20,25 @@ public class MainFrame extends JFrame {
         this.setSize(665, 785);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
 
-        gamePanel = new GamePanel(game);
-        setBackground(Color.BLACK);
-        this.add(gamePanel);
+        GamePanel gp = new GamePanel(game);
+        WinPanel wp = new WinPanel(game);
+        LosePanel lp = new LosePanel(game);
+        this.cl =new CardLayout();
+        JPanel pan = new JPanel(cl);
+        pan.add(gp,"GAMEPANEL");
+        pan.add(wp,"WINPANEL");
+        pan.add(lp,"LOSEPANEL");
 
-        this.setVisible(true);
+        this.add(pan);
+
+        cl.show(pan,"GAMEPANEL");
+
         this.addKeyListener(new MainFrame.KeyboardListener());
     }
 
-    public void go() {
-        while (true) {
-            try {
-                Thread.sleep(3);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            gamePanel.repaint();
-        }
-    }
+
 
     /**
      * Check whether the UP key is currently pressed
@@ -127,4 +128,9 @@ public class MainFrame extends JFrame {
     public GamePanel getGamePanel() {
         return gamePanel;
     }
+
+    public CardLayout getCardLayout(){
+        return this.cl;
+    }
+
 }

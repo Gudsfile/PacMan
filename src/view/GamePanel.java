@@ -25,8 +25,12 @@ public class GamePanel extends JPanel {
         paintScore(g);
         paintScore(g);
         if(game.getLife()<0){
-            getCardLayout().show(pan,"GAMEPANEL");
-        }
+            MainFrame mf =(MainFrame) this.getParent();
+            mf.getCardLayout().show(mf.getParent(),"LOSEPANEL");
+        }/*else if(game.getFinished()){
+            MainFrame mf =(MainFrame) this.getParent();
+            mf.getCardLayout().show(mf.getParent(),"WINPANEL");
+        }*/
     }
 
     public void paintStaticGamePiece(Graphics g) {
