@@ -1,3 +1,4 @@
+/*
 import logic.Game;
 import logic.Ghost;
 import view.Play;
@@ -21,15 +22,10 @@ public class TestPlayThread extends Thread {
     }
 
     public void run() {
-        // int[] mo = {1,1,1,1,1,2,2,2,2,2,2,4,2,2,2,4,4,4,4,3,3,3,4}; // va à l'entrée des fantômes
-        // int[] mo = {1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,1,1,1,3,1,2,2,2}; // va au SP en haut à droite
-        // int[] mo = {1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1}; // va dans un tp à droite
-        // int[] mo = {4,4,4,4,4,2,2,2,2,2,2,4,4,4,4,4}; // va dans un tp à gauche
 
         switch (this.getName()) {
             case "PC":
                 while (g.getLife() >= 0) {
-                    // Récupération de la touche pressée puis mouvement
                     if (this.play.getMainFrame().isUpPressed()) {
                         g.play((1));
                     } else if (this.play.getMainFrame().isDownPressed()) {
@@ -39,9 +35,6 @@ public class TestPlayThread extends Thread {
                     } else if (this.play.getMainFrame().isRightPressed()) {
                         g.play((4));
                     }
-                    // g.play(mo[temp]);
-                    // temp = (temp + 1) % mo.length;
-                    // verification();
                     try {
                         Thread.sleep(350);
                     } catch (InterruptedException e) {
@@ -50,8 +43,7 @@ public class TestPlayThread extends Thread {
                 }
             case "G1":
                 while (g.getLife() >= 0) {
-                    threadGhost(g.getGhostList().get(0));
-                    // verification();
+                    g.play(g.getGhostList().get(0));
                     try {
                         Thread.sleep(350);
                     } catch (InterruptedException e) {
@@ -60,8 +52,7 @@ public class TestPlayThread extends Thread {
                 }
             case "G2":
                 while (g.getLife() >= 0) {
-                    threadGhost(g.getGhostList().get(1));
-                    // verification();
+                    g.play(g.getGhostList().get(1));
                     try {
                         Thread.sleep(350);
                     } catch (InterruptedException e) {
@@ -70,7 +61,7 @@ public class TestPlayThread extends Thread {
                 }
             case "G3":
                 while (g.getLife() >= 0) {
-                    threadGhost(g.getGhostList().get(2));
+                    g.play(g.getGhostList().get(2));
                     // verification();
                     try {
                         Thread.sleep(350);
@@ -80,8 +71,7 @@ public class TestPlayThread extends Thread {
                 }
             case "G4":
                 while (g.getLife() >= 0) {
-                    threadGhost(g.getGhostList().get(3));
-                    // verification();
+                    g.play(g.getGhostList().get(3));
                     try {
                         Thread.sleep(350);
                     } catch (InterruptedException e) {
@@ -120,25 +110,6 @@ public class TestPlayThread extends Thread {
         }
     }
 
-    private synchronized void threadGhost(Ghost ghost) {
-        int dx = (int) (Math.random() * ((399) + 1));
-        int dy = (int) (Math.random() * ((399) + 1));
-        if (dx < 100) {
-            dx = -1;
-            dy = 0;
-        } else if (dx < 200) {
-            dx = 0;
-            dy = 1;
-        } else if (dx < 300) {
-            dx = 1;
-            dy = 0;
-        } else if (dx < 400) {
-            dx = 0;
-            dy = -1;
-        }
-        this.g.play(ghost, dx, dy);
-    }
-
     private void verification() {
         for (Ghost temp : g.getGhostList()) {
             if (g.getPacMan().getX() == temp.getX() && g.getPacMan().getY() == temp.getY()) {
@@ -150,4 +121,4 @@ public class TestPlayThread extends Thread {
             }
         }
     }
-}
+}*/

@@ -58,16 +58,16 @@ public class Ghost extends GamePiece {
         this.stateEaten = false;
         switch (countGhost) {
             case 0:
-                this.name = "\033[31m" + "G1" + "\033[39m";//GhostNames.Blinky.toString();
+                this.name = GhostNames.Blinky.toString();//"\033[31m" + "G1" + "\033[39m";
                 break;
             case 1:
-                this.name = "\033[32m" + "G2" + "\033[39m";//GhostNames.Pinky.toString();
+                this.name = GhostNames.Pinky.toString();//"\033[32m" + "G2" + "\033[39m";
                 break;
             case 2:
-                this.name = "\033[36m" + "G3" + "\033[39m";//GhostNames.Inky.toString();
+                this.name = GhostNames.Inky.toString();//"\033[36m" + "G3" + "\033[39m";
                 break;
             case 3:
-                this.name = "\033[35m" + "G4" + "\033[39m";//GhostNames.Clyde.toString();
+                this.name = GhostNames.Clyde.toString();//"\033[35m" + "G4" + "\033[39m";
                 break;
         }
     }

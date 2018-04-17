@@ -29,14 +29,28 @@ public class Node {
      */
     Map<Node, Integer> adjacentNodes = new HashMap<>();
 
+    private String name;
+
+    public void addDestination(Node destination, int distance) {
+        adjacentNodes.put(destination, distance);
+    }
+
+    public Node(String name) {
+        this.name = name;
+    }
 
     public Node(int x, int y) {
+        this.name = x + ":" + y;
         this.x = x;
         this.y = y;
     }
 
-    public void addDestination(Node destination, int distance) {
-        adjacentNodes.put(destination, distance);
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getX() {

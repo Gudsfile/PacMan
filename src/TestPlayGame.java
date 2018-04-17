@@ -1,3 +1,4 @@
+/*
 
 import logic.Game;
 import view.Play;
@@ -32,6 +33,7 @@ public class TestPlayGame {
     }
 }
 
+*/
 /*
 System.out.println("                        ##########\n" +
 "                     #################\n" +

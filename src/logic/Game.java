@@ -56,7 +56,7 @@ public class Game {
     /**
      * Objet permettant d'utilisé l'algorithme de recherche de chemin Dijkstra
      */
-    private Maze maze;
+    private Maze[][] mazeTab;
     /**
      * Liste des fantômes
      */
@@ -128,7 +128,14 @@ public class Game {
                 }
             }
         }
-        this.maze = new Maze(this.gameBoard);
+        mazeTab = new Maze[gameParam.getBoard().length][gameParam.getBoard()[0].length];
+        for (int i = 0; i < gameParam.getBoard().length; i++) {
+            for (int j = 0; j < gameParam.getBoard()[0].length; j++) {
+                if (gameParam.getBoard()[i][j] != 1) {
+                    mazeTab[i][j] = new Maze(gameParam.getBoard(), i, j);
+                }
+            }
+        }
     }
 
     /**
@@ -173,49 +180,47 @@ public class Game {
     /**
      * Jeu des fantomes, choix du déplacement (dx, dy)
      *
-     * @param ghost  le fantôme concerné
+     * @param ghost le fantôme concerné
      * @pre g != null
      */
     public void play(Ghost ghost) {
         int dx = 0;
         int dy = 0;
-        Node node;
+        int[] movement = new int[2];
         if (ghost.isStateEaten()) { // Retour au départ
-            node = maze.getShortestPath(ghost.getX(), ghost.getY(), Ghost.getStartX(), Ghost.getStartY());
-            if (node != null) {
-                dx = node.getShortestPath().get(1).getX() - ghost.getX();
-                dy = node.getShortestPath().get(1).getY() - ghost.getY();
+            movement = getMovement(ghost.getX(), ghost.getY(), Ghost.getStartX(), Ghost.getStartY());
+            if (movement != null) {
+                dx = movement[0];
+                dy = movement[1];
             } else {
-                dx = Ghost.getStartX() - ghost.getX();
-                dy = Ghost.getStartY() - ghost.getY();
+                System.out.println("Ghost eaten -> movement is null");
             }
         } else if (this.power || ghost.getName().equals(GhostNames.Pinky.toString()) || ghost.getName().equals(GhostNames.Inky.toString()) || ghost.getName().equals(GhostNames.Clyde.toString())) { // En danger
             int endX = 0;
             int endY = 0;
-            while(this.gameBoard[endX][endY] instanceof Wall) {
-                endX = (int)(Math.random() * (this.gameBoard.length) + 1);
-                endY = (int)(Math.random() * (this.gameBoard[0].length) + 1);
+            while (this.gameBoard[endX][endY] instanceof Wall) {
+                endX = (int) (Math.random() * (this.gameBoard.length-1) + 1);
+                endY = (int) (Math.random() * (this.gameBoard[0].length-1) + 1);
             }
-            node = maze.getShortestPath(ghost.getX(), ghost.getY(), endX, endY);
-            if (node != null) {
-                dx = node.getShortestPath().get(1).getX() - ghost.getX();
-                dy = node.getShortestPath().get(1).getY() - ghost.getY();
+            movement = getMovement(ghost.getX(), ghost.getY(), endX, endY);
+            if (movement != null) {
+                dx = movement[0];
+                dy = movement[1];
             } else {
-                dx = endX - ghost.getX();
-                dy = endY - ghost.getY();
+                System.out.println("Fantômes effrayés + fantôme autre que G1 -> movement is null");
             }
         } else if (ghost.getName().equals(GhostNames.Blinky.toString())) { // Poursuite
-            node = maze.getShortestPath(ghost.getX(), ghost.getY(), this.pacMan.getX(), this.pacMan.getY());
-            if (node != null) {
-                dx = node.getShortestPath().get(1).getX() - ghost.getX();
-                dy = node.getShortestPath().get(1).getY() - ghost.getY();
+            movement = getMovement(ghost.getX(), ghost.getY(), this.pacMan.getX(), this.pacMan.getY());
+            if (movement != null) {
+                dx = movement[0];
+                dy = movement[1];
             } else {
-                dx = this.pacMan.getX() - ghost.getX();
-                dy = this.pacMan.getY() - ghost.getY();
+                System.out.println("Fantôme G1 -> movement is null");
             }
         }
-
+        System.out.println("dx: " + dx + " dy: " + dy);
         if (this.isValidBoardMove(ghost.getX(), ghost.getY(), dx, dy)) {
+            System.out.println();
             moveGhost(ghost, dx, dy);
         }
     }
@@ -256,6 +261,7 @@ public class Game {
             } else if (this.gameBoard[x + dx][y + dy] instanceof Wall) {
                 result = false;
             }
+            System.out.println("valid : " + result);
         }
         return result;
     }
@@ -349,6 +355,30 @@ public class Game {
         }
     }
 
+    private int[] getMovement(int xStart, int yStart, int xEnd, int yEnd) {
+        int[] movement = new int[2];
+        if (this.mazeTab == null) {
+            System.out.println("Aïe");
+        }
+        if (this.mazeTab[xStart][yStart] != null) {
+            Node node = this.mazeTab[xStart][yStart].getPath(xEnd, yEnd);
+            if (node != null && node.getShortestPath().size() > 1) {
+                movement[0] = Integer.parseInt(node.getShortestPath().get(1).getName().split(":")[0]) - xStart;
+                movement[1] = Integer.parseInt(node.getShortestPath().get(1).getName().split(":")[1]) - yStart;
+            } else if (Math.abs(xEnd - xStart + yEnd - yStart) == 1) {
+                movement[0] = xEnd - xStart;
+                movement[1] = yEnd - yStart;
+            } else {
+                System.out.println("Impossible node null");
+                movement = null;
+            }
+        } else {
+            System.out.println("Impossible maze null");
+            movement = null;
+        }
+        return movement;
+    }
+
     /**
      * Evenement lorsque PacMan mange un fantôme
      *
@@ -398,7 +428,7 @@ public class Game {
                 GamePiece g = this.gameBoard[i][j];
                 Ghost gh = this.gameGhostBoard[i][j];
                 if (gh != null) {
-                    System.out.print(gh.getName() + "  ");
+                    System.out.print(/*gh.getName()*/"\033[31m" + "GH" + "\033[39m" + "  ");
                 } else {
                     if (g != null) {
                         System.out.print(g.getName() + "  ");
@@ -420,7 +450,7 @@ public class Game {
      * Fin
      */
     private void end() {
-        //TODO end
+        finished = true;
     }
 
     /**
@@ -664,5 +694,28 @@ public class Game {
         this.powerDuration = powerDuration;
     }
 
+    public Maze[][] getMazeTab() {
+        return mazeTab;
+    }
+
+    public void setMazeTab(Maze[][] mazeTab) {
+        this.mazeTab = mazeTab;
+    }
+
+    public int getPacDotCount() {
+        return pacDotCount;
+    }
+
+    public void setPacDotCount(int pacDotCount) {
+        this.pacDotCount = pacDotCount;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
 }
 
