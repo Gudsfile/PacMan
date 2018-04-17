@@ -1,24 +1,42 @@
 package view;
+import data.ScoreWritter;
 import logic.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
 public class LosePanel extends JPanel {
-    private Game game;
-    public LosePanel(Game game) {
 
-        this.game = game;
-        this.add(this, BorderLayout.SOUTH);
-        this.setLayout(new GridLayout(2,2));
-        JLabel pseudo=new JLabel("Pseudo : ");
+    public MainPanel mainPanel;
+
+    public LosePanel(MainPanel mainPanel) {
+        this.mainPanel = mainPanel;
+
         JTextField pseudoTextField = new JTextField("");
-        JButton playButton = new JButton( "Nouvelle Partie", game.writeScore(pseudoTextField.getText()));
-        JButton stopButton = new JButton( "Stop",game.writeScore(pseudoTextField.getText()));
-        this.add(pseudo);
+
+        JButton playButton = new JButton( "Nouvelle Partie");
+        playButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                mainPanel.getGame().writeScore(pseudoTextField.getText());
+                mainPanel.startNewGame();
+            }
+        });
+
+        JButton stopButton = new JButton( "Stop");
+        stopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                mainPanel.getGame().writeScore(pseudoTextField.getText());
+                System.exit(0);
+            }
+        });
+
         this.add(pseudoTextField);
         this.add(playButton);
         this.add(stopButton);
@@ -34,7 +52,7 @@ public class LosePanel extends JPanel {
         }
         g.drawImage(img, 0, 0,this);
         g.setColor(Color.WHITE);
-        String fs=String.valueOf(game.getFinalScore());
+        String fs=String.valueOf(mainPanel.getGame().getFinalScore());
         g.drawString("Your score :"+fs,432 ,100);
     }
 

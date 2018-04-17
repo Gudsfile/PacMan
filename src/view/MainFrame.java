@@ -9,20 +9,18 @@ import java.awt.event.KeyEvent;
 
 public class MainFrame extends JFrame {
 
-    private Game game;
     private static boolean upPressed, downPressed, leftPressed, rightPressed;
-    private GamePanel gamePanel;
+    private MainPanel mainPanel;
 
-    public MainFrame(Game game) {
-        this.game = game;
+    public MainFrame() {
         this.setTitle("PacMan");
         this.setSize(665, 785);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        gamePanel = new GamePanel(game);
+        mainPanel = new MainPanel();
         setBackground(Color.BLACK);
-        this.add(gamePanel);
+        this.add(mainPanel);
 
         this.setVisible(true);
         this.addKeyListener(new MainFrame.KeyboardListener());
@@ -35,7 +33,7 @@ public class MainFrame extends JFrame {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            gamePanel.repaint();
+            mainPanel.repaint();
         }
     }
 
@@ -75,6 +73,10 @@ public class MainFrame extends JFrame {
         return rightPressed;
     }
 
+    public MainPanel getMainPanel() {
+        return mainPanel;
+    }
+
     /**
      * Inner class KeyboardListener - listens for the UP, DOWN, RIGHT, LEFT
      * keys.
@@ -90,8 +92,8 @@ public class MainFrame extends JFrame {
                     MainFrame.downPressed = false;
                     MainFrame.leftPressed = false;
                     MainFrame.rightPressed = false;
-                    //game.play(1);
-                    gamePanel.repaint();
+                    mainPanel.getGame().play(1);
+                    mainPanel.repaint();
                     break;
                 case KeyEvent.VK_DOWN:
                     System.out.println("Pressed : DOWN");
@@ -99,8 +101,8 @@ public class MainFrame extends JFrame {
                     MainFrame.downPressed = true;
                     MainFrame.leftPressed = false;
                     MainFrame.rightPressed = false;
-                    //game.play(2);
-                    gamePanel.repaint();
+                    mainPanel.getGame().play(2);
+                    mainPanel.repaint();
                     break;
                 case KeyEvent.VK_LEFT:
                     System.out.println("Pressed : LEFT");
@@ -108,8 +110,8 @@ public class MainFrame extends JFrame {
                     MainFrame.downPressed = false;
                     MainFrame.leftPressed = true;
                     MainFrame.rightPressed = false;
-                    //game.play(3);
-                    gamePanel.repaint();
+                    mainPanel.getGame().play(3);
+                    mainPanel.repaint();
                     break;
                 case KeyEvent.VK_RIGHT:
                     System.out.println("Pressed : RIGHT");
@@ -117,14 +119,11 @@ public class MainFrame extends JFrame {
                     MainFrame.downPressed = false;
                     MainFrame.leftPressed = false;
                     MainFrame.rightPressed = true;
-                    //game.play(4);
-                    gamePanel.repaint();
+                    mainPanel.getGame().play(4);
+                    mainPanel.repaint();
                     break;
             }
+            mainPanel.getGame().play(mainPanel.getGame().getGhostList().get(0));
         }
-    }
-
-    public GamePanel getGamePanel() {
-        return gamePanel;
     }
 }

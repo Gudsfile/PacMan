@@ -10,29 +10,37 @@ import java.io.IOException;
 import java.net.URL;
 
 public class GamePanel extends JPanel {
-    private Game game;
 
-    public GamePanel(Game game) {
-        this.game = game;
+    private MainPanel mainPanel;
+    private JLabel scoreLabel;
+
+    public GamePanel(MainPanel mainPanel) {
+        this.mainPanel = mainPanel;
+        Font font = new Font("Courier", Font.BOLD, 40);
+        scoreLabel = new JLabel();
+        scoreLabel.setFont(font);
+        scoreLabel.setBounds(300,400,50,150);
+        this.add(scoreLabel);
+    }
+
+    public void updateScoreLabel() {
+        scoreLabel.setText("Score : "+mainPanel.getGame().getFinalScore());
     }
 
     public void paintComponent(Graphics g) {
-
         paintStaticGamePiece(g);
         paintPacMan(g);
         paintGhost(g);
         paintLife(g);
-        paintScore(g);
-        paintScore(g);
-        if(game.getLife()<0){
-            getCardLayout().show(pan,"GAMEPANEL");
+        if(mainPanel.getGame().getLife()<0){
+            mainPanel.swapView(MainPanel.KEY_TEXTS[2]);
         }
     }
 
     public void paintStaticGamePiece(Graphics g) {
-        for (int i = 0; i < game.getGameBoard().length; i++) {
-            for (int j = 0; j < game.getGameBoard()[0].length; j++) {
-                GamePiece gamePiece = game.getGameBoard()[i][j];
+        for (int i = 0; i < mainPanel.getGame().getGameBoard().length; i++) {
+            for (int j = 0; j < mainPanel.getGame().getGameBoard()[0].length; j++) {
+                GamePiece gamePiece = mainPanel.getGame().getGameBoard()[i][j];
                 Image img;
                 try {
                     if (gamePiece == null) {
@@ -83,34 +91,34 @@ public class GamePanel extends JPanel {
     }
 
     public void paintPacMan(Graphics g) {
-        int pcX = game.getPacMan().getX();
-        int pcY = game.getPacMan().getY();
+        int pcX = mainPanel.getGame().getPacMan().getX();
+        int pcY = mainPanel.getGame().getPacMan().getY();
         Image img = new ImageIcon("res/Img/pacman.gif").getImage();
         g.drawImage(img, pcY * 35, 50 + pcX * 35, 35, 35, this);
     }
 
     public void paintGhost(Graphics g) {
         Ghost ghost;
-        for (int i = 0; i < game.getGameGhostBoard().length; i++) {
-            for (int j = 0; j < game.getGameGhostBoard()[0].length; j++) {
-                ghost = game.getGameGhostBoard()[i][j];
+        for (int i = 0; i < mainPanel.getGame().getGameGhostBoard().length; i++) {
+            for (int j = 0; j < mainPanel.getGame().getGameGhostBoard()[0].length; j++) {
+                ghost = mainPanel.getGame().getGameGhostBoard()[i][j];
                 if (ghost != null) {
-                    if (game.isPower()) {
+                    if (mainPanel.getGame().isPower()) {
                         Image img = new ImageIcon("res/Img/ghost_danger.gif").getImage();
                         g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
                     } else if (ghost.isStateEaten()) {
                         Image img = new ImageIcon("res/Img/ghost_killed.png").getImage();
                         g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
-                    } else if (ghost.getName().equals("\033[31m" + "G1" + "\033[39m")) {
+                    } else if (ghost.getName().equals(GhostNames.Blinky.toString())) {
                         Image img = new ImageIcon("res/Img/blinky.gif").getImage();
                         g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
-                    } else if (ghost.getName().equals("\033[32m" + "G2" + "\033[39m")) {
+                    } else if (ghost.getName().equals(GhostNames.Pinky.toString())) {
                         Image img = new ImageIcon("res/Img/pinky.gif").getImage();
                         g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
-                    } else if (ghost.getName().equals("\033[36m" + "G3" + "\033[39m")) {
+                    } else if (ghost.getName().equals(GhostNames.Inky.toString())) {
                         Image img = new ImageIcon("res/Img/inky.gif").getImage();
                         g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
-                    } else if (ghost.getName().equals("\033[35m" + "G4" + "\033[39m")) {
+                    } else if (ghost.getName().equals(GhostNames.Clyde.toString())) {
                         Image img = new ImageIcon("res/Img/clyde.gif").getImage();
                         g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
                     }
@@ -120,17 +128,10 @@ public class GamePanel extends JPanel {
     }
 
     public void paintLife(Graphics g) {
-        for (int i = 0; i < game.getLife(); i++) {
+        for (int i = 0; i < mainPanel.getGame().getLife(); i++) {
             Image img = null;
             img = new ImageIcon("res/Img/pacman.png").getImage();
             g.drawImage(img, i * 50, 0, 50, 50, this);
         }
-    }
-
-    public void paintScore(Graphics g){
-        g.setColor(Color.WHITE);
-        Font font = new Font("Courier", Font.BOLD, 40);
-        g.setFont(font);
-        g.drawString("Score : "+this.game.getFinalScore(), 300, 40);
     }
 }

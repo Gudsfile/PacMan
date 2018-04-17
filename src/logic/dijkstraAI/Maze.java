@@ -48,7 +48,7 @@ public class Maze {
     public Node getPath(int xEnd, int yEnd) {
         Node res = null;
         for (Node node : this.graph.getNodes()) {
-            if (node.getName().equals(xEnd + ":" + yEnd)) {
+            if (node.getX() == xEnd && node.getY() == yEnd) {
                 res = node;
             }
         }

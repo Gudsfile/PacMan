@@ -250,18 +250,11 @@ public class Game {
      * @return vrai si le déplacement est valide, false dans le cas contraire
      */
     private boolean isValidBoardMove(int x, int y, int dx, int dy) {
-        boolean result = true;
+        boolean result = false;
         if (this.isValidMove(dx, dy)) {
-            if (y == 0 && dy == -1 || y == this.gameBoard[0].length - 1 && dy == 1) {
-                result = true;
-            } else if (x == 0 && dx == -1 || x == this.gameBoard.length - 1 && dx == 1) {
-                result = true;
-            } else if (x + dx < 0 || x + dx > gameBoard[0].length || y + dy < 0 || y + dy > gameBoard.length) {
-                result = false;
-            } else if (this.gameBoard[x + dx][y + dy] instanceof Wall) {
-                result = false;
-            }
-            System.out.println("valid : " + result);
+           if (x+dx >= 0 && y+dy >= 0 && x+dx < this.gameBoard.length && y+dy < this.gameBoard[0].length && !(this.gameBoard[x+dx][y+dy] instanceof Wall)) {
+               result = true;
+           }
         }
         return result;
     }
@@ -314,7 +307,9 @@ public class Game {
             }
             this.pacMan.setX(x + dx);
             this.pacMan.setY(y + dy);
+
         }
+        this.gameBoard[this.pacMan.getX()][this.pacMan.getY()] = null;
     }
 
     /**
@@ -390,7 +385,6 @@ public class Game {
         this.score += Ghost.getValue() * comboCount;
         this.updateLifeCount();
         this.comboCount += 1;
-        this.play(gameGhostBoard[x][y]);
     }
 
     /**

@@ -8,15 +8,16 @@ import java.io.File;
 import java.io.IOException;
 
 public class WinPanel extends JPanel {
-    private Game game;
-    public WinPanel(Game game) {
 
-        this.game = game;
-        this.add(this, BorderLayout.SOUTH);
-        this.setLayout(new GridLayout(2,2));
+    private MainPanel mainPanel;
+
+    public WinPanel(MainPanel mainPanel) {
+
+        this.mainPanel = mainPanel;
+
         JLabel pseudo=new JLabel("Pseudo : ");
         JTextField pseudoTextField = new JTextField("");
-        JButton playButton = new JButton( "Nouvelle Partie", game.writeScore(pseudoTextField.getText()));
+        JButton playButton = new JButton( "Nouvelle Partie");
         JButton stopButton = new JButton( "Stop");
         this.add(pseudo);
         this.add(pseudoTextField);
@@ -32,7 +33,7 @@ public class WinPanel extends JPanel {
         }
         g.drawImage(img, 0, 50, this);
         g.setColor(Color.WHITE);
-        String fs=String.valueOf(game.getFinalScore());
+        String fs=String.valueOf(mainPanel.getGame().getFinalScore());
         g.drawString("Your score :"+fs,432 ,100);
     }
 }
