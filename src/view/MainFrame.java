@@ -38,6 +38,7 @@ public class MainFrame extends JFrame {
                 mainPanel.getGame().play(4);
             }
             mainPanel.repaint();
+            mainPanel.getGame().displayBoard();
             System.out.println("Life: "+mainPanel.getGame().getLife()+" Power : "+mainPanel.getGame().isPower()+" Score : "+mainPanel.getGame().getFinalScore());
             try {
                 Thread.sleep(mainPanel.getGame().getPacMan().getSpeed());
@@ -49,7 +50,7 @@ public class MainFrame extends JFrame {
     public void goRepaint() {
         while (true) {
             try {
-                Thread.sleep(3);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -105,6 +106,7 @@ public class MainFrame extends JFrame {
 
         @Override
         public void keyPressed(KeyEvent event) {
+            mainPanel.getGame().setStarted(true);
             switch (event.getKeyCode()) {
                 case KeyEvent.VK_UP:
                     System.out.println("Pressed : UP");

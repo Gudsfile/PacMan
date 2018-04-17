@@ -75,6 +75,7 @@ public class Game implements Runnable {
     private int previousDY;
     private int pacDotCount = 0;
     private boolean finished = false;
+    private boolean started = false;
 
     /**
      * Construit une partie
@@ -187,43 +188,45 @@ public class Game implements Runnable {
         int dx = 0;
         int dy = 0;
         int[] movement = new int[2];
-        if (ghost.isStateEaten()) { // Retour au départ
-            movement = getMovement(ghost.getX(), ghost.getY(), Ghost.getStartX(), Ghost.getStartY());
-            if (movement != null) {
-                dx = movement[0];
-                dy = movement[1];
-            } else {
-                //System.out.println("Ghost eaten -> movement is null");
+        if (started) {
+            if (ghost.isStateEaten()) { // Retour au départ
+                movement = getMovement(ghost.getX(), ghost.getY(), Ghost.getStartX(), Ghost.getStartY());
+                if (movement != null) {
+                    dx = movement[0];
+                    dy = movement[1];
+                } else {
+                    //System.out.println("Ghost eaten -> movement is null");
+                }
+            } else if (this.power || ghost.getName().equals(GhostNames.Pinky.toString()) || ghost.getName().equals(GhostNames.Inky.toString()) || ghost.getName().equals(GhostNames.Clyde.toString())) { // En danger
+                int endX = 0;
+                int endY = 0;
+                while (this.gameBoard[endX][endY] instanceof Wall) {
+                    endX = (int) (Math.random() * (this.gameBoard.length - 1) + 1);
+                    endY = (int) (Math.random() * (this.gameBoard[0].length - 1) + 1);
+                }
+                movement = getMovement(ghost.getX(), ghost.getY(), endX, endY);
+                if (movement != null) {
+                    dx = movement[0];
+                    dy = movement[1];
+                } else {
+                    //System.out.println("Fantômes effrayés + fantôme autre que G1 -> movement is null");
+                }
+            } else if (ghost.getName().equals(GhostNames.Blinky.toString())) { // Poursuite
+                movement = getMovement(ghost.getX(), ghost.getY(), this.pacMan.getX(), this.pacMan.getY());
+                if (movement != null) {
+                    dx = movement[0];
+                    dy = movement[1];
+                } else {
+                    //System.out.println("Fantôme G1 -> movement is null");
+                }
             }
-        } else if (this.power || ghost.getName().equals(GhostNames.Pinky.toString()) || ghost.getName().equals(GhostNames.Inky.toString()) || ghost.getName().equals(GhostNames.Clyde.toString())) { // En danger
-            int endX = 0;
-            int endY = 0;
-            while (this.gameBoard[endX][endY] instanceof Wall) {
-                endX = (int) (Math.random() * (this.gameBoard.length - 1) + 1);
-                endY = (int) (Math.random() * (this.gameBoard[0].length - 1) + 1);
-            }
-            movement = getMovement(ghost.getX(), ghost.getY(), endX, endY);
-            if (movement != null) {
-                dx = movement[0];
-                dy = movement[1];
-            } else {
-                //System.out.println("Fantômes effrayés + fantôme autre que G1 -> movement is null");
-            }
-        } else if (ghost.getName().equals(GhostNames.Blinky.toString())) { // Poursuite
-            movement = getMovement(ghost.getX(), ghost.getY(), this.pacMan.getX(), this.pacMan.getY());
-            if (movement != null) {
-                dx = movement[0];
-                dy = movement[1];
-            } else {
-                //System.out.println("Fantôme G1 -> movement is null");
-            }
-        }
-        //System.out.println("dx: " + dx + " dy: " + dy);
-        if (this.isValidBoardMove(ghost.getX(), ghost.getY(), dx, dy)) {
-            //System.out.println();
-            moveGhost(ghost, dx, dy);
-            if (!isPower() && ghost.getX() == pacMan.getX() && ghost.getY() == pacMan.getY()) {
-                killPacMan();
+            //System.out.println("dx: " + dx + " dy: " + dy);
+            if (this.isValidBoardMove(ghost.getX(), ghost.getY(), dx, dy)) {
+                //System.out.println();
+                moveGhost(ghost, dx, dy);
+                if (!isPower() && ghost.getX() == pacMan.getX() && ghost.getY() == pacMan.getY()) {
+                    killPacMan();
+                }
             }
         }
     }
@@ -403,9 +406,13 @@ public class Game implements Runnable {
         this.pacMan.setX(this.pacMan.getStartX());
         this.pacMan.setY(this.pacMan.getStartY());
         for (Ghost g:this.ghostList) {
+            this.gameGhostBoard[g.getX()][g.getY()] = null;
             g.setX(Ghost.getStartX());
             g.setY(Ghost.getStartY());
+            this.gameGhostBoard[Ghost.getStartX()][Ghost.getStartY()] = g;
         }
+
+        this.started = false;
     }
 
 
@@ -787,6 +794,14 @@ public class Game implements Runnable {
             result = result+result;
         }
         return result;
+    }
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
     }
 }
 
