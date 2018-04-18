@@ -1,7 +1,5 @@
 package view;
 
-import logic.Game;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -38,7 +36,7 @@ public class MainFrame extends JFrame {
                 mainPanel.getGame().play(4);
             }
             mainPanel.repaint();
-            mainPanel.getGame().displayBoard();
+            //mainPanel.getGame().displayBoard();
             System.out.println("Life: "+mainPanel.getGame().getLife()+" Power : "+mainPanel.getGame().isPower()+" Score : "+mainPanel.getGame().getFinalScore());
             try {
                 Thread.sleep(mainPanel.getGame().getPacMan().getSpeed());

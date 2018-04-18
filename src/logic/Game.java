@@ -73,8 +73,17 @@ public class Game implements Runnable {
      * Dernier déplacement de pacMan en y
      */
     private int previousDY;
+    /**
+     * Nombre de PacDot restante
+     */
     private int pacDotCount = 0;
+    /**
+     * Etat fini de la partie
+     */
     private boolean finished = false;
+    /**
+     * Etat démarré de la partie
+     */
     private boolean started = false;
 
     /**
@@ -182,9 +191,9 @@ public class Game implements Runnable {
      * Jeu des fantomes, choix du déplacement (dx, dy)
      *
      * @param ghost le fantôme concerné
-     * @pre g != null
+     * @pre ghost != null
      */
-    public void play(Ghost ghost) {
+    private void play(Ghost ghost) {
         int dx = 0;
         int dy = 0;
         int[] movement = new int[2];
@@ -194,8 +203,6 @@ public class Game implements Runnable {
                 if (movement != null) {
                     dx = movement[0];
                     dy = movement[1];
-                } else {
-                    //System.out.println("Ghost eaten -> movement is null");
                 }
             } else if (this.power || ghost.getName().equals(GhostNames.Pinky.toString()) || ghost.getName().equals(GhostNames.Inky.toString()) || ghost.getName().equals(GhostNames.Clyde.toString())) { // En danger
                 int endX = 0;
@@ -208,21 +215,15 @@ public class Game implements Runnable {
                 if (movement != null) {
                     dx = movement[0];
                     dy = movement[1];
-                } else {
-                    //System.out.println("Fantômes effrayés + fantôme autre que G1 -> movement is null");
                 }
             } else if (ghost.getName().equals(GhostNames.Blinky.toString())) { // Poursuite
                 movement = getMovement(ghost.getX(), ghost.getY(), this.pacMan.getX(), this.pacMan.getY());
                 if (movement != null) {
                     dx = movement[0];
                     dy = movement[1];
-                } else {
-                    //System.out.println("Fantôme G1 -> movement is null");
                 }
             }
-            //System.out.println("dx: " + dx + " dy: " + dy);
             if (this.isValidBoardMove(ghost.getX(), ghost.getY(), dx, dy)) {
-                //System.out.println();
                 moveGhost(ghost, dx, dy);
                 if (!isPower() && ghost.getX() == pacMan.getX() && ghost.getY() == pacMan.getY()) {
                     killPacMan();
@@ -260,9 +261,9 @@ public class Game implements Runnable {
         if (this.isValidMove(dx, dy)) {
             if (x + dx >= 0 && y + dy >= 0 && x + dx < this.gameBoard.length && y + dy < this.gameBoard[0].length && !(this.gameBoard[x + dx][y + dy] instanceof Wall)) {
                 result = true;
-            } else if ( (x == 0 && dx == -1 && dy == 0) || (x == this.gameBoard.length-1 && dx == 1 && dy == 0) ) {
+            } else if ((x == 0 && dx == -1 && dy == 0) || (x == this.gameBoard.length - 1 && dx == 1 && dy == 0)) {
                 result = true;
-            } else if ( (y == 0 && dy == -1 && dx == 0) || (y == this.gameBoard[0].length-1 && dy == 1 && dx == 0) ) {
+            } else if ((y == 0 && dy == -1 && dx == 0) || (y == this.gameBoard[0].length - 1 && dy == 1 && dx == 0)) {
                 result = true;
             }
         }
@@ -358,8 +359,20 @@ public class Game implements Runnable {
         } else {
             this.gameGhostBoard[x][y] = null;
         }
+        if (ghost.getX() == Ghost.getStartX() && ghost.getY() == Ghost.getStartY()) {
+            ghost.setStateEaten(false);
+        }
     }
 
+    /**
+     * Retourne le mouvement à faire pour aller d'une position à une autre en passant par le chemin le plus court
+     *
+     * @param xStart postion en x de départ
+     * @param yStart postion en y de départ
+     * @param xEnd   postion en x d'arrivée
+     * @param yEnd   postion en y d'arrivée
+     * @return un tableau contenant le mouvement en x ([0]) et en y ([1]) à effectuer
+     */
     private int[] getMovement(int xStart, int yStart, int xEnd, int yEnd) {
         int[] movement = new int[2];
 
@@ -398,19 +411,14 @@ public class Game implements Runnable {
                         movement[0] = 0;
                         movement[1] = -1;
                     } else {
-                        // System.out.println("error");
                         movement = null;
                     }
                 } else {
-                    // System.out.println("node/path null");
                     movement = null;
                 }
             } else {
-                // System.out.println("maze[+" + xStart + "][" + yStart + "] null");
                 movement = null;
             }
-        } else {
-            // System.out.println("mazeTab null");
         }
 
         return movement;
@@ -421,8 +429,14 @@ public class Game implements Runnable {
      *
      * @param x position du fantôme mangé
      * @param y position du fantôme mangé
+     * @pre PacMan doit recouvrir un fantôme
+     * @pre le pouvoir doit être activé
+     * @post le fantôme doit passer à l'état de mangé
+     * @post le score du joueur doit augmenté
+     * @post le combo doit augmenter
+     * TODO ne pas tuer de nouveau un fantôme déjà tuer lors d'une même powerDuration
      */
-    public void killGhost(int x, int y) {
+    private void killGhost(int x, int y) {
         this.gameGhostBoard[x][y].setStateEaten(true);
         this.score += Ghost.getValue() * comboCount;
         this.updateLifeCount();
@@ -431,8 +445,13 @@ public class Game implements Runnable {
 
     /**
      * Evenement lorsque PacMan est mangé
+     *
+     * @pre un fantôme doit recouvrir PacMan
+     * @post le jeu est arrêté
+     * @post pacman et les fantômes replacés
+     * @post le nombre de vie réduit
      */
-    public void killPacMan() {
+    private void killPacMan() {
         this.life -= 1;
         if (this.life < 0) {
             end();
@@ -451,6 +470,18 @@ public class Game implements Runnable {
         this.started = false;
     }
 
+    /**
+     * Retourne le temps entre chaque mouvement d'un fantôme
+     *
+     * @return temps entre chaque mouvement d'un fantôme
+     */
+    private int getGhostSpeed() {
+        int result = Ghost.getSpeed();
+        if (power) {
+            result = result + result;
+        }
+        return result;
+    }
 
     /**
      * Augmente le nombre de vie à chaque tranche de 10k points
@@ -475,7 +506,11 @@ public class Game implements Runnable {
                     System.out.print(/*gh.getName()*/"\033[31m" + "GH" + "\033[39m" + "  ");
                 } else {
                     if (g != null) {
-                        System.out.print(g.getName() + "  ");
+                        if (g instanceof Fruit) {
+                            System.out.print("FR");
+                        } else {
+                            System.out.print(g.getName() + "  ");
+                        }
                     } else {
                         System.out.print("00" + "  ");
                     }
@@ -486,6 +521,11 @@ public class Game implements Runnable {
         this.gameBoard[this.pacMan.getX()][this.pacMan.getY()] = null;
     }
 
+    /**
+     * Écrit le score
+     *
+     * @param name nom du joueur
+     */
     public void writeScore(String name) {
         ScoreWritter.writeScore(name, this.finalScore);
     }
@@ -738,30 +778,95 @@ public class Game implements Runnable {
         this.powerDuration = powerDuration;
     }
 
+    /**
+     * Renvoie le tableau des graph des correspondant aux plateau
+     *
+     * @return mazeTab
+     * @post result = mazeTab
+     */
     public Maze[][] getMazeTab() {
         return mazeTab;
     }
 
+    /**
+     * Modifie mazeTab
+     *
+     * @param mazeTab new mazeTab
+     * @pre mazeTab est en adéquation avec le plateau du jeu
+     * @post this.mazeTab = mazeTab
+     */
     public void setMazeTab(Maze[][] mazeTab) {
         this.mazeTab = mazeTab;
     }
 
+    /**
+     * Retourne le compteur de pacdot restante
+     *
+     * @return pacDotCount
+     * @post pacDotCount
+     */
     public int getPacDotCount() {
         return pacDotCount;
     }
 
+    /**
+     * Modifie le nombre de PacDot restante
+     *
+     * @param pacDotCount new pacDotCount
+     * @post this.pacDotCount = pacDotCount
+     */
     public void setPacDotCount(int pacDotCount) {
         this.pacDotCount = pacDotCount;
     }
 
+    /**
+     * Indique si la partie est terminé où non
+     *
+     * @return finished ?
+     * @post result = finished
+     */
     public boolean isFinished() {
         return finished;
     }
 
+    /**
+     * Modifie le statut fin de la partie
+     *
+     * @param finished new finished
+     * @post this.finished = finished
+     */
     public void setFinished(boolean finished) {
         this.finished = finished;
     }
 
+    /**
+     * Indique si la partie a commencé
+     *
+     * @return started
+     * @post result = started
+     */
+    public boolean isStarted() {
+        return started;
+    }
+
+    /**
+     * Modifie l'état commencé de la partie
+     *
+     * @param started new started
+     * @post this.started = started
+     */
+    public void setStarted(boolean started) {
+        this.started = started;
+    }
+
+    /**
+     * Run du thread
+     * G1 -> run du thread pour le fantôme 1
+     * G2 -> run du thread pour le fantôme 2
+     * G3 -> run du thread pour le fantôme 3
+     * G4 -> run du thread pour le fantôme 4
+     * PO -> run pour la powerDuration
+     */
     @Override
     public void run() {
         switch (Thread.currentThread().getName()) {
@@ -824,20 +929,5 @@ public class Game implements Runnable {
         }
     }
 
-    private int getGhostSpeed() {
-        int result = Ghost.getSpeed();
-        if (power) {
-            result = result + result;
-        }
-        return result;
-    }
-
-    public boolean isStarted() {
-        return started;
-    }
-
-    public void setStarted(boolean started) {
-        this.started = started;
-    }
 }
 
