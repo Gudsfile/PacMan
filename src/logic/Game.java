@@ -260,6 +260,10 @@ public class Game implements Runnable {
         if (this.isValidMove(dx, dy)) {
             if (x + dx >= 0 && y + dy >= 0 && x + dx < this.gameBoard.length && y + dy < this.gameBoard[0].length && !(this.gameBoard[x + dx][y + dy] instanceof Wall)) {
                 result = true;
+            } else if ( (x == 0 && dx == -1 && dy == 0) || (x == this.gameBoard.length-1 && dx == 1 && dy == 0) ) {
+                result = true;
+            } else if ( (y == 0 && dy == -1 && dx == 0) || (y == this.gameBoard[0].length-1 && dy == 1 && dx == 0) ) {
+                result = true;
             }
         }
         return result;
@@ -358,25 +362,57 @@ public class Game implements Runnable {
 
     private int[] getMovement(int xStart, int yStart, int xEnd, int yEnd) {
         int[] movement = new int[2];
-        if (this.mazeTab == null) {
-            //System.out.println("Aïe");
-        }
-        if (this.mazeTab[xStart][yStart] != null) {
-            Node node = this.mazeTab[xStart][yStart].getPath(xEnd, yEnd);
-            if (node != null && node.getShortestPath().size() > 1) {
-                movement[0] = Integer.parseInt(node.getShortestPath().get(1).getName().split(":")[0]) - xStart;
-                movement[1] = Integer.parseInt(node.getShortestPath().get(1).getName().split(":")[1]) - yStart;
-            } else if (Math.abs(xEnd - xStart + yEnd - yStart) == 1) {
-                movement[0] = xEnd - xStart;
-                movement[1] = yEnd - yStart;
+
+        if (this.mazeTab != null) {
+            if (this.mazeTab[xStart][yStart] != null) {
+                Node node = this.mazeTab[xStart][yStart].getPath(xEnd, yEnd);
+                if (node != null) {
+                    if (node.getShortestPath().size() > 1) {
+                        movement[0] = Integer.parseInt(node.getShortestPath().get(1).getName().split(":")[0]) - xStart;
+                        movement[1] = Integer.parseInt(node.getShortestPath().get(1).getName().split(":")[1]) - yStart;
+                        if (movement[0] == this.mazeTab.length - 1) {
+                            movement[0] = 1;
+                        }
+                        if (movement[0] == -this.mazeTab.length + 1) {
+                            movement[0] = -1;
+                        }
+                        if (movement[1] == this.mazeTab[0].length - 1) {
+                            movement[1] = -1;
+                        }
+                        if (movement[1] == -this.mazeTab[0].length + 1) {
+                            movement[1] = 1;
+                        }
+                    } else if (Math.abs(xEnd - xStart + yEnd - yStart) == 1) {
+                        movement[0] = xEnd - xStart;
+                        movement[1] = yEnd - yStart;
+                    } else if (xStart == this.mazeTab.length - 1) {
+                        movement[0] = 1;
+                        movement[1] = 0;
+                    } else if (xStart == 0) {
+                        movement[0] = -1;
+                        movement[1] = 0;
+                    } else if (yStart == this.mazeTab[0].length - 1) {
+                        movement[0] = 0;
+                        movement[1] = 1;
+                    } else if (yStart == 0) {
+                        movement[0] = 0;
+                        movement[1] = -1;
+                    } else {
+                        // System.out.println("error");
+                        movement = null;
+                    }
+                } else {
+                    // System.out.println("node/path null");
+                    movement = null;
+                }
             } else {
-                //System.out.println("Impossible node null");
+                // System.out.println("maze[+" + xStart + "][" + yStart + "] null");
                 movement = null;
             }
         } else {
-            //System.out.println("Impossible maze null");
-            movement = null;
+            // System.out.println("mazeTab null");
         }
+
         return movement;
     }
 
@@ -405,7 +441,7 @@ public class Game implements Runnable {
         this.previousDY = 0;
         this.pacMan.setX(this.pacMan.getStartX());
         this.pacMan.setY(this.pacMan.getStartY());
-        for (Ghost g:this.ghostList) {
+        for (Ghost g : this.ghostList) {
             this.gameGhostBoard[g.getX()][g.getY()] = null;
             g.setX(Ghost.getStartX());
             g.setY(Ghost.getStartY());
@@ -791,7 +827,7 @@ public class Game implements Runnable {
     private int getGhostSpeed() {
         int result = Ghost.getSpeed();
         if (power) {
-            result = result+result;
+            result = result + result;
         }
         return result;
     }
