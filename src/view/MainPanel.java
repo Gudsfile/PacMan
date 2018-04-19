@@ -8,7 +8,7 @@ import java.awt.*;
 public class MainPanel extends JPanel {
     private Game game;
     private GamePanel gamePanel;
-    private LosePanel losePanel;
+    private LPanel losePanel;
     private WinPanel winPanel;
     private static final String GAME_PANEL = "Game Panel";
     private static final String WIN_PANEL = "Win Panel";
@@ -20,7 +20,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         this.game = new Game(1);
         this.gamePanel = new GamePanel(this);
-        this.losePanel = new LosePanel(this);
+        this.losePanel = new LPanel(this);
         this.winPanel = new WinPanel(this);
         cards.add(gamePanel, GAME_PANEL);
         cards.add(winPanel, WIN_PANEL);
@@ -35,6 +35,8 @@ public class MainPanel extends JPanel {
     }
 
     public void startNewGame() {
+        this.game=new Game(1);
+        this.swapView(MainPanel.KEY_TEXTS[0]);
 
     }
 
@@ -62,11 +64,11 @@ public class MainPanel extends JPanel {
         this.gamePanel = gamePanel;
     }
 
-    public LosePanel getLosePanel() {
+    public LPanel getLosePanel() {
         return losePanel;
     }
 
-    public void setLosePanel(LosePanel losePanel) {
+    public void setLosePanel(LPanel losePanel) {
         this.losePanel = losePanel;
     }
 
