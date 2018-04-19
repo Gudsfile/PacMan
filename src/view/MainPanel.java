@@ -19,6 +19,9 @@ public class MainPanel extends JPanel {
 
     public MainPanel() {
         this.game = new Game(1);
+        build();
+    }
+    public void build(){
         this.gamePanel = new GamePanel(this);
         this.losePanel = new LPanel(this);
         this.winPanel = new WinPanel(this);
@@ -29,13 +32,14 @@ public class MainPanel extends JPanel {
         add(cards, BorderLayout.CENTER);
         this.swapView(MainPanel.KEY_TEXTS[0]);
     }
-
     public void swapView(String key) {
         cardlayout.show(cards, key);
     }
 
     public void startNewGame() {
         this.game=new Game(1);
+        this.setGame(game);
+        build();
         this.swapView(MainPanel.KEY_TEXTS[0]);
 
     }

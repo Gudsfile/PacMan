@@ -18,7 +18,7 @@ public class LPanel extends JPanel {
 
     public LPanel(MainPanel mainPanel) {
         this.mainPanel = mainPanel;
-
+        this.add(panel1);
         nouvellePartieButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -39,8 +39,7 @@ public class LPanel extends JPanel {
                     mainPanel.getGame().writeScore(textField1.getText());
             }
         });
-        //paintBackground();
-        this.add(panel1);
+
 
     }
 
@@ -52,6 +51,12 @@ public class LPanel extends JPanel {
             e.printStackTrace();
         }
         g.drawImage(img, 0, 0,this);
+
+        Font font = new Font("Arial",Font.BOLD,20);
+        g.setFont(font);
+        g.setColor(Color.WHITE);
+        String fs=String.valueOf(mainPanel.getGame().getFinalScore());
+        g.drawString("Your score :"+fs,250 ,100);
     }
 
 }

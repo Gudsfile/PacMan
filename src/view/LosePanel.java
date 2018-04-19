@@ -1,4 +1,4 @@
-package view;
+/*package view;
 import data.ScoreWritter;
 import logic.*;
 
@@ -60,3 +60,4 @@ public class LosePanel extends JPanel {
 
     }
 
+*/
