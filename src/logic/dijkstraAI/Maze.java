@@ -24,17 +24,25 @@ public class Maze {
         for (int i = 0; i < this.nodeBoard.length; i++) {
             for (int j = 0; j < this.nodeBoard[0].length; j++) {
                 if (this.nodeBoard[i][j] != null) {
-                    if (this.nodeBoard[i + 1][j] != null) {
-                        this.nodeBoard[i][j].addDestination(this.nodeBoard[i + 1][j], 1);
-                    }
-                    if (this.nodeBoard[i - 1][j] != null) {
-                        this.nodeBoard[i][j].addDestination(this.nodeBoard[i - 1][j], 1);
-                    }
-                    if (this.nodeBoard[i][j + 1] != null) {
+                    if (j == 0) {
                         this.nodeBoard[i][j].addDestination(this.nodeBoard[i][j + 1], 1);
-                    }
-                    if (this.nodeBoard[i][j - 1] != null) {
+                        this.nodeBoard[i][j].addDestination(this.nodeBoard[i][this.nodeBoard[0].length - 1], 1);
+                    } else if (j == this.nodeBoard[0].length - 1) {
                         this.nodeBoard[i][j].addDestination(this.nodeBoard[i][j - 1], 1);
+                        this.nodeBoard[i][j].addDestination(this.nodeBoard[i][0], 1);
+                    } else {
+                        if (this.nodeBoard[i][j + 1] != null) {
+                            this.nodeBoard[i][j].addDestination(this.nodeBoard[i][j + 1], 1);
+                        }
+                        if (this.nodeBoard[i][j - 1] != null) {
+                            this.nodeBoard[i][j].addDestination(this.nodeBoard[i][j - 1], 1);
+                        }
+                        if (this.nodeBoard[i - 1][j] != null) {
+                            this.nodeBoard[i][j].addDestination(this.nodeBoard[i - 1][j], 1);
+                        }
+                        if (this.nodeBoard[i + 1][j] != null) {
+                            this.nodeBoard[i][j].addDestination(this.nodeBoard[i + 1][j], 1);
+                        }
                     }
                     this.graph.addNode(this.nodeBoard[i][j]);
                 }
@@ -48,7 +56,7 @@ public class Maze {
     public Node getPath(int xEnd, int yEnd) {
         Node res = null;
         for (Node node : this.graph.getNodes()) {
-            if (node.getX() == xEnd && node.getY() == yEnd) {
+            if (node.getName().equals(xEnd + ":" + yEnd)) {
                 res = node;
             }
         }

@@ -105,11 +105,11 @@ public class GamePanel extends JPanel {
             for (int j = 0; j < mainPanel.getGame().getGameGhostBoard()[0].length; j++) {
                 ghost = mainPanel.getGame().getGameGhostBoard()[i][j];
                 if (ghost != null) {
-                    if (mainPanel.getGame().isPower()) {
-                        Image img = new ImageIcon("res/Img/ghost_danger.gif").getImage();
-                        g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
-                    } else if (ghost.isStateEaten()) {
+                    if (ghost.isStateEaten()) {
                         Image img = new ImageIcon("res/Img/ghost_killed.png").getImage();
+                        g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
+                    } else if (mainPanel.getGame().isPower()) {
+                        Image img = new ImageIcon("res/Img/ghost_danger.gif").getImage();
                         g.drawImage(img, j * 35, 50 + i * 35, 35, 35, this);
                     } else if (ghost.getName().equals(GhostNames.Blinky.toString())) {
                         Image img = new ImageIcon("res/Img/blinky.gif").getImage();
