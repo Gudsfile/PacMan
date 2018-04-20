@@ -137,4 +137,8 @@ public class MainFrame extends JFrame {
             }
         }
     }
+
+    public void setMainPanel(MainPanel mp){
+        this.mainPanel=mp;
+    }
 }

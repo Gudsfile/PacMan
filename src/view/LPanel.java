@@ -1,5 +1,7 @@
 package view;
 
+import logic.Game;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +24,23 @@ public class LPanel extends JPanel {
         nouvellePartieButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                mainPanel.startNewGame();
+                MainFrame mainFrame = new MainFrame();
+                Game game = mainFrame.getMainPanel().getGame();
+
+                Thread threadG1 = new Thread(game, "G1");
+                Thread threadG2 = new Thread(game, "G2");
+                Thread threadG3 = new Thread(game, "G3");
+                Thread threadG4 = new Thread(game, "G4");
+                Thread threadPO = new Thread(game, "PO");
+
+                threadG1.start();
+                threadG2.start();
+                threadG3.start();
+                threadG4.start();
+                threadPO.start();
+
+                mainFrame.go();
+
             }
         });
 
@@ -56,7 +74,7 @@ public class LPanel extends JPanel {
         g.setFont(font);
         g.setColor(Color.WHITE);
         String fs=String.valueOf(mainPanel.getGame().getFinalScore());
-        g.drawString("Your score :"+fs,450 ,100);
+        g.drawString("Your score :"+fs,150 ,300);
     }
 
 }
