@@ -34,8 +34,10 @@ public class GamePanel extends JPanel {
         paintLife(g);
         if(mainPanel.getGame().getLife()<0){
             mainPanel.swapView(MainPanel.KEY_TEXTS[2]);
-        }else if(mainPanel.getGame().isFinished()){
+        }else if(mainPanel.getGame().isFinished()/*&&mainPanel.getGame().getLevel()==2*/){
             mainPanel.swapView(MainPanel.KEY_TEXTS[1]);
+        }else if(mainPanel.getGame().isFinished()/*&&mainPanel.getGame().getLevel()<2*/){
+
         }
     }
 

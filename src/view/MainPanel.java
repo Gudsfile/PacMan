@@ -37,9 +37,6 @@ public class MainPanel extends JPanel {
     }
 
     public void startNewGame() {
-        this.game=new Game(1);
-        this.setGame(game);
-        build();
         this.swapView(MainPanel.KEY_TEXTS[0]);
 
     }

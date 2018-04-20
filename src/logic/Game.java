@@ -85,6 +85,10 @@ public class Game implements Runnable {
      * Etat démarré de la partie
      */
     private boolean started = false;
+    /**
+     * Numero du niveau du jeu
+     */
+    private int level;
 
     /**
      * Construit une partie
@@ -97,6 +101,7 @@ public class Game implements Runnable {
      * @post power = false
      */
     public Game(int level) {
+        this.level=level;
         FileReader in = new FileReader("res/Levels/Level" + level + ".json");
         GameParam gameParam = in.initGame(level);
         if (gameParam != null) {
@@ -858,6 +863,14 @@ public class Game implements Runnable {
     public void setStarted(boolean started) {
         this.started = started;
     }
+
+    /**
+     * Retourne le niveau du jeu
+     *
+     * @return le numero du niveau
+     * @post result=level
+     */
+    public int getLevel(){return this.level;}
 
     /**
      * Run du thread

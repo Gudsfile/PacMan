@@ -52,11 +52,11 @@ public class LPanel extends JPanel {
         }
         g.drawImage(img, 0, 0,this);
 
-        Font font = new Font("Arial",Font.BOLD,20);
+        Font font = new Font("Arial",Font.BOLD,30);
         g.setFont(font);
         g.setColor(Color.WHITE);
         String fs=String.valueOf(mainPanel.getGame().getFinalScore());
-        g.drawString("Your score :"+fs,250 ,100);
+        g.drawString("Your score :"+fs,450 ,100);
     }
 
 }
