@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-public class LPanel extends JPanel {
+public class LPanel extends JPanel implements ActionListener {
     private JTextField textField1;
     private JButton enregistrerButton;
     private JButton nouvellePartieButton;
@@ -21,45 +21,11 @@ public class LPanel extends JPanel {
     public LPanel(MainPanel mainPanel) {
         this.mainPanel = mainPanel;
         this.add(panel1);
-        nouvellePartieButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                MainFrame mainFrame = new MainFrame();
-                Game game = mainFrame.getMainPanel().getGame();
-
-                Thread threadG1 = new Thread(game, "G1");
-                Thread threadG2 = new Thread(game, "G2");
-                Thread threadG3 = new Thread(game, "G3");
-                Thread threadG4 = new Thread(game, "G4");
-                Thread threadPO = new Thread(game, "PO");
-
-                threadG1.start();
-                threadG2.start();
-                threadG3.start();
-                threadG4.start();
-                threadPO.start();
-
-                mainFrame.go();
-
-            }
-        });
-
-        stopButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                System.exit(0);
-            }
-        });
-
-        enregistrerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                    mainPanel.getGame().writeScore(textField1.getText());
-            }
-        });
-
-
+        nouvellePartieButton.addActionListener(this);
+        stopButton.addActionListener(this);
+        enregistrerButton.addActionListener(this);
     }
+
 
     public void paintComponent(Graphics g){
         Image img = null;
@@ -75,6 +41,19 @@ public class LPanel extends JPanel {
         g.setColor(Color.WHITE);
         String fs=String.valueOf(mainPanel.getGame().getFinalScore());
         g.drawString("Your score :"+fs,150 ,300);
+    }
+
+    public void actionPerformed(ActionEvent arg0) {
+        if(arg0.getSource() == nouvellePartieButton) {
+            mainPanel.startNewGame();
+        }
+        if(arg0.getSource() == stopButton){
+            System.exit(0);
+        }
+
+        if(arg0.getSource() == stopButton) {
+            mainPanel.getGame().writeScore(textField1.getText());
+        }
     }
 
 }

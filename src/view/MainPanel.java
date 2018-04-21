@@ -22,6 +22,7 @@ public class MainPanel extends JPanel {
         build();
     }
     public void build(){
+        JPanel container=new JPanel();
         this.gamePanel = new GamePanel(this);
         this.losePanel = new LPanel(this);
         this.winPanel = new WinPanel(this);
@@ -30,6 +31,7 @@ public class MainPanel extends JPanel {
         cards.add(losePanel, LOSE_PANEL);
         setLayout(new BorderLayout());
         add(cards, BorderLayout.CENTER);
+        cardlayout.first(cards);
         this.swapView(MainPanel.KEY_TEXTS[0]);
     }
     public void swapView(String key) {
@@ -37,6 +39,8 @@ public class MainPanel extends JPanel {
     }
 
     public void startNewGame() {
+        this.game=new Game(1);
+        this.swapView(MainPanel.KEY_TEXTS[0]);
 
     }
 
