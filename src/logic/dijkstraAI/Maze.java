@@ -1,12 +1,40 @@
 package logic.dijkstraAI;
 
+/**
+ * Cette classe permet de créer un graphe à partir d'un tableau à deux entrées et d'obtenir le chemin le plus
+ * court d'un point (x,y) vers un point demandé
+ */
 public class Maze {
 
+    /**
+     * Tableau des noeuds
+     */
     private Node[][] nodeBoard;
+    /**
+     * Graphe correspondant
+     */
     private Graph graph;
+    /**
+     * coordonnée x de départ des chemins
+     */
     private int x;
+    /**
+     * coordonnée y de départ des chemins
+     */
     private int y;
 
+    /**
+     * Construit un objet Maze, initialise le tableau des noeuds et créer le graph
+     *
+     * @param board tableau à deux dimensions
+     * @param x     coordonée x du point de départ des chemins à calculer
+     * @param y     coordonée y du point de départ des chemins à calculer
+     * @pre board != null
+     * @pre x comprit dans le tableau
+     * @pre y comprit dans le tableau
+     * @post si un élement de board vaut 1 alors il n'est pas accessible
+     * @post graph correspondant au point (x,y) et à board
+     */
     public Maze(int[][] board, int x, int y) {
         this.x = x;
         this.y = y;
@@ -53,6 +81,14 @@ public class Maze {
 
     }
 
+    /**
+     * Retourne le chemin le plus court allant de (x,y) à (xEnd, yEnd)
+     *
+     * @param xEnd coordonnée x du point à atteindre
+     * @param yEnd coordonnée y du point à atteindre
+     * @return le chemin le plus court vers (xEnd, yEnd)
+     * @post result = null si pas de chemins trouvé
+     */
     public Node getPath(int xEnd, int yEnd) {
         Node res = null;
         for (Node node : this.graph.getNodes()) {
