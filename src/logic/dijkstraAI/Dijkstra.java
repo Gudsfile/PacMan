@@ -18,7 +18,7 @@ public class Dijkstra {
         while (unsettledNodes.size() != 0) {
             Node currentNode = getLowestDistanceNode(unsettledNodes);
             unsettledNodes.remove(currentNode);
-            for (Map.Entry< Node, Integer> adjacencyPair: currentNode.getAdjacentNodes().entrySet()) {
+            for (Map.Entry<Node, Integer> adjacencyPair : currentNode.getAdjacentNodes().entrySet()) {
                 Node adjacentNode = adjacencyPair.getKey();
                 Integer edgeWeight = adjacencyPair.getValue();
                 if (!settledNodes.contains(adjacentNode)) {
@@ -31,10 +31,10 @@ public class Dijkstra {
         return graph;
     }
 
-    private static Node getLowestDistanceNode(Set < Node > unsettledNodes) {
+    private static Node getLowestDistanceNode(Set<Node> unsettledNodes) {
         Node lowestDistanceNode = null;
         int lowestDistance = Integer.MAX_VALUE;
-        for (Node node: unsettledNodes) {
+        for (Node node : unsettledNodes) {
             int nodeDistance = node.getDistance();
             if (nodeDistance < lowestDistance) {
                 lowestDistance = nodeDistance;

@@ -7,19 +7,34 @@ public class PacMan2k18 {
         MainFrame mainFrame = new MainFrame();
         Game game = mainFrame.getMainPanel().getGame();
 
-        Thread threadG1 = new Thread(game, "G1");
-        Thread threadG2 = new Thread(game, "G2");
-        Thread threadG3 = new Thread(game, "G3");
-        Thread threadG4 = new Thread(game, "G4");
-        Thread threadPO = new Thread(game, "PO");
+        Thread[] threads = {
+                new Thread(game, "G1"),
+                new Thread(game, "G2"),
+                new Thread(game, "G3"),
+                new Thread(game, "G4"),
+                new Thread(game, "PO")
+        };
 
-        threadG1.start();
-        threadG2.start();
-        threadG3.start();
-        threadG4.start();
-        threadPO.start();
-
+        startThread(threads);
         mainFrame.go();
 
     }
+
+    static Thread[] updateThread(Thread[] t, Game g) {
+        Thread[] res = new Thread[t.length];
+        for (int i = 0; i < t.length; i++) {
+            if (!t[i].isInterrupted()) {
+                t[i].interrupt();
+            }
+            res[i] = new Thread(g, t[i].getName());
+        }
+        return res;
+    }
+
+    static void startThread(Thread[] t) {
+        for (Thread t2 : t) {
+            t2.start();
+        }
+    }
+
 }

@@ -97,6 +97,10 @@ public class MainFrame extends JFrame {
         return mainPanel;
     }
 
+    public void setMainPanel(MainPanel mp) {
+        this.mainPanel = mp;
+    }
+
     /**
      * Inner class KeyboardListener - listens for the UP, DOWN, RIGHT, LEFT
      * keys.
@@ -136,9 +140,5 @@ public class MainFrame extends JFrame {
                     break;
             }
         }
-    }
-
-    public void setMainPanel(MainPanel mp) {
-        this.mainPanel = mp;
     }
 }

@@ -94,26 +94,6 @@ public class Ghost extends GamePiece {
     }
 
     /**
-     * get name
-     *
-     * @return name
-     * @post result = name
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * set name
-     *
-     * @param name new name
-     * @post this.name = name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * get value
      *
      * @return value
@@ -171,6 +151,26 @@ public class Ghost extends GamePiece {
      */
     public static void setStartY(int startY) {
         Ghost.startY = startY;
+    }
+
+    /**
+     * get name
+     *
+     * @return name
+     * @post result = name
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * set name
+     *
+     * @param name new name
+     * @post this.name = name
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**

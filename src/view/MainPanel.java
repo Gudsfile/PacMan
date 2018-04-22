@@ -6,14 +6,14 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainPanel extends JPanel {
-    private Game game;
-    private GamePanel gamePanel;
-    private LPanel losePanel;
-    private WPanel winPanel;
     private static final String GAME_PANEL = "Game Panel";
     private static final String WIN_PANEL = "Win Panel";
     private static final String LOSE_PANEL = "Lose Panel";
     public static final String[] KEY_TEXTS = {GAME_PANEL, WIN_PANEL, LOSE_PANEL};
+    private Game game;
+    private GamePanel gamePanel;
+    private LPanel losePanel;
+    private WPanel winPanel;
     private CardLayout cardlayout = new CardLayout();
     private JPanel cards = new JPanel(cardlayout);
 

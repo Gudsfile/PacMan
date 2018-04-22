@@ -9,11 +9,11 @@ import java.io.File;
 import java.io.IOException;
 
 public class WPanel extends JPanel implements ActionListener {
+    public MainPanel mainPanel;
     private JTextField textField1;
     private JButton enregistrerButton;
     private JButton continueButton;
     private JButton stopButton;
-    public MainPanel mainPanel;
     private JPanel panel1;
 
     public WPanel(MainPanel mainPanel) {
@@ -43,16 +43,14 @@ public class WPanel extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent arg0) {
         if (arg0.getSource() == continueButton) {
-            mainPanel.continueGame();
+            this.mainPanel.continueGame();
         }
         if (arg0.getSource() == stopButton) {
-            mainPanel.getGame().writeScore(textField1.getText());
-            enregistrerButton.setEnabled(false);
             System.exit(0);
         }
         if (arg0.getSource() == enregistrerButton) {
-            mainPanel.getGame().writeScore(textField1.getText());
-            enregistrerButton.setEnabled(false);
+            this.mainPanel.getGame().writeScore(textField1.getText());
+            this.enregistrerButton.setEnabled(false);
         }
     }
 

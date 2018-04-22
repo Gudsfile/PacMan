@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 public class GamePanel extends JPanel {
 
@@ -19,12 +18,12 @@ public class GamePanel extends JPanel {
         Font font = new Font("Courier", Font.BOLD, 40);
         scoreLabel = new JLabel();
         scoreLabel.setFont(font);
-        scoreLabel.setBounds(300,400,50,150);
+        scoreLabel.setBounds(300, 400, 50, 150);
         this.add(scoreLabel);
     }
 
     public void updateScoreLabel() {
-        scoreLabel.setText("Score : "+mainPanel.getGame().getFinalScore());
+        scoreLabel.setText("Score : " + mainPanel.getGame().getFinalScore());
     }
 
     public void paintComponent(Graphics g) {
@@ -32,11 +31,11 @@ public class GamePanel extends JPanel {
         paintPacMan(g);
         paintGhost(g);
         paintLife(g);
-        if(mainPanel.getGame().getLife()<0){
+        if (mainPanel.getGame().getLife() < 0) {
             mainPanel.swapView(MainPanel.KEY_TEXTS[2]);
-        }else if(mainPanel.getGame().isFinished()/*&&mainPanel.getGame().getLevel()==2*/){
+        } else if (mainPanel.getGame().isFinished()/*&&mainPanel.getGame().getLevel()==2*/) {
             mainPanel.swapView(MainPanel.KEY_TEXTS[1]);
-        }else if(mainPanel.getGame().isFinished()/*&&mainPanel.getGame().getLevel()<2*/){
+        } else if (mainPanel.getGame().isFinished()/*&&mainPanel.getGame().getLevel()<2*/) {
 
         }
     }

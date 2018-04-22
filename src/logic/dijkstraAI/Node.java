@@ -8,6 +8,10 @@ import java.util.Map;
 public class Node {
 
     /**
+     * Hashmap contenant les couples (Node adjacent, distance) du node
+     */
+    Map<Node, Integer> adjacentNodes = new HashMap<>();
+    /**
      * Position x
      */
     private int x;
@@ -19,21 +23,11 @@ public class Node {
      * Liste chainé
      */
     private List<Node> shortestPath = new LinkedList<>();
-
     /**
      * Distane infinie utilisé pour initialser le graph des parcours
      */
     private Integer distance = Integer.MAX_VALUE;
-    /**
-     * Hashmap contenant les couples (Node adjacent, distance) du node
-     */
-    Map<Node, Integer> adjacentNodes = new HashMap<>();
-
     private String name;
-
-    public void addDestination(Node destination, int distance) {
-        adjacentNodes.put(destination, distance);
-    }
 
     public Node(String name) {
         this.name = name;
@@ -43,6 +37,10 @@ public class Node {
         this.name = x + ":" + y;
         this.x = x;
         this.y = y;
+    }
+
+    public void addDestination(Node destination, int distance) {
+        adjacentNodes.put(destination, distance);
     }
 
     public String getName() {
