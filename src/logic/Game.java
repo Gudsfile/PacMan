@@ -101,10 +101,10 @@ public class Game implements Runnable {
      * @post power = false
      */
     public Game(int level) {
-        this.level=level;
         FileReader in = new FileReader("res/Levels/Level" + level + ".json");
         GameParam gameParam = in.initGame(level);
         if (gameParam != null) {
+            this.level = level;
             this.life = 3;
             this.score = 0;
             this.finalScore = 0;
@@ -224,8 +224,8 @@ public class Game implements Runnable {
             }
             // Le fantôme se dirige à l'endroit où va être PacMan
             else if (ghost.getName().equals(GhostNames.Pinky.toString())) {
-                if (isValidBoardMove(this.pacMan.getX()+(this.previousDX*3), this.pacMan.getY()+(this.previousDY*3), this.previousDX, this.previousDY)) {
-                    movement = getMovement(ghost.getX(), ghost.getY(), (this.previousDX*3)+this.pacMan.getX(), (this.previousDY*3)+this.pacMan.getY());
+                if (isValidBoardMove(this.pacMan.getX() + (this.previousDX * 3), this.pacMan.getY() + (this.previousDY * 3), this.previousDX, this.previousDY)) {
+                    movement = getMovement(ghost.getX(), ghost.getY(), (this.previousDX * 3) + this.pacMan.getX(), (this.previousDY * 3) + this.pacMan.getY());
                 } else {
                     while (this.gameBoard[endX][endY] instanceof Wall) {
                         endX = (int) (Math.random() * (this.gameBoard.length - 1) + 1);
@@ -236,7 +236,7 @@ public class Game implements Runnable {
             }
             // Le fantôme poursuit PacMan jusqu'à être à quelques cases de lui auquel cas il pannique
             else if (ghost.getName().equals(GhostNames.Clyde.toString())) {
-                if (Math.abs(ghost.getX()-this.pacMan.getX()) + Math.abs(ghost.getY()-this.pacMan.getY()) > 3) {
+                if (Math.abs(ghost.getX() - this.pacMan.getX()) + Math.abs(ghost.getY() - this.pacMan.getY()) > 4) {
                     movement = getMovement(ghost.getX(), ghost.getY(), this.pacMan.getX(), this.pacMan.getY());
                 } else {
                     while (this.gameBoard[endX][endY] instanceof Wall) {
@@ -248,7 +248,7 @@ public class Game implements Runnable {
             }
             // Le fantôme se déplace aléatoirement sauf s'il est a une case de PacMan auquel cas il le poursuit
             else if (ghost.getName().equals(GhostNames.Inky.toString())) {
-                if (Math.abs(ghost.getX()-this.pacMan.getX()) + Math.abs(ghost.getY()-this.pacMan.getY()) < 2) {
+                if (Math.abs(ghost.getX() - this.pacMan.getX()) + Math.abs(ghost.getY() - this.pacMan.getY()) < 2) {
                     movement = getMovement(ghost.getX(), ghost.getY(), this.pacMan.getX(), this.pacMan.getY());
                 } else {
                     while (this.gameBoard[endX][endY] instanceof Wall) {
@@ -479,9 +479,13 @@ public class Game implements Runnable {
      * TODO ne pas tuer de nouveau un fantôme déjà tuer lors d'une même powerDuration
      */
     private void killGhost(int x, int y) {
-        this.gameGhostBoard[x][y].setStateEaten(true);
-        increaseScore(Ghost.getValue() * this.comboCount);
-        this.comboCount += 1;
+        for (Ghost g : this.ghostList) {
+            if (g.getX() == x && g.getY() == y) {
+                g.setStateEaten(true);
+                increaseScore(Ghost.getValue() * this.comboCount);
+                this.comboCount += 1;
+            }
+        }
     }
 
     /**
@@ -527,6 +531,7 @@ public class Game implements Runnable {
 
     /**
      * Augmente le score
+     *
      * @param value ce qui est ajouté au score
      * @post score = old_score + value
      * @post finalscore = old_score + value
@@ -920,7 +925,9 @@ public class Game implements Runnable {
      * @return le numero du niveau
      * @post result=level
      */
-    public int getLevel(){return this.level;}
+    public int getLevel() {
+        return this.level;
+    }
 
     /**
      * Run du thread

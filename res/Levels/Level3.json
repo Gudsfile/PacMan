@@ -1,8 +1,8 @@
 {
   "PacDotValue":10,
   "FruitValue":100,
-  "PowerTime":7,
-  "GameSpeed":300, // indice de temps entre les mouvements
+  "PowerTime":5,
+  "GameSpeed":250, // temps entre les mouvements
   "board":[
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     [1,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,1],
