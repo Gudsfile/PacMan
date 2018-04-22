@@ -1,7 +1,7 @@
 {
   "PacDotValue":10,
   "FruitValue":100,
-  "PowerTime":10,
+  "PowerTime":7,
   "GameSpeed":300,
   "board":[
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],

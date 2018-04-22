@@ -199,41 +199,77 @@ public class Game implements Runnable {
      * @pre ghost != null
      */
     private void play(Ghost ghost) {
-        int dx = 0;
-        int dy = 0;
-        int[] movement = new int[2];
+        int endX = 0;
+        int endY = 0;
+        int[] movement = null;
+
+        // Si le jeu a démarré
         if (started) {
-            if (ghost.isStateEaten()) { // Retour au départ
+
+            // Le fantôme se dirige vers le départ
+            if (ghost.isStateEaten()) {
                 movement = getMovement(ghost.getX(), ghost.getY(), Ghost.getStartX(), Ghost.getStartY());
-                if (movement != null) {
-                    dx = movement[0];
-                    dy = movement[1];
-                }
-            } else if (this.power || ghost.getName().equals(GhostNames.Pinky.toString()) || ghost.getName().equals(GhostNames.Inky.toString()) || ghost.getName().equals(GhostNames.Clyde.toString())) { // En danger
-                int endX = 0;
-                int endY = 0;
+            }
+            // Le fantôme pannique et fait des déplacement aléatoire
+            else if (this.power) {
                 while (this.gameBoard[endX][endY] instanceof Wall) {
                     endX = (int) (Math.random() * (this.gameBoard.length - 1) + 1);
                     endY = (int) (Math.random() * (this.gameBoard[0].length - 1) + 1);
                 }
                 movement = getMovement(ghost.getX(), ghost.getY(), endX, endY);
-                if (movement != null) {
-                    dx = movement[0];
-                    dy = movement[1];
-                }
-            } else if (ghost.getName().equals(GhostNames.Blinky.toString())) { // Poursuite
+            }
+            // Le fantôme poursuit PacMan
+            else if (ghost.getName().equals(GhostNames.Blinky.toString())) {
                 movement = getMovement(ghost.getX(), ghost.getY(), this.pacMan.getX(), this.pacMan.getY());
-                if (movement != null) {
-                    dx = movement[0];
-                    dy = movement[1];
+            }
+            // Le fantôme se dirige à l'endroit où va être PacMan
+            else if (ghost.getName().equals(GhostNames.Pinky.toString())) {
+                if (isValidBoardMove(this.pacMan.getX()+(this.previousDX*3), this.pacMan.getY()+(this.previousDY*3), this.previousDX, this.previousDY)) {
+                    movement = getMovement(ghost.getX(), ghost.getY(), (this.previousDX*3)+this.pacMan.getX(), (this.previousDY*3)+this.pacMan.getY());
+                } else {
+                    while (this.gameBoard[endX][endY] instanceof Wall) {
+                        endX = (int) (Math.random() * (this.gameBoard.length - 1) + 1);
+                        endY = (int) (Math.random() * (this.gameBoard[0].length - 1) + 1);
+                    }
+                    movement = getMovement(ghost.getX(), ghost.getY(), endX, endY);
                 }
             }
-            if (this.isValidBoardMove(ghost.getX(), ghost.getY(), dx, dy)) {
-                moveGhost(ghost, dx, dy);
-                if (!isPower() && ghost.getX() == pacMan.getX() && ghost.getY() == pacMan.getY()) {
-                    killPacMan();
+            // Le fantôme poursuit PacMan jusqu'à être à quelques cases de lui auquel cas il pannique
+            else if (ghost.getName().equals(GhostNames.Clyde.toString())) {
+                if (Math.abs(ghost.getX()-this.pacMan.getX()) + Math.abs(ghost.getY()-this.pacMan.getY()) > 3) {
+                    movement = getMovement(ghost.getX(), ghost.getY(), this.pacMan.getX(), this.pacMan.getY());
+                } else {
+                    while (this.gameBoard[endX][endY] instanceof Wall) {
+                        endX = (int) (Math.random() * (this.gameBoard.length - 1) + 1);
+                        endY = (int) (Math.random() * (this.gameBoard[0].length - 1) + 1);
+                    }
+                    movement = getMovement(ghost.getX(), ghost.getY(), endX, endY);
                 }
             }
+            // Le fantôme se déplace aléatoirement sauf s'il est a une case de PacMan auquel cas il le poursuit
+            else if (ghost.getName().equals(GhostNames.Inky.toString())) {
+                if (Math.abs(ghost.getX()-this.pacMan.getX()) + Math.abs(ghost.getY()-this.pacMan.getY()) < 2) {
+                    movement = getMovement(ghost.getX(), ghost.getY(), this.pacMan.getX(), this.pacMan.getY());
+                } else {
+                    while (this.gameBoard[endX][endY] instanceof Wall) {
+                        endX = (int) (Math.random() * (this.gameBoard.length - 1) + 1);
+                        endY = (int) (Math.random() * (this.gameBoard[0].length - 1) + 1);
+                    }
+                    movement = getMovement(ghost.getX(), ghost.getY(), endX, endY);
+                }
+            }
+
+            // Si le mouvement n'est pas null
+            if (movement != null) {
+                // Si le mouvement choisit est valide le fantôme se déplace
+                if (this.isValidBoardMove(ghost.getX(), ghost.getY(), movement[0], movement[1])) {
+                    moveGhost(ghost, movement[0], movement[1]);
+                    if (!isPower() && ghost.getX() == pacMan.getX() && ghost.getY() == pacMan.getY()) {
+                        killPacMan();
+                    }
+                }
+            }
+
         }
     }
 
@@ -311,14 +347,10 @@ public class Game implements Runnable {
                 this.pacDotCount--;
                 this.finished = (pacDotCount == 0);
             } else if (this.gameBoard[x + dx][y + dy] instanceof Fruit) {
-                this.score += Fruit.value;
-                this.finalScore += Fruit.value;
-                this.updateLifeCount();
+                increaseScore(Fruit.value);
             } else if (this.gameBoard[x + dx][y + dy] instanceof PacDot) {
-                this.score += PacDot.value;
-                this.finalScore += PacDot.value;
+                increaseScore(PacDot.value);
                 this.pacDotCount--;
-                this.updateLifeCount();
                 this.finished = (pacDotCount == 0);
             }
             this.pacMan.setX(x + dx);
@@ -365,6 +397,11 @@ public class Game implements Runnable {
             this.gameGhostBoard[x][y] = null;
         }
         if (ghost.getX() == Ghost.getStartX() && ghost.getY() == Ghost.getStartY()) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             ghost.setStateEaten(false);
         }
     }
@@ -443,8 +480,7 @@ public class Game implements Runnable {
      */
     private void killGhost(int x, int y) {
         this.gameGhostBoard[x][y].setStateEaten(true);
-        this.score += Ghost.getValue() * comboCount;
-        this.updateLifeCount();
+        increaseScore(Ghost.getValue() * this.comboCount);
         this.comboCount += 1;
     }
 
@@ -457,6 +493,7 @@ public class Game implements Runnable {
      * @post le nombre de vie réduit
      */
     private void killPacMan() {
+        this.score = 0;
         this.life -= 1;
         if (this.life < 0) {
             end();
@@ -486,6 +523,19 @@ public class Game implements Runnable {
             result = result + result;
         }
         return result;
+    }
+
+    /**
+     * Augmente le score
+     * @param value ce qui est ajouté au score
+     * @post score = old_score + value
+     * @post finalscore = old_score + value
+     * @post augmenter les vies s'il le faut
+     */
+    private void increaseScore(int value) {
+        this.score += value;
+        this.finalScore += value;
+        this.updateLifeCount();
     }
 
     /**
