@@ -10,8 +10,6 @@ import java.io.FileWriter;
 
 /**
  * Cette classe écrit dans un fichier JSON les scores des joueurs
- *
- * @author Alexis CANO
  */
 public class ScoreWritter {
 

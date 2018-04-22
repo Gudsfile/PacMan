@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 /**
  * Cette classe modélise une partie du jeu PacMan.
- *
- * @author Théophile Chénais
  * @inv {@code this.life >=0}
  * @inv {@code this.gameBoard != null}
  * @inv {@code this.gameBoard.width > 0}

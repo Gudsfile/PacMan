@@ -2,8 +2,6 @@ package data;
 
 /**
  * Cette class permet de stocker les paramètre d'une partie de PacMan lu à partir d'un fichier JSON de paramètre
- *
- * @author Alexis Cano
  * @inv {@code this.level > 0}
  * @inv {@code this.pacDotValue > 0}
  * @inv {@code this.fruitValue > 0}
@@ -92,6 +90,10 @@ public class GameParam {
         }
     }
 
+    /**
+     * Invarriant de classe
+     * @return booleen invarriant
+     */
     public boolean invarriant() {
         if (this.level > 0 && this.pacDotValue > 0 && this.fruitValue > 0 && this.powerTime > 0 && this.gameSpeed > 0 && this.board != null) {
             return true;
@@ -100,10 +102,18 @@ public class GameParam {
         }
     }
 
+    /**
+     * Get le niveau de jeu
+     * @return le niveau de jeu
+     */
     public int getLevel() {
         return level;
     }
 
+    /**
+     * Set le niveau de jeu
+     * @param level le niveau de jeu
+     */
     public void setLevel(int level) {
         this.level = level;
     }
@@ -197,6 +207,7 @@ public class GameParam {
     public void setBoard(int[][] board) {
         this.board = board;
     }
+
 
     public int getStartPacManX() {
         return startPacManX;

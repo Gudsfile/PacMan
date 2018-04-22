@@ -2,8 +2,6 @@ package logic;
 
 /**
  * Cette classe modélise les super-gommes du jeu PacMan.
- *
- * @author Théophile Chénais
  */
 public class SuperPacDot extends PacDot {
 

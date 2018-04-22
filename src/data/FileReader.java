@@ -10,8 +10,6 @@ import static java.lang.Math.toIntExact;
 
 /**
  * Cette classe lit les fichiers JSON permettant de paramétrer une partie de PacMan
- *
- * @author Alexis CANO
  */
 public class FileReader {
 

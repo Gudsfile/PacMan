@@ -3,8 +3,6 @@ package logic;
 
 /**
  * Cette classe modélise PacMan du jeu PacMan.
- *
- * @author Théophile Chénais
  * @inv {@code speed > 0}
  */
 public class PacMan extends GamePiece {

@@ -2,8 +2,6 @@ package logic;
 
 /**
  * Cette classe modélise les fantôme du jeu PacMan.
- *
- * @author Théophile Chénais
  * @inv {@code speed >= 0}
  */
 public class Ghost extends GamePiece {
@@ -58,16 +56,16 @@ public class Ghost extends GamePiece {
         this.stateEaten = false;
         switch (countGhost) {
             case 0:
-                this.name = GhostNames.Blinky.toString();//"\033[31m" + "G1" + "\033[39m";
+                this.name = GhostNames.Blinky.toString();
                 break;
             case 1:
-                this.name = GhostNames.Pinky.toString();//"\033[32m" + "G2" + "\033[39m";
+                this.name = GhostNames.Pinky.toString();
                 break;
             case 2:
-                this.name = GhostNames.Inky.toString();//"\033[36m" + "G3" + "\033[39m";
+                this.name = GhostNames.Inky.toString();
                 break;
             case 3:
-                this.name = GhostNames.Clyde.toString();//"\033[35m" + "G4" + "\033[39m";
+                this.name = GhostNames.Clyde.toString();
                 break;
         }
     }

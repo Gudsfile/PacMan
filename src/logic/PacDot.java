@@ -2,8 +2,6 @@ package logic;
 
 /**
  * Cette classe modélise les PacDot du jeu PacMan.
- *
- * @author Théophile Chénais
  * @inv {@code value > 0}
  */
 public class PacDot extends GamePiece {
