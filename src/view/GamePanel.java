@@ -8,11 +8,24 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Panel de l'affichage, représente la partie du Pacman
+ */
 public class GamePanel extends JPanel {
 
+    /**
+     * Panel principal de l'affichage
+     */
     private MainPanel mainPanel;
+    /**
+     * Label représentant le score
+     */
     private JLabel scoreLabel;
 
+    /**
+     * Constructeur du panel jeu
+     * @param mainPanel le panel principal de l'affichage
+     */
     public GamePanel(MainPanel mainPanel) {
         this.mainPanel = mainPanel;
         Font font = new Font("Courier", Font.BOLD, 40);
@@ -22,10 +35,17 @@ public class GamePanel extends JPanel {
         this.add(scoreLabel);
     }
 
+    /**
+     * Met à jour le score
+     */
     public void updateScoreLabel() {
         scoreLabel.setText("Score : " + mainPanel.getGame().getFinalScore());
     }
 
+    /**
+     * Place les éléments de l'affichage
+     * @param g
+     */
     public void paintComponent(Graphics g) {
         paintStaticGamePiece(g);
         paintPacMan(g);
@@ -40,6 +60,10 @@ public class GamePanel extends JPanel {
         }
     }
 
+    /**
+     * Place les éléments statiques du plateau de jeu
+     * @param g
+     */
     public void paintStaticGamePiece(Graphics g) {
         for (int i = 0; i < mainPanel.getGame().getGameBoard().length; i++) {
             for (int j = 0; j < mainPanel.getGame().getGameBoard()[0].length; j++) {
@@ -93,6 +117,10 @@ public class GamePanel extends JPanel {
         }
     }
 
+    /**
+     * Place le pacman sur le plateau de jeu
+     * @param g
+     */
     public void paintPacMan(Graphics g) {
         int pcX = mainPanel.getGame().getPacMan().getX();
         int pcY = mainPanel.getGame().getPacMan().getY();
@@ -100,6 +128,10 @@ public class GamePanel extends JPanel {
         g.drawImage(img, pcY * 35, 50 + pcX * 35, 35, 35, this);
     }
 
+    /**
+     * Place les fantomes sur le plateau de jeu
+     * @param g
+     */
     public void paintGhost(Graphics g) {
         Ghost ghost;
         for (int i = 0; i < mainPanel.getGame().getGameGhostBoard().length; i++) {
@@ -130,6 +162,10 @@ public class GamePanel extends JPanel {
         }
     }
 
+    /**
+     * Place le compteur de vie sur le plateau
+     * @param g
+     */
     public void paintLife(Graphics g) {
         for (int i = 0; i < mainPanel.getGame().getLife(); i++) {
             Image img = null;

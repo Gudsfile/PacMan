@@ -8,14 +8,39 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Panel de défaite
+ */
 public class LPanel extends JPanel implements ActionListener {
+    /**
+     * Panel principal
+     */
     public MainPanel mainPanel;
+    /**
+     * Textfield pour le pseudo du joueur
+     */
     private JTextField textField1;
+    /**
+     * Boutton pour enregistrer le score
+     */
     private JButton enregistrerButton;
+    /**
+     * Boutton pour lancer une nouvelle partie
+     */
     private JButton nouvellePartieButton;
+    /**
+     * Boutton pour arrêter le jeu
+     */
     private JButton stopButton;
+    /**
+     * Panel principal du panel Lose
+     */
     private JPanel panel1;
 
+    /**
+     * Constructeur du panel Lose
+     * @param mainPanel
+     */
     public LPanel(MainPanel mainPanel) {
         this.mainPanel = mainPanel;
         this.add(panel1);
@@ -24,7 +49,10 @@ public class LPanel extends JPanel implements ActionListener {
         this.enregistrerButton.addActionListener(this);
     }
 
-
+    /**
+     * Construit l'affichage
+     * @param g
+     */
     public void paintComponent(Graphics g) {
         Image img = null;
         try {
@@ -41,6 +69,10 @@ public class LPanel extends JPanel implements ActionListener {
         g.drawString("Your score :" + fs, 150, 300);
     }
 
+    /**
+     * Controlleur des bouttons
+     * @param arg0 action effectué
+     */
     public void actionPerformed(ActionEvent arg0) {
         if (arg0.getSource() == nouvellePartieButton) {
             this.mainPanel.startNewGame();

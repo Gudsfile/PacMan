@@ -1,6 +1,9 @@
 import logic.Game;
 import view.MainFrame;
 
+/**
+ * Lanceur du jeu Pacman
+ */
 public class PacMan2k18 {
 
     public static void main(String[] args) {

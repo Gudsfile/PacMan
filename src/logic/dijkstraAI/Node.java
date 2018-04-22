@@ -5,6 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Classe représentant un noeud d'un graph
+ */
 public class Node {
 
     /**
@@ -27,18 +30,35 @@ public class Node {
      * Distane infinie utilisé pour initialser le graph des parcours
      */
     private Integer distance = Integer.MAX_VALUE;
+    /**
+     * Nom du noeud
+     */
     private String name;
 
+    /**
+     * Constructeur du noeud
+     * @param name nom du noeud
+     */
     public Node(String name) {
         this.name = name;
     }
 
+    /**
+     * Constructeur du noeud
+     * @param x valeur de x
+     * @param y valeur de y
+     */
     public Node(int x, int y) {
         this.name = x + ":" + y;
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * Ajoute un noeud adjacent
+     * @param destination le noeud adjacent
+     * @param distance la distance vers le noeud adjacent
+     */
     public void addDestination(Node destination, int distance) {
         adjacentNodes.put(destination, distance);
     }

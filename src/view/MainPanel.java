@@ -5,23 +5,62 @@ import logic.Game;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Panel principal de l'affichage
+ */
 public class MainPanel extends JPanel {
+    /**
+     * String pour le cardLayout, Gamepanel
+     */
     private static final String GAME_PANEL = "Game Panel";
+    /**
+     * String pour le cardLayout, Winpanel
+     */
     private static final String WIN_PANEL = "Win Panel";
+    /**
+     * String pour le cardLayout, Losepanel
+     */
     private static final String LOSE_PANEL = "Lose Panel";
+    /**
+     * Tableau contenant les clées correspondant au différents panels
+     */
     public static final String[] KEY_TEXTS = {GAME_PANEL, WIN_PANEL, LOSE_PANEL};
+    /**
+     * Le jeu Pacman en cour
+     */
     private Game game;
+    /**
+     * Le panel de jeu
+     */
     private GamePanel gamePanel;
+    /**
+     * Le panel GameOver
+     */
     private LPanel losePanel;
+    /**
+     * Le panel victoire
+     */
     private WPanel winPanel;
+    /**
+     * Le cardlayout
+     */
     private CardLayout cardlayout = new CardLayout();
+    /**
+     * Le panel contenant les différents panels de l'application
+     */
     private JPanel cards = new JPanel(cardlayout);
 
+    /**
+     * Constructeur du mainPanel
+     */
     public MainPanel() {
-        this.game = new Game(2);
+        this.game = new Game(1);
         build();
     }
 
+    /**
+     * Construit l'affichage
+     */
     public void build() {
         JPanel container = new JPanel();
         this.gamePanel = new GamePanel(this);
@@ -36,16 +75,26 @@ public class MainPanel extends JPanel {
         this.swapView(MainPanel.KEY_TEXTS[0]);
     }
 
+    /**
+     * Change de panel
+     * @param key la clé du panel à afficher
+     */
     public void swapView(String key) {
         cardlayout.show(cards, key);
     }
 
+    /**
+     * Lance une nouvelle partie
+     */
     public void startNewGame() {
         this.game = new Game(1);
         this.swapView(MainPanel.KEY_TEXTS[0]);
         build();
     }
 
+    /**
+     * Lance le niveau suivant après une victoire
+     */
     public void continueGame() {
         int life = this.game.getLife();
         int score = this.game.getFinalScore();

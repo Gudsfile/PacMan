@@ -5,9 +5,18 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+/**
+ * Frame principale du jeu Pacman
+ */
 public class MainFrame extends JFrame {
 
+    /**
+     * Booleens représentant les états des touche de déplacement
+     */
     private static boolean upPressed, downPressed, leftPressed, rightPressed;
+    /**
+     * Panel principal du jeu
+     */
     private MainPanel mainPanel;
 
     public MainFrame() {
@@ -24,6 +33,9 @@ public class MainFrame extends JFrame {
         this.addKeyListener(new MainFrame.KeyboardListener());
     }
 
+    /**
+     * Lance une partie de Pacman
+     */
     public void go() {
         while (!mainPanel.getGame().isFinished()) {
             if (upPressed) {
@@ -43,17 +55,6 @@ public class MainFrame extends JFrame {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    public void goRepaint() {
-        while (true) {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            mainPanel.repaint();
         }
     }
 
