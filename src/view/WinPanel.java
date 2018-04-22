@@ -1,4 +1,4 @@
-
+/*
 package view;
 
 import logic.*;
@@ -40,3 +40,4 @@ public class WinPanel extends JPanel {
         g.drawString("Your score :" + fs, 432, 100);
     }
 }
+*/

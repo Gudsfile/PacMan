@@ -9,7 +9,7 @@ public class MainPanel extends JPanel {
     private Game game;
     private GamePanel gamePanel;
     private LPanel losePanel;
-    private WinPanel winPanel;
+    private WPanel winPanel;
     private static final String GAME_PANEL = "Game Panel";
     private static final String WIN_PANEL = "Win Panel";
     private static final String LOSE_PANEL = "Lose Panel";
@@ -18,7 +18,7 @@ public class MainPanel extends JPanel {
     private JPanel cards = new JPanel(cardlayout);
 
     public MainPanel() {
-        this.game = new Game(1);
+        this.game = new Game(2);
         build();
     }
 
@@ -26,7 +26,7 @@ public class MainPanel extends JPanel {
         JPanel container = new JPanel();
         this.gamePanel = new GamePanel(this);
         this.losePanel = new LPanel(this);
-        this.winPanel = new WinPanel(this);
+        this.winPanel = new WPanel(this);
         cards.add(gamePanel, GAME_PANEL);
         cards.add(winPanel, WIN_PANEL);
         cards.add(losePanel, LOSE_PANEL);
@@ -41,6 +41,12 @@ public class MainPanel extends JPanel {
     }
 
     public void startNewGame() {
+        this.game = new Game(1);
+        this.swapView(MainPanel.KEY_TEXTS[0]);
+        build();
+    }
+
+    public void continueGame() {
         int life = this.game.getLife();
         int score = this.game.getFinalScore();
         this.game = new Game(this.game.getLevel() + 1);
@@ -48,7 +54,6 @@ public class MainPanel extends JPanel {
         this.game.setFinalScore(score);
         this.swapView(MainPanel.KEY_TEXTS[0]);
         build();
-
     }
 
     public Game getGame() {
@@ -83,11 +88,11 @@ public class MainPanel extends JPanel {
         this.losePanel = losePanel;
     }
 
-    public WinPanel getWinPanel() {
+    public WPanel getWinPanel() {
         return winPanel;
     }
 
-    public void setWinPanel(WinPanel winPanel) {
+    public void setWinPanel(WPanel winPanel) {
         this.winPanel = winPanel;
     }
 }
