@@ -42,9 +42,12 @@ public class MainPanel extends JPanel {
 
     public void startNewGame() {
         int life = this.game.getLife();
+        int score = this.game.getFinalScore();
         this.game = new Game(this.game.getLevel() + 1);
         this.game.setLife(life);
+        this.game.setFinalScore(score);
         this.swapView(MainPanel.KEY_TEXTS[0]);
+        build();
 
     }
 

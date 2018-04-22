@@ -161,33 +161,35 @@ public class Game implements Runnable {
     public synchronized void play(int mouvement) {
         int dx = 0;
         int dy = 0;
-        switch (mouvement) {
-            case 1: // haut
-                dx = -1;
-                dy = 0;
-                break;
-            case 2: // Bas
-                dx = 1;
-                dy = 0;
-                break;
-            case 3: // Gauche
-                dx = 0;
-                dy = -1;
-                break;
-            case 4: // Droite
-                dx = 0;
-                dy = 1;
-                break;
-            default:
-                break;
-        }
-        if (this.isValidBoardMove(this.pacMan.getX(), this.pacMan.getY(), dx, dy)) {
-            movePacMan(dx, dy);
-            this.previousDX = dx;
-            this.previousDY = dy;
-        } else {
-            if (this.isValidBoardMove(this.pacMan.getX(), this.pacMan.getY(), this.previousDX, this.previousDY)) {
-                movePacMan(this.previousDX, this.previousDY);
+        if (started) {
+            switch (mouvement) {
+                case 1: // haut
+                    dx = -1;
+                    dy = 0;
+                    break;
+                case 2: // Bas
+                    dx = 1;
+                    dy = 0;
+                    break;
+                case 3: // Gauche
+                    dx = 0;
+                    dy = -1;
+                    break;
+                case 4: // Droite
+                    dx = 0;
+                    dy = 1;
+                    break;
+                default:
+                    break;
+            }
+            if (this.isValidBoardMove(this.pacMan.getX(), this.pacMan.getY(), dx, dy)) {
+                movePacMan(dx, dy);
+                this.previousDX = dx;
+                this.previousDY = dy;
+            } else {
+                if (this.isValidBoardMove(this.pacMan.getX(), this.pacMan.getY(), this.previousDX, this.previousDY)) {
+                    movePacMan(this.previousDX, this.previousDY);
+                }
             }
         }
     }

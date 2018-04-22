@@ -1,5 +1,6 @@
 
 package view;
+
 import logic.*;
 
 import javax.imageio.ImageIO;
@@ -16,15 +17,16 @@ public class WinPanel extends JPanel {
 
         this.mainPanel = mainPanel;
 
-        JLabel pseudo=new JLabel("Pseudo : ");
+        JLabel pseudo = new JLabel("Pseudo : ");
         JTextField pseudoTextField = new JTextField("");
-        JButton playButton = new JButton( "Nouvelle Partie");
-        JButton stopButton = new JButton( "Stop");
+        JButton playButton = new JButton("Nouvelle Partie");
+        JButton stopButton = new JButton("Stop");
         this.add(pseudo);
         this.add(pseudoTextField);
         this.add(playButton);
         this.add(stopButton);
     }
+
     public void paintComponent(Graphics g) {
         Image img = null;
         try {
@@ -34,7 +36,7 @@ public class WinPanel extends JPanel {
         }
         g.drawImage(img, 0, 50, this);
         g.setColor(Color.WHITE);
-        String fs=String.valueOf(mainPanel.getGame().getFinalScore());
-        g.drawString("Your score :"+fs,432 ,100);
+        String fs = String.valueOf(mainPanel.getGame().getFinalScore());
+        g.drawString("Your score :" + fs, 432, 100);
     }
 }

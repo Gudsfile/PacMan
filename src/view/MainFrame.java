@@ -37,7 +37,7 @@ public class MainFrame extends JFrame {
             }
             mainPanel.repaint();
             //mainPanel.getGame().displayBoard();
-            System.out.println("Life: "+mainPanel.getGame().getLife()+" Power : "+mainPanel.getGame().isPower()+" Score : "+mainPanel.getGame().getFinalScore());
+            //System.out.println("Life: "+mainPanel.getGame().getLife()+" Power : "+mainPanel.getGame().isPower()+" Score : "+mainPanel.getGame().getFinalScore());
             try {
                 Thread.sleep(mainPanel.getGame().getPacMan().getSpeed());
             } catch (InterruptedException e) {
@@ -45,6 +45,7 @@ public class MainFrame extends JFrame {
             }
         }
     }
+
     public void goRepaint() {
         while (true) {
             try {
@@ -104,41 +105,40 @@ public class MainFrame extends JFrame {
 
         @Override
         public void keyPressed(KeyEvent event) {
-            mainPanel.getGame().setStarted(true);
             switch (event.getKeyCode()) {
                 case KeyEvent.VK_UP:
-                    System.out.println("Pressed : UP");
                     MainFrame.upPressed = true;
                     MainFrame.downPressed = false;
                     MainFrame.leftPressed = false;
                     MainFrame.rightPressed = false;
+                    mainPanel.getGame().setStarted(true);
                     break;
                 case KeyEvent.VK_DOWN:
-                    System.out.println("Pressed : DOWN");
                     MainFrame.upPressed = false;
                     MainFrame.downPressed = true;
                     MainFrame.leftPressed = false;
                     MainFrame.rightPressed = false;
+                    mainPanel.getGame().setStarted(true);
                     break;
                 case KeyEvent.VK_LEFT:
-                    System.out.println("Pressed : LEFT");
                     MainFrame.upPressed = false;
                     MainFrame.downPressed = false;
                     MainFrame.leftPressed = true;
                     MainFrame.rightPressed = false;
+                    mainPanel.getGame().setStarted(true);
                     break;
                 case KeyEvent.VK_RIGHT:
-                    System.out.println("Pressed : RIGHT");
                     MainFrame.upPressed = false;
                     MainFrame.downPressed = false;
                     MainFrame.leftPressed = false;
                     MainFrame.rightPressed = true;
+                    mainPanel.getGame().setStarted(true);
                     break;
             }
         }
     }
 
-    public void setMainPanel(MainPanel mp){
-        this.mainPanel=mp;
+    public void setMainPanel(MainPanel mp) {
+        this.mainPanel = mp;
     }
 }

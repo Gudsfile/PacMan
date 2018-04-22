@@ -1,16 +1,8 @@
 {
-  "Highscore": 1850,
+  "Highscore": 4050,
   "Scores": [
     {
       "Score": 720,
-      "Name": ""
-    },
-    {
-      "Score": 630,
-      "Name": ""
-    },
-    {
-      "Score": 1850,
       "Name": ""
     },
     {
@@ -18,12 +10,12 @@
       "Name": "Théophile"
     },
     {
-      "Score": 200,
-      "Name": "b"
+      "Score": 3090,
+      "Name": "toto"
     },
     {
-      "Score": 240,
-      "Name": "ty"
+      "Score": 4050,
+      "Name": "Théophile"
     }
   ]
 }
